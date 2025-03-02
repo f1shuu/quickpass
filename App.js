@@ -1,24 +1,14 @@
 import { registerRootComponent } from 'expo';
 
-import { View, Text } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-
-registerRootComponent(App);
+import Loader from './Loader';
+import ThemeProvider from './providers/ThemeProvider';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hello, QuickPass!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <Loader />
+    </ThemeProvider>
   )
 }
 
-const styles = {
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-}
+registerRootComponent(App);
