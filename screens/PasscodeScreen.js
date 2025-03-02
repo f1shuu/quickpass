@@ -80,7 +80,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
             borderRadius: 10
         },
         text: {
-            fontFamily: 'Nexa',
+            fontFamily: 'Tommy',
             fontSize: 20,
             color: theme.primary
         }

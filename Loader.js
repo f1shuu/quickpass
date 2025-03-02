@@ -1,15 +1,21 @@
 
 
 import { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+
+import CustomTabBar from './components/CustomTabBar';
+import PasscodeScreen from './screens/PasscodeScreen';
+import PasswordCreator from './screens/PasswordCreator';
+import PasswordsScreen from './screens/PasswordsScreen';
 
 import { useTheme } from './providers/ThemeProvider';
-import PasscodeScreen from './screens/PasscodeScreen';
 
 SplashScreen.preventAutoHideAsync();
+const Stack = createStackNavigator();
 
 export default function Loader() {
     const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +26,7 @@ export default function Loader() {
         const loadAppResources = async () => {
             try {
                 await Font.loadAsync({
-                    'Nexa': require('./assets/fonts/Nexa-Heavy.ttf')
+                    'Tommy': require('./assets/fonts/Tommy-Bold.otf')
                 })
             } catch (error) {
                 console.error(error);
@@ -36,27 +42,22 @@ export default function Loader() {
 
     if (!isAuthenticated) return <PasscodeScreen onAuthSuccess={() => setIsAuthenticated(true)} />;
 
-    const styles = {
-        container: {
-            flex: 1,
-            backgroundColor: theme.primary,
-            alignItems: 'center',
-            justifyContent: 'center'
-        },
-        text: {
-            fontFamily: 'Nexa',
-            fontSize: 24,
-            color: theme.secondary
-        }
-    }
-
     return (
         isLoading ? null : (
             <>
+                <NavigationContainer>
                 <StatusBar style='auto' />
-                <View style={styles.container}>
-                    <Text style={styles.text}>Hello, QuickPass!</Text>
-                </View>
+                    <Stack.Navigator
+                        screenOptions={{
+                            animationEnabled: false,
+                            header: (props) => <CustomTabBar {...props} />,
+                            cardStyle: { backgroundColor: theme.primary }
+                        }}
+                    >
+                        <Stack.Screen name='PasswordsScreen' component={PasswordsScreen} options={{ animation: 'none' }} />
+                        <Stack.Screen name='PasswordCreator' component={PasswordCreator} options={{ animation: 'none' }} />
+                    </Stack.Navigator>
+                </NavigationContainer>
             </>
         )
     )

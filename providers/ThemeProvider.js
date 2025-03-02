@@ -3,8 +3,8 @@ import { createContext, useContext } from 'react';
 
 const themes = {
     light: {
-        primary: '#FFFFFF',
-        secondary: '#262626'
+        primary: '#262626',
+        secondary: '#FFFFFF'
     },
     dark: {
         primary: '#262626',
