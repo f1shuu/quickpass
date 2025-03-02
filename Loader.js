@@ -9,8 +9,8 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import CustomTabBar from './components/CustomTabBar';
 import PasscodeScreen from './screens/PasscodeScreen';
-import PasswordCreator from './screens/PasswordCreator';
-import PasswordsScreen from './screens/PasswordsScreen';
+import PasswordCreator from './screens/PasswordCreatorScreen';
+import PasswordsScreen from './screens/PasswordsListScreen';
 
 import { useTheme } from './providers/ThemeProvider';
 
