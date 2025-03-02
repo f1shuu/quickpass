@@ -1,6 +1,6 @@
 {
   "name": "quickpass",
-  "version": "0.1",
+  "version": "0.2",
   "main": "App.js",
   "scripts": {
     "start": "expo start",
@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-navigation/native": "^7.0.15",
     "@react-navigation/stack": "^7.1.2",
     "expo": "~52.0.37",

@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, TextInput } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
 
-import { useTheme } from '../providers/ThemeProvider';
+import Button from '../components/Button';
+
 import { translate } from '../providers/LanguageProvider';
+import { useTheme } from '../providers/ThemeProvider';
 
 export default function PasscodeScreen({ onAuthSuccess }) {
-    const theme = useTheme();
-
     const [passcode, setPasscode] = useState('');
     const [storedPasscode, setStoredPasscode] = useState('');
 
+    const theme = useTheme();
+
     useEffect(() => {
         checkStoredPasscode();
-    }, []);
+    }, [])
 
     async function checkStoredPasscode() {
         const passcode = await SecureStore.getItemAsync('passcode');
@@ -69,16 +71,6 @@ export default function PasscodeScreen({ onAuthSuccess }) {
             borderRadius: 10,
             color: theme.secondary
         },
-        button: {
-            backgroundColor: theme.secondary,
-            padding: 10,
-            width: 200,
-            height: 60,
-            alignSelf: 'center',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 10
-        },
         text: {
             fontFamily: 'Tommy',
             fontSize: 20,
@@ -88,18 +80,15 @@ export default function PasscodeScreen({ onAuthSuccess }) {
 
     return (
         <View style={styles.container}>
-            <Text style={[styles.text, { color: theme.secondary }]}>Enter passcode</Text>
             <TextInput
-                style={styles.input}
+                style={[styles.input, styles.text, { color: theme.secondary }]}
                 value={passcode}
                 onChangeText={setPasscode}
                 secureTextEntry
                 keyboardType="numeric"
                 maxLength={4}
             />
-            <TouchableOpacity onPress={handlePasscodeSubmit} style={styles.button}>
-                <Text style={styles.text}>{ storedPasscode ? translate('unlock') : translate('setPasscode')}</Text>
-            </TouchableOpacity>
+            <Button onPress={handlePasscodeSubmit} theme='secondary' text={storedPasscode ? translate('unlock') : translate('setPasscode')} />
         </View>
-    );
+    )
 }

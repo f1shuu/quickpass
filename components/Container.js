@@ -10,14 +10,14 @@ export default function Container({ title, children }) {
             flex: 1,
             backgroundColor: theme.secondary,
             marginHorizontal: '2.5%',
-            padding: 20,
+            padding: 30,
             borderRadius: 25
         },
         text: {
             fontFamily: 'Tommy',
-            fontSize: 20,
+            fontSize: 24,
             color: theme.primary,
-            marginBottom: 20
+            marginBottom: 30
         }
     }
 

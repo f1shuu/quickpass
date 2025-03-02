@@ -4,20 +4,28 @@ export const translate = (key) => translations[Localization.getLocales()[0].lang
 
 const translations = {
     pl: {
+        addPassword: 'Dodaj hasło',
+        allPasswords: 'Wszystkie hasła',
         createPassword: 'Stwórz nowe hasło',
         fallbackLabel: 'Użyj kodu PIN',
-        passwordsList: 'Lista haseł',
+        mail: 'E-mail',
+        password: 'Hasło',
         promptMessage: 'Zeskanuj odcisk palca',
         setPasscode: 'Ustaw kod PIN',
-        unlock: 'Odblokuj'
+        unlock: 'Odblokuj',
+        website: 'Nazwa'
     },
 
     en: {
+        addPassword: 'Add password',
+        allPasswords: 'All passwords',
         createPassword: 'Create a new password',
         fallbackLabel: 'Use passcode',
-        passwordsList: 'Passwords list',
+        mail: 'E-mail',
+        password: 'Password',
         promptMessage: 'Scan your fingerprint',
         setPasscode: 'Set passcode',
-        unlock: 'Unlock'
+        unlock: 'Unlock',
+        website: 'Webiste name'
     }
 }
