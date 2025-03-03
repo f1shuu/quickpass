@@ -85,7 +85,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
                 value={passcode}
                 onChangeText={setPasscode}
                 secureTextEntry
-                keyboardType="numeric"
+                keyboardType='numeric'
                 maxLength={4}
             />
             <Button onPress={handlePasscodeSubmit} theme='secondary' text={storedPasscode ? translate('unlock') : translate('setPasscode')} />

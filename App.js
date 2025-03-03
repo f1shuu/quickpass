@@ -1,6 +1,5 @@
-import { registerRootComponent } from 'expo';
-
 import Loader from './Loader';
+
 import ThemeProvider from './providers/ThemeProvider';
 
 export default function App() {
@@ -10,5 +9,3 @@ export default function App() {
     </ThemeProvider>
   )
 }
-
-registerRootComponent(App);

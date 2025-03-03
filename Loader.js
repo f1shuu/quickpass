@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import * as Font from 'expo-font';
@@ -15,6 +13,7 @@ import PasswordsScreen from './screens/PasswordsListScreen';
 import { useTheme } from './providers/ThemeProvider';
 
 SplashScreen.preventAutoHideAsync();
+
 const Stack = createStackNavigator();
 
 export default function Loader() {
