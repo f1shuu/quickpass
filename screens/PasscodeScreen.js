@@ -30,9 +30,8 @@ export default function PasscodeScreen({ onAuthSuccess }) {
             await SecureStore.setItemAsync('passcode', passcode);
             onAuthSuccess();
         } else {
-            if (passcode === storedPasscode) {
-                onAuthSuccess();
-            } else {
+            if (passcode === storedPasscode) onAuthSuccess();
+            else {
                 alert('Incorrect passcode');
                 setPasscode('');
             }

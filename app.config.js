@@ -21,7 +21,7 @@ export default {
       }
     },
     android: {
-      'package': 'com.f1shu.QuickPass'
+      'package': 'com.f1shu.quickpass'
     }
   }
 }

@@ -1,7 +1,6 @@
 import { Text, TextInput } from 'react-native';
 import { useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
-import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Button from '../components/Button';
 import Colors from '../constants/Colors';
@@ -17,8 +16,6 @@ export default function PasswordCreatorScreen() {
 
     const theme = useTheme();
 
-    const navigation = useNavigation();
-
     const savePassword = async (website, mail, password) => {
         try {
             const data = JSON.stringify({ mail, password });
@@ -31,8 +28,6 @@ export default function PasswordCreatorScreen() {
                 websites.push(website);
                 await SecureStore.setItemAsync('websites', JSON.stringify(websites));
             }
-
-            navigation.navigate('PasswordsScreen');
         } catch (error) {
             console.error(error);
         }
