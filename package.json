@@ -1,14 +1,16 @@
 {
   "name": "quickpass",
-  "version": "0.3",
+  "version": "0.4",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.0.4",
     "@react-native-async-storage/async-storage": "1.23.1",
     "expo": "~52.0.38",
+    "expo-clipboard": "~7.0.1",
     "expo-local-authentication": "~15.0.2",
     "expo-localization": "^16.0.1",
     "expo-secure-store": "~14.0.1",
@@ -17,7 +19,8 @@
     "react": "18.3.1",
     "react-native": "0.76.7",
     "react-native-gesture-handler": "~2.20.2",
-    "react-native-vector-icons": "^10.2.0"
+    "react-native-vector-icons": "^10.2.0",
+    "@react-native-community/slider": "4.5.5"
   },
   "private": true
 }

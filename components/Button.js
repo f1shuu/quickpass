@@ -2,29 +2,39 @@ import { Text, TouchableOpacity } from 'react-native';
 
 import { useTheme } from '../providers/ThemeProvider';
 
-export default function Button({ onPress, variant, text }) {
+export default function Button({ onPress, variant, text, children }) {
     const theme = useTheme();
 
     const styles = {
-        button: {
-            padding: 10,
-            width: 200,
-            height: 60,
+        common: {
+            backgroundColor: theme.tertiary,
             alignSelf: 'center',
             justifyContent: 'center',
             alignItems: 'center',
-            borderRadius: 10,
-            marginTop: 25
+            borderRadius: 10
+        },
+        wide: {
+            width: 'auto',
+            height: 60,
+            maxWidth: '100%',
+            paddingHorizontal: 50
+        },
+        narrow: {
+            width: 60,
+            height: 60
         },
         text: {
             fontFamily: 'Tommy',
-            fontSize: 20
+            fontSize: 20,
+            color: theme.primary
         }
     }
 
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, { backgroundColor: variant === 'primary' ? theme.primary : theme.secondary }]} >
-            <Text style={[styles.text, { color: variant === 'primary' ? theme.secondary : theme.primary }]}>{text}</Text>
+        <TouchableOpacity
+            onPress={onPress}
+            style={[styles.common, variant === 'wide' ? styles.wide : styles.narrow]}>
+            {variant === 'wide' ? <Text style={styles.text}>{text}</Text> : children}
         </TouchableOpacity >
     )
 }

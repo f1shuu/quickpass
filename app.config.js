@@ -2,7 +2,7 @@ export default {
   expo: {
     name: 'QuickPass',
     slug: 'QuickPass',
-    version: '0.3',
+    version: '0.4',
     orientation: 'portrait',
     icon: './assets/images/icon.png',
     userInterfaceStyle: 'dark',
@@ -10,7 +10,7 @@ export default {
     splash: {
       'image': './assets/images/splash.png',
       'resizeMode': 'contain',
-      'backgroundColor': '#ffffff'
+      'backgroundColor': '#000000'
     },
     plugins: [
       'expo-secure-store'

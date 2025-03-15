@@ -3,25 +3,29 @@ export default {
         addPassword: 'Dodaj hasło',
         allPasswords: 'Wszystkie hasła',
         createPassword: 'Stwórz nowe hasło',
-        fallbackLabel: 'Użyj kodu PIN',
         mail: 'E-mail',
+        minNumbers: 'Min. liczba cyfr',
+        minSpecialCharacters: 'Min. liczba znaków specjalnych',
         password: 'Hasło',
-        promptMessage: 'Zeskanuj odcisk palca',
-        setPasscode: 'Ustaw kod PIN',
-        unlock: 'Odblokuj',
-        website: 'Nazwa'
+        passwordLength: 'Długość hasła',
+        regenerate: 'Generuj', 
+        strongPasswordGenerator: 'Generator silnych haseł',
+        website: 'Nazwa',
+        welcome: 'Witaj w Quickpass'
     },
 
     en: {
         addPassword: 'Add password',
         allPasswords: 'All passwords',
         createPassword: 'Create a new password',
-        fallbackLabel: 'Use passcode',
         mail: 'E-mail',
+        minNumbers: 'Minimum numbers',
+        minSpecialCharacters: 'Minimum special characters',
         password: 'Password',
-        promptMessage: 'Scan your fingerprint',
-        setPasscode: 'Set passcode',
-        unlock: 'Unlock',
-        website: 'Webiste name'
+        passwordLength: 'Password length',
+        regenerate: 'Regenerate',
+        strongPasswordGenerator: 'Strong password generator',
+        website: 'Webiste name',
+        welcome: 'Welcome to Quickpass'
     }
 }

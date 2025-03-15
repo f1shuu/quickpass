@@ -8,15 +8,13 @@ export default function Container({ title, children }) {
     const styles = {
         container: {
             flex: 1,
-            backgroundColor: theme.secondary,
-            marginHorizontal: '2.5%',
-            padding: 30,
-            borderRadius: 25
+            backgroundColor: theme.primary,
+            padding: 30
         },
         text: {
             fontFamily: 'Tommy',
             fontSize: 24,
-            color: theme.primary,
+            color: theme.text,
             marginBottom: 30
         }
     }

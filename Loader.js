@@ -3,7 +3,7 @@ import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import PasscodeScreen from './screens/PasscodeScreen';
-import PasswordCreatorScreen from './screens/PasswordCreatorScreen';
+import PasswordGeneratorScreen from './screens/PasswordGeneratorScreen';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,7 +32,7 @@ export default function Loader() {
 
     return (
         isLoading ? null : (
-            <PasswordCreatorScreen />
+            <PasswordGeneratorScreen />
         )
     )
 }

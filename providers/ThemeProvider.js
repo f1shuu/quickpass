@@ -7,7 +7,7 @@ const ThemeContext = createContext();
 
 export default function ThemeProvider({ children }) {
     const colorScheme = useColorScheme();
-    const currentTheme = Themes[colorScheme] || Themes.dark;
+    const currentTheme = Themes[colorScheme] || Themes.default;
 
     return (
         <ThemeContext.Provider value={currentTheme}>
