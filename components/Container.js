@@ -9,7 +9,8 @@ export default function Container({ title, children }) {
         container: {
             flex: 1,
             backgroundColor: theme.primary,
-            padding: 30
+            padding: 30,
+            gap: 15
         },
         text: {
             fontFamily: 'Tommy',

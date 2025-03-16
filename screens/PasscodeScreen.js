@@ -14,6 +14,9 @@ export default function PasscodeScreen({ onAuthSuccess }) {
     const [passcode, setPasscode] = useState('');
     const [maskedPasscode, setMaskedPasscode] = useState('');
     const [storedPasscode, setStoredPasscode] = useState('');
+    const [tempPasscode, setTempPasscode] = useState('');
+    const [secondTime, setSecondTime] = useState(false);
+    const [message, setMessage] = useState(translate('createPasscode'));
 
     const theme = useTheme();
 
@@ -21,21 +24,52 @@ export default function PasscodeScreen({ onAuthSuccess }) {
         checkStoredPasscode();
     }, [])
 
-    async function checkStoredPasscode() {
-        const passcode = await SecureStore.getItemAsync('passcode');
-        setStoredPasscode(passcode);
+    useEffect(() => {
+        if (passcode.length === PASSCODE_LENGTH) handlePasscodeSubmit();
+    }, [passcode])
 
-        if (passcode) handleBiometricAuth();
+    async function checkStoredPasscode() {
+        const storedPasscode = await SecureStore.getItemAsync('passcode');
+        setStoredPasscode(storedPasscode);
+        if (storedPasscode) {
+            setMessage(translate('enterPasscode'));
+            handleBiometricAuth();
+        }
+    }
+
+    const handlePasscodeInput = (value) => {
+        if (maskedPasscode.length + 1 <= PASSCODE_LENGTH && passcode.length + 1 <= PASSCODE_LENGTH) {
+            setMaskedPasscode(maskedPasscode + '•');
+            setPasscode(passcode + value);
+        }
     }
 
     async function handlePasscodeSubmit() {
         if (!storedPasscode) {
+            if (!secondTime) {
+                setSecondTime(true);
+                setMessage(translate('confirmPasscode'));
+                setTempPasscode(passcode);
+                setMaskedPasscode('');
+                setPasscode('');
+                return;
+            } else {
+                if (passcode !== tempPasscode) {
+                    setSecondTime(false);
+                    setMessage(translate('passcodesDontMatch'));
+                    setTempPasscode('');
+                    setMaskedPasscode('');
+                    setPasscode('');
+                    return;
+                }
+            }
             await SecureStore.setItemAsync('passcode', passcode);
             onAuthSuccess();
         } else {
             if (passcode === storedPasscode) onAuthSuccess();
             else {
-                alert('Incorrect passcode');
+                setMessage(translate('incorrectPasscode'));
+                setMaskedPasscode('');
                 setPasscode('');
             }
         }
@@ -54,12 +88,6 @@ export default function PasscodeScreen({ onAuthSuccess }) {
         })
 
         if (biometricAuth.success) onAuthSuccess();
-    }
-
-    const handlePasscodeInput = (value) => {
-        if (passcode.length < PASSCODE_LENGTH) setPasscode(passcode + value);
-        if (maskedPasscode.length < PASSCODE_LENGTH) setMaskedPasscode(maskedPasscode + '•');
-        if (passcode.length === PASSCODE_LENGTH - 1) handlePasscodeSubmit();
     }
 
     const handleDelete = () => {
@@ -81,8 +109,8 @@ export default function PasscodeScreen({ onAuthSuccess }) {
         },
         title: {
             fontFamily: 'Tommy',
-            fontSize: 28,
-            color: theme.tertiary
+            fontSize: 22,
+            color: theme.text
         },
         text: {
             fontFamily: 'Tommy',
@@ -121,41 +149,19 @@ export default function PasscodeScreen({ onAuthSuccess }) {
     return (
         <View style={styles.container}>
             <View style={styles.logo}>
-                <Image source={require('../assets/images/logo.png')} style={{ width: 100, height: 100 }} />
-                <Text style={styles.title}>QUICKPASS</Text>
+                <Image source={require('../assets/images/splash.png')} style={{ width: 200, height: 200 }} />
+                <Text style={styles.title}>{message}</Text>
             </View>
             <View>
                 <Text style={[styles.text, styles.placeholderText]}>{PASSCODE_PLACEHOLDER}</Text>
                 <Text style={[styles.text, styles.passcodeText]}>{maskedPasscode}</Text>
             </View>
             <View style={styles.grid}>
-                <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('1')}>
-                    <Text style={styles.text}>1</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('2')}>
-                    <Text style={styles.text}>2</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('3')}>
-                    <Text style={styles.text}>3</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('4')}>
-                    <Text style={styles.text}>4</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('5')}>
-                    <Text style={styles.text}>5</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('6')}>
-                    <Text style={styles.text}>6</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('7')}>
-                    <Text style={styles.text}>7</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('8')}>
-                    <Text style={styles.text}>8</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('9')}>
-                    <Text style={styles.text}>9</Text>
-                </TouchableOpacity>
+                {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((num) => (
+                    <TouchableOpacity key={num} style={styles.button} onPress={() => handlePasscodeInput(num)}>
+                        <Text style={styles.text}>{num}</Text>
+                    </TouchableOpacity>
+                ))}
                 <TouchableOpacity style={styles.button} onPress={() => handleBiometricAuth()}>
                     <MaterialIcons name='fingerprint' size={36} color={theme.tertiary} />
                 </TouchableOpacity>

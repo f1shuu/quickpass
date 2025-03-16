@@ -14,7 +14,6 @@ export default function Button({ onPress, variant, text, children }) {
             borderRadius: 10
         },
         wide: {
-            width: 'auto',
             height: 60,
             maxWidth: '100%',
             paddingHorizontal: 50

@@ -14,7 +14,7 @@ import { useTheme } from '../providers/ThemeProvider';
 
 export default function PasswordCreatorScreen() {
     const MIN_PASSWORD_LENGTH = 8;
-    const MAX_PASSWORD_LENGTH = 64;
+    const MAX_PASSWORD_LENGTH = 32;
     const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const LOWERCASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz';
     const NUMBERS = '1234567890';
@@ -95,19 +95,16 @@ export default function PasswordCreatorScreen() {
     }
 
     const getFontSize = () => {
-        if (passwordLength <= 24) return 18;
-        if (passwordLength <= 32) return 13;
-        if (passwordLength <= 48) return 9;
-        return 6.5;
+        if (passwordLength <= 16) return 18;
+        if (passwordLength <= 24) return 15;
+        return 12;
     }
 
     const styles = {
         row: {
-            width: '100%',
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            gap: 10
         },
         input: {
             flex: 1,
@@ -116,7 +113,12 @@ export default function PasswordCreatorScreen() {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: theme.secondary,
-            borderRadius: 10
+            borderTopLeftRadius: 10,
+            borderBottomLeftRadius: 10,
+            borderTopWidth: 1,
+            borderLeftWidth: 1,
+            borderBottomWidth: 1,
+            borderColor: theme.tertiary
         },
         text: {
             fontFamily: 'Tommy',
@@ -129,17 +131,27 @@ export default function PasswordCreatorScreen() {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: theme.secondary,
+            borderTopRightRadius: 10,
+            borderBottomRightRadius: 10,
+            borderTopWidth: 1,
+            borderRightWidth: 1,
+            borderBottomWidth: 1,
+            borderColor: theme.tertiary
+        },
+        section: {
+            backgroundColor: theme.secondary,
+            padding: 15,
             borderRadius: 10
         },
         slider: {
             width: '80%',
-            marginVertical: 25
+            marginVertical: 25,
         }
     }
 
     return (
         <Container title={translate('strongPasswordGenerator')}>
-            <View style={[styles.row, { marginBottom: 50 }]}>
+            <View style={styles.row}>
                 <View style={styles.input}>
                     <Text style={[styles.text, { fontSize: getFontSize() }]}>{password}</Text>
                 </View>
@@ -147,7 +159,7 @@ export default function PasswordCreatorScreen() {
                     <MaterialIcons name='content-copy' size={30} color={theme.text} />
                 </TouchableOpacity>
             </View>
-            <View style={{ marginBottom: 15 }}>
+            <View style={styles.section}>
                 <Text style={styles.text}>{translate('passwordLength')}: {passwordLength}</Text>
                 <View style={styles.row}>
                     <Text style={styles.text}>{MIN_PASSWORD_LENGTH}</Text>
@@ -165,43 +177,51 @@ export default function PasswordCreatorScreen() {
                     <Text style={styles.text}>{MAX_PASSWORD_LENGTH}</Text>
                 </View>
             </View>
-            <View style={{ marginBottom: 50 }}>
+            <View style={styles.section}>
                 <View style={styles.row}>
-                    <Text style={styles.text}>[A-Z]</Text>
-                    <Switch
-                        trackColor={{ false: Colors.red, true: theme.tertiary }}
-                        thumbColor={theme.text}
-                        onValueChange={toggleUseUpperCaseLetters}
-                        value={useUpperCaseLetters}
-                    />
-                    <Text style={styles.text}>[a-z]</Text>
-                    <Switch
-                        trackColor={{ false: Colors.red, true: theme.tertiary }}
-                        thumbColor={theme.text}
-                        onValueChange={toggleUseLowerCaseLetters}
-                        value={useLowerCaseLetters}
-                    />
+                    <View style={styles.row}>
+                        <Text style={styles.text}>[A-Z]</Text>
+                        <Switch
+                            trackColor={{ false: Colors.red, true: theme.tertiary }}
+                            thumbColor={theme.text}
+                            onValueChange={toggleUseUpperCaseLetters}
+                            value={useUpperCaseLetters}
+                        />
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.text}>[a-z]</Text>
+                        <Switch
+                            trackColor={{ false: Colors.red, true: theme.tertiary }}
+                            thumbColor={theme.text}
+                            onValueChange={toggleUseLowerCaseLetters}
+                            value={useLowerCaseLetters}
+                        />
+                    </View>
                 </View>
                 <View style={styles.row}>
-                    <Text style={styles.text}>[0-9]</Text>
-                    <Switch
-                        trackColor={{ false: Colors.red, true: theme.tertiary }}
-                        thumbColor={theme.text}
-                        onValueChange={toggleUseNumbers}
-                        value={useNumbers}
-                    />
-                    <Text style={styles.text}>[!@#]</Text>
-                    <Switch
-                        trackColor={{ false: Colors.red, true: theme.tertiary }}
-                        thumbColor={theme.text}
-                        onValueChange={toggleUseSpecialCharacters}
-                        value={useSpecialCharacters}
-                    />
+                    <View style={styles.row}>
+                        <Text style={styles.text}>[0-9]</Text>
+                        <Switch
+                            trackColor={{ false: Colors.red, true: theme.tertiary }}
+                            thumbColor={theme.text}
+                            onValueChange={toggleUseNumbers}
+                            value={useNumbers}
+                        />
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.text}>[!@#]</Text>
+                        <Switch
+                            trackColor={{ false: Colors.red, true: theme.tertiary }}
+                            thumbColor={theme.text}
+                            onValueChange={toggleUseSpecialCharacters}
+                            value={useSpecialCharacters}
+                        />
+                    </View>
                 </View>
             </View>
             {useNumbers || useSpecialCharacters ? (
                 <>
-                    <View style={{ marginBottom: 15 }}>
+                    <View style={styles.section}>
                         {useNumbers ? (
                             <>
                                 <Text style={styles.text}>{translate('minNumbers')}: {minNumbers}</Text>
@@ -245,15 +265,17 @@ export default function PasswordCreatorScreen() {
                     </View>
                 </>
             ) : null}
-            <Button onPress={() => generateStrongPassword(
-                useUpperCaseLetters,
-                useLowerCaseLetters,
-                useNumbers,
-                useSpecialCharacters,
-                passwordLength,
-                minNumbers,
-                minSpecialCharacters
-            )} variant='wide' text={translate('regenerate')} />
+            <View style={{ marginTop: 25 }}>
+                <Button onPress={() => generateStrongPassword(
+                    useUpperCaseLetters,
+                    useLowerCaseLetters,
+                    useNumbers,
+                    useSpecialCharacters,
+                    passwordLength,
+                    minNumbers,
+                    minSpecialCharacters
+                )} variant='wide' text={translate('regenerate')} />
+            </View>
         </Container>
     )
 }

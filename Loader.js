@@ -8,10 +8,11 @@ import PasswordGeneratorScreen from './screens/PasswordGeneratorScreen';
 SplashScreen.preventAutoHideAsync();
 
 export default function Loader() {
-    const [isLoading, setIsLoading] = useState(true);
+    const [fontsLoaded, setFontsLoaded] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        const loadAppResources = async () => {
+        const loadFonts = async () => {
             try {
                 await Font.loadAsync({
                     'Tommy': require('./assets/fonts/Tommy-Bold.otf')
@@ -19,20 +20,19 @@ export default function Loader() {
             } catch (error) {
                 console.error(error);
             } finally {
-                setIsLoading(false);
-                await SplashScreen.hideAsync();
+                setFontsLoaded(true);
             }
         }
-        loadAppResources();
+        loadFonts();
     }, [])
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    useEffect(() => {
+        if (fontsLoaded) SplashScreen.hideAsync();
+    }, [fontsLoaded])
 
-    if (!isAuthenticated) return <PasscodeScreen onAuthSuccess={() => setIsAuthenticated(true)} />;
+    if (!fontsLoaded) return null;
 
-    return (
-        isLoading ? null : (
-            <PasswordGeneratorScreen />
-        )
-    )
+    if (!isAuthenticated) return <PasscodeScreen onAuthSuccess={() => setIsAuthenticated(true)} />
+
+    return <PasswordGeneratorScreen />
 }
