@@ -101,7 +101,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
             backgroundColor: theme.primary,
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingTop: 100
+            paddingTop: 50
         },
         logo: {
             alignItems: 'center',

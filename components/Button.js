@@ -32,6 +32,7 @@ export default function Button({ onPress, variant, text, children }) {
     return (
         <TouchableOpacity
             onPress={onPress}
+            activeOpacity={0.75}
             style={[styles.common, variant === 'wide' ? styles.wide : styles.narrow]}>
             {variant === 'wide' ? <Text style={styles.text}>{text}</Text> : children}
         </TouchableOpacity >

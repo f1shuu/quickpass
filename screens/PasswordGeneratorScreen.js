@@ -155,7 +155,7 @@ export default function PasswordCreatorScreen() {
                 <View style={styles.input}>
                     <Text style={[styles.text, { fontSize: getFontSize() }]}>{password}</Text>
                 </View>
-                <TouchableOpacity onPress={() => Clipboard.setStringAsync(password)} style={styles.button}>
+                <TouchableOpacity onPress={() => Clipboard.setStringAsync(password)} activeOpacity={0.75} style={styles.button}>
                     <MaterialIcons name='content-copy' size={30} color={theme.text} />
                 </TouchableOpacity>
             </View>
@@ -179,7 +179,7 @@ export default function PasswordCreatorScreen() {
             </View>
             <View style={styles.section}>
                 <View style={styles.row}>
-                    <View style={styles.row}>
+                    <View style={[styles.row, { marginBottom: 15 }]}>
                         <Text style={styles.text}>[A-Z]</Text>
                         <Switch
                             trackColor={{ false: Colors.red, true: theme.tertiary }}
@@ -188,7 +188,7 @@ export default function PasswordCreatorScreen() {
                             value={useUpperCaseLetters}
                         />
                     </View>
-                    <View style={styles.row}>
+                    <View style={[styles.row, { marginBottom: 15 }]}>
                         <Text style={styles.text}>[a-z]</Text>
                         <Switch
                             trackColor={{ false: Colors.red, true: theme.tertiary }}
