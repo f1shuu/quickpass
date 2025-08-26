@@ -9,21 +9,18 @@ export default function Container({ title, children }) {
         container: {
             flex: 1,
             backgroundColor: theme.primary,
-            paddingTop: 30,
-            paddingHorizontal: 15,
-            gap: 15
+            padding: 10,
+            gap: 10
         },
         text: {
             fontFamily: 'Tommy',
             fontSize: 24,
-            color: theme.text,
-            marginBottom: 30
+            color: theme.text
         }
     }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>{title}</Text>
             {children}
         </View>
     )

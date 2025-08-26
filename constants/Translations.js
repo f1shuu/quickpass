@@ -14,8 +14,10 @@ export default {
         passcodesDontMatch: 'Kody PIN nie pasują, spróbuj ponownie',
         password: 'Hasło',
         passwordLength: 'Długość hasła',
+        passwordsList: 'Lista haseł',
         promptMessage: 'Odblokuj odciskiem palca',
-        regenerate: 'Generuj', 
+        regenerate: 'Generuj',
+        settings: 'Ustawienia',
         strongPasswordGenerator: 'Generator silnych haseł',
         website: 'Nazwa'
     },
@@ -35,10 +37,11 @@ export default {
         passcodesDontMatch: 'Passcodes don\'t match, try again',
         password: 'Password',
         passwordLength: 'Password length',
+        passwordsList: 'Passwords list',
         promptMessage: 'Scan your fingerprint',
         regenerate: 'Regenerate',
+        settings: 'Settings',
         strongPasswordGenerator: 'Strong password generator',
         website: 'Webiste name'
-
     }
 }

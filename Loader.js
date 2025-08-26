@@ -3,7 +3,7 @@ import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import PasscodeScreen from './screens/PasscodeScreen';
-import PasswordGeneratorScreen from './screens/PasswordGeneratorScreen';
+import NavBar from './components/NavBar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,5 +34,5 @@ export default function Loader() {
 
     if (!isAuthenticated) return <PasscodeScreen onAuthSuccess={() => setIsAuthenticated(true)} />
 
-    return <PasswordGeneratorScreen />
+    return <NavBar />
 }

@@ -150,7 +150,7 @@ export default function PasswordCreatorScreen() {
     }
 
     return (
-        <Container title={translate('strongPasswordGenerator')}>
+        <Container>
             <View style={styles.row}>
                 <View style={styles.input}>
                     <Text style={[styles.text, { fontSize: getFontSize() }]}>{password}</Text>
@@ -265,7 +265,7 @@ export default function PasswordCreatorScreen() {
                     </View>
                 </>
             ) : null}
-            <View style={{ marginTop: 25 }}>
+            <View>
                 <Button onPress={() => generateStrongPassword(
                     useUpperCaseLetters,
                     useLowerCaseLetters,
