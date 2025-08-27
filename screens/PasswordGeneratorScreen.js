@@ -141,11 +141,12 @@ export default function PasswordCreatorScreen() {
         section: {
             backgroundColor: theme.secondary,
             padding: 15,
+            paddingBottom: 0,
             borderRadius: 10
         },
         slider: {
             width: '80%',
-            marginVertical: 25,
+            marginVertical: 25
         }
     }
 
@@ -177,7 +178,7 @@ export default function PasswordCreatorScreen() {
                     <Text style={styles.text}>{MAX_PASSWORD_LENGTH}</Text>
                 </View>
             </View>
-            <View style={styles.section}>
+            <View style={[styles.section, { paddingBottom: 15 }]}>
                 <View style={styles.row}>
                     <View style={[styles.row, { marginBottom: 15 }]}>
                         <Text style={styles.text}>[A-Z]</Text>
@@ -226,10 +227,10 @@ export default function PasswordCreatorScreen() {
                             <>
                                 <Text style={styles.text}>{translate('minNumbers')}: {minNumbers}</Text>
                                 <View style={styles.row}>
-                                    <Text style={styles.text}>0</Text>
+                                    <Text style={styles.text}>1</Text>
                                     <Slider
                                         style={styles.slider}
-                                        minimumValue={0}
+                                        minimumValue={1}
                                         maximumValue={Math.floor(passwordLength / 4)}
                                         minimumTrackTintColor={theme.tertiary}
                                         maximumTrackTintColor={theme.text}
@@ -246,10 +247,10 @@ export default function PasswordCreatorScreen() {
                             <>
                                 <Text style={styles.text}>{translate('minSpecialCharacters')}: {minSpecialCharacters}</Text>
                                 <View style={styles.row}>
-                                    <Text style={styles.text}>0</Text>
+                                    <Text style={styles.text}>1</Text>
                                     <Slider
                                         style={styles.slider}
-                                        minimumValue={0}
+                                        minimumValue={1}
                                         maximumValue={Math.floor(passwordLength / 4)}
                                         minimumTrackTintColor={theme.tertiary}
                                         maximumTrackTintColor={theme.text}
@@ -265,7 +266,7 @@ export default function PasswordCreatorScreen() {
                     </View>
                 </>
             ) : null}
-            <View>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
                 <Button onPress={() => generateStrongPassword(
                     useUpperCaseLetters,
                     useLowerCaseLetters,

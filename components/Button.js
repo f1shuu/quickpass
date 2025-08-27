@@ -11,15 +11,14 @@ export default function Button({ onPress, variant, text, children }) {
             alignSelf: 'center',
             justifyContent: 'center',
             alignItems: 'center',
-            borderRadius: 10
+            borderRadius: 10,
+            height: 60
         },
         wide: {
-            height: 60,
             maxWidth: '100%',
             paddingHorizontal: 50
         },
         narrow: {
-            width: 60,
             height: 60
         },
         text: {
