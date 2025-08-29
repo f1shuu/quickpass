@@ -1,8 +1,8 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import { useTheme } from '../providers/ThemeProvider';
 
-export default function Container({ title, children }) {
+export default function Container({ children }) {
     const theme = useTheme();
 
     const styles = {

@@ -1,11 +1,9 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Text, FlatList, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import MIcon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/FontAwesome6';
 
-import Colors from '../constants/Colors';
 import Container from '../components/Container';
 
 import { translate } from '../providers/LanguageProvider';
@@ -16,90 +14,108 @@ export default function PasswordsListScreen() {
 
     const theme = useTheme();
 
+    const navigation = useNavigation();
+
     useEffect(() => {
-        loadWebsites();
+        getPasswords();
     }, [])
 
-    const loadWebsites = async () => {
-        const storedWebsites = await SecureStore.getItemAsync('websites');
-        if (!storedWebsites) return;
-
-        const websites = JSON.parse(storedWebsites);
-        const passwordList = [];
-
-        for (const website of websites) {
-            const storedData = await SecureStore.getItemAsync(website);
-            if (storedData) {
-                try {
-                    const { mail, password } = JSON.parse(storedData);
-                    passwordList.push({ key: website, mail, password });
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        }
-        setPasswords(passwordList);
-    }
-
-    const deletePassword = async (key) => {
+    const getPasswords = async () => {
         try {
-            await SecureStore.deleteItemAsync(key);
-
-            const storedWebsites = await AsyncStorage.getItem('websites');
-            const websites = storedWebsites ? JSON.parse(storedWebsites) : [];
-            const updatedWebsites = websites.filter(svc => svc !== key);
-            await AsyncStorage.setItem('websites', JSON.stringify(updatedWebsites));
-
-            loadWebsites();
+            const storedPasswords = await SecureStore.getItemAsync('passwords');
+            if (storedPasswords) {
+                const parsedPasswords = JSON.parse(storedPasswords);
+                setPasswords(parsedPasswords)
+            } else setPasswords([]);
         } catch (error) {
-            console.error('Error deleting password:', error);
+            console.error(error)
         }
     }
 
-    const Item = ({ website }) => (
-        <TouchableOpacity style={styles.item}>
-            <View style={styles.row}>
-                <Icon name={website.toLowerCase()} size={25} color={theme.primary} />
-                <Text style={styles.text}>{website}</Text>
-            </View>
-            <TouchableOpacity onPress={() => deletePassword(website)}>
-                <MIcon name='close' size={25} color={Colors.red} />
-            </TouchableOpacity>
-        </TouchableOpacity>
-    )
+    const deletePassword = async (id, setPasswords) => {
+        try {
+            const storedPasswords = await SecureStore.getItemAsync('passwords');
+            if (!storedPasswords) return;
+
+            const parsedPasswords = JSON.parse(storedPasswords);
+            const updatedPasswords = parsedPasswords.filter(item => item.id !== id);
+
+            await SecureStore.setItemAsync('passwords', JSON.stringify(updatedPasswords));
+            setPasswords(updatedPasswords);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const styles = {
         item: {
+            backgroundColor: theme.secondary,
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingHorizontal: 10,
-            paddingVertical: 20,
-            borderBottomWidth: 1,
-            borderBottomColor: theme.primary
-        },
-        row: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 15,
-            width: '50%'
+            marginVertical: 7.5,
+            padding: 20,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: theme.tertiary
         },
         text: {
             fontFamily: 'Tommy',
             fontSize: 16,
-            color: theme.primary
+            color: theme.text
+        },
+        icon: {
+            position: 'absolute',
+            alignSelf: 'center',
+            top: '33%'
+        },
+        noPasswordsText: {
+            fontFamily: 'Tommy',
+            fontSize: 20,
+            color: theme.secondary,
+            position: 'absolute',
+            alignSelf: 'center',
+            top: '60%'
+        },
+        addButton: {
+            position: 'absolute',
+            justifyContent: 'center',
+            alignItems: 'center',
+            bottom: 20,
+            right: 20,
+            width: 65,
+            height: 65,
+            backgroundColor: theme.tertiary,
+            borderRadius: 50
         }
     }
 
+    const Item = ({ id, icon, app }) => (
+        <TouchableOpacity style={styles.item} onPress={() => deletePassword(id, setPasswords)}>
+            <Icon name={icon} size={25} color={theme.text} />
+            <Text style={styles.text}>{app}</Text>
+        </TouchableOpacity>
+    )
+
     return (
-        <Container title={translate('allPasswords') + ` (${passwords.length})`}>
+        <Container>
             <FlatList
                 data={passwords}
-                keyExtractor={(item) => item.key}
+                keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <Item website={item.key} />
+                    <Item id={item.id} icon={item.data.icon} app={item.data.app} />
                 )}
             />
+            {passwords.length === 0 ? (
+                <>
+                    <Icon name='shield' size={150} color={theme.secondary} style={styles.icon} />
+                    <Text style={styles.noPasswordsText}>{translate('noPasswords')}</Text>
+                </>
+            ) : null}
+            <TouchableOpacity onPress={() => navigation.navigate('AddPasswordScreen')} style={styles.addButton} activeOpacity={0.8}>
+                <Icon name='plus' size={28} color={theme.textHeader} />
+            </TouchableOpacity>
         </Container>
     )
 }

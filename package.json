@@ -1,6 +1,6 @@
 {
   "name": "quickpass",
-  "version": "0.6",
+  "version": "0.7",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -21,9 +21,12 @@
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
     "react-native": "^0.79.5",
+    "react-native-element-dropdown": "^2.12.4",
     "react-native-gesture-handler": "~2.24.0",
+    "react-native-get-random-values": "^1.11.0",
     "react-native-safe-area-context": "^5.4.0",
-    "react-native-vector-icons": "^10.2.0"
+    "react-native-vector-icons": "^10.2.0",
+    "uuid": "^11.1.0"
   },
   "private": true,
   "expo": {
