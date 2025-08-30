@@ -27,7 +27,6 @@ export default function NavigationBar() {
         },
         tabBarStyle: {
             backgroundColor: theme.secondary,
-            height: 70,
             elevation: 0,
             borderTopWidth: 0
         },
@@ -43,6 +42,7 @@ export default function NavigationBar() {
                 initialRouteName='PasswordGeneratorScreen'
                 screenOptions={{
                     animationEnabled: false,
+                    tabBarHideOnKeyboard: false,
                     tabBarButton: (props) => (
                         <TouchableWithoutFeedback onPress={props.onPress}>
                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -59,7 +59,7 @@ export default function NavigationBar() {
                         ...customOptions,
                         title: translate('passwordsList'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='list' size={24} color={focused ? theme.tertiary : theme.placeholder} />
+                            <Icon name='list' size={24} color={focused ? theme.primary : theme.placeholder} />
                         )
                     })}
                 />
@@ -70,7 +70,7 @@ export default function NavigationBar() {
                         ...customOptions,
                         title: translate('passwordGenerator'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='square-plus' size={28} color={focused ? theme.tertiary : theme.placeholder} />
+                            <Icon name='square-plus' size={28} color={focused ? theme.primary : theme.placeholder} />
                         )
                     })}
                 />
@@ -81,7 +81,7 @@ export default function NavigationBar() {
                         ...customOptions,
                         title: translate('settings'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='gear' size={24} color={focused ? theme.tertiary : theme.placeholder} />
+                            <Icon name='gear' size={24} color={focused ? theme.primary : theme.placeholder} />
                         )
                     })}
                 />

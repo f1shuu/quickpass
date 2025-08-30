@@ -1,8 +1,9 @@
-import { Text, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import * as SecureStore from 'expo-secure-store';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+import * as SecureStore from 'expo-secure-store';
+import * as Clipboard from 'expo-clipboard';
 
 import Container from '../components/Container';
 
@@ -11,6 +12,8 @@ import { useTheme } from '../providers/ThemeProvider';
 
 export default function PasswordsListScreen() {
     const [passwords, setPasswords] = useState([]);
+    const [activeId, setActiveId] = useState(null);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const theme = useTheme();
 
@@ -49,21 +52,72 @@ export default function PasswordsListScreen() {
     }
 
     const styles = {
-        item: {
+        header: {
             backgroundColor: theme.secondary,
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginVertical: 7.5,
-            padding: 20,
-            borderRadius: 10,
+            marginTop: 10,
+            padding: 15,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
             borderWidth: 1,
-            borderColor: theme.tertiary
+            borderColor: theme.primary
+        },
+        row: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 10
         },
         text: {
             fontFamily: 'Tommy',
             fontSize: 16,
             color: theme.text
+        },
+        content: {
+            backgroundColor: theme.secondary,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 10,
+            padding: 10,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
+            borderWidth: 1,
+            borderTopWidth: 0,
+            borderColor: theme.primary
+        },
+        textBoxes: {
+            gap: 10,
+            marginBottom: 10
+        },
+        textBox: {
+            backgroundColor: theme.tertiary,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            padding: 10,
+            borderRadius: 7.5
+        },
+        smallText: {
+            fontFamily: 'Tommy',
+            fontSize: 16,
+            color: theme.placeholder
+        },
+        visibilityToggle: {
+            position: 'absolute',
+            right: '125%',
+            width: 45,
+            height: 45,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        button: {
+            flex: 1,
+            backgroundColor: theme.primary,
+            alignItems: 'center',
+            borderRadius: 7.5,
+            paddingVertical: 10
         },
         icon: {
             position: 'absolute',
@@ -86,34 +140,91 @@ export default function PasswordsListScreen() {
             right: 20,
             width: 65,
             height: 65,
-            backgroundColor: theme.tertiary,
+            backgroundColor: theme.primary,
             borderRadius: 50
         }
     }
 
-    const Item = ({ id, icon, app }) => (
-        <TouchableOpacity style={styles.item} onPress={() => deletePassword(id, setPasswords)}>
-            <Icon name={icon} size={25} color={theme.text} />
-            <Text style={styles.text}>{app}</Text>
-        </TouchableOpacity>
-    )
+    const Password = ({ item }) => {
+        const isActive = activeId === item.id;
+
+        return (
+            <View>
+                <TouchableOpacity
+                    onPress={() => setActiveId(activeId === item.id ? null : item.id)}
+                    activeOpacity={0.75}
+                    style={isActive ? styles.header : [styles.header, { borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}
+                >
+                    <View style={styles.row}>
+                        <Icon name={item.data.icon} size={32} color={theme.text} />
+                        <Text style={styles.text}>{item.data.app}</Text>
+                    </View>
+                    <Icon name={isActive ? 'caret-up' : 'caret-down'} size={24} color={theme.text} />
+                </TouchableOpacity>
+                {isActive ? (
+                    <View style={styles.content}>
+                        <View style={styles.textBoxes}>
+                            <View style={styles.textBox}>
+                                <Icon name={'user'} size={20} color={theme.placeholder} />
+                                <Text style={styles.smallText}>{item.data.login}</Text>
+                                <TouchableOpacity onPress={() => Clipboard.setStringAsync(item.data.login)} activeOpacity={0.75}>
+                                    <Icon name='copy' size={24} color={theme.placeholder} />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.textBox}>
+                                <Icon name={'key'} size={20} color={theme.placeholder} />
+                                <Text style={styles.smallText}>{isPasswordVisible ? item.data.password : '•'.repeat(item.data.password.length)}</Text>
+                                <View style={styles.row}>
+                                    <TouchableOpacity style={styles.visibilityToggle} onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+                                        <Icon
+                                            name={isPasswordVisible ? 'eye' : 'eye-slash'}
+                                            size={20}
+                                            color={theme.placeholder}
+                                        />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => Clipboard.setStringAsync(item.data.password)} activeOpacity={0.75}>
+                                        <Icon name='copy' size={24} color={theme.placeholder} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={[styles.row, { width: '100%' }]}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('AddPasswordScreen', { id: item.id })}
+                                activeOpacity={0.75}
+                                style={styles.button}
+                            >
+                                <Text style={[styles.text, { color: theme.background }]}>{translate('edit')}</Text>
+                            </TouchableOpacity >
+                            <TouchableOpacity
+                                onPress={() => deletePassword(item.id, setPasswords)}
+                                activeOpacity={0.75}
+                                style={styles.button}
+                            >
+                                <Text style={[styles.text, { color: theme.background }]}>{translate('delete')}</Text>
+                            </TouchableOpacity >
+                        </View>
+                    </View>
+                ) : null}
+            </View>
+        )
+    }
 
     return (
         <Container>
-            <FlatList
-                data={passwords}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <Item id={item.id} icon={item.data.icon} app={item.data.app} />
-                )}
-            />
-            {passwords.length === 0 ? (
+            {passwords.length !== 0 ? (
+                <FlatList
+                    data={passwords}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => <Password item={item} />}
+                />
+            ) : (
                 <>
                     <Icon name='shield' size={150} color={theme.secondary} style={styles.icon} />
                     <Text style={styles.noPasswordsText}>{translate('noPasswords')}</Text>
                 </>
-            ) : null}
-            <TouchableOpacity onPress={() => navigation.navigate('AddPasswordScreen')} style={styles.addButton} activeOpacity={0.8}>
+            )}
+            <TouchableOpacity onPress={() => navigation.navigate('AddPasswordScreen')} style={styles.addButton} activeOpacity={0.75}>
                 <Icon name='plus' size={28} color={theme.textHeader} />
             </TouchableOpacity>
         </Container>

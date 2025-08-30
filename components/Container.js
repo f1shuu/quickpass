@@ -8,7 +8,7 @@ export default function Container({ children }) {
     const styles = {
         container: {
             flex: 1,
-            backgroundColor: theme.primary,
+            backgroundColor: theme.background,
             padding: 10,
             gap: 10
         },

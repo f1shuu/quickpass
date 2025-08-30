@@ -99,7 +99,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
     const styles = {
         container: {
             flex: 1,
-            backgroundColor: theme.primary,
+            backgroundColor: theme.background,
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingTop: 50
@@ -116,7 +116,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
         text: {
             fontFamily: 'Tommy',
             fontSize: 36,
-            color: theme.tertiary,
+            color: theme.primary,
             letterSpacing: 10
         },
         placeholderText: {
@@ -125,7 +125,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
         },
         passcodeText: {
             fontSize: 56,
-            color: theme.tertiary,
+            color: theme.primary,
             position: 'absolute',
             top: 0,
             left: 0
@@ -148,7 +148,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: theme.primary }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
             <View style={styles.container}>
                 <View style={styles.logo}>
                     <Image source={require('../assets/images/splash.png')} style={{ width: 200, height: 200 }} />
@@ -165,13 +165,13 @@ export default function PasscodeScreen({ onAuthSuccess }) {
                         </TouchableOpacity>
                     ))}
                     <TouchableOpacity style={styles.button} onPress={() => handleBiometricAuth()}>
-                        <MaterialIcons name='fingerprint' size={36} color={theme.tertiary} />
+                        <MaterialIcons name='fingerprint' size={36} color={theme.primary} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('0')}>
                         <Text style={styles.text}>0</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => handleDelete()}>
-                        <MaterialIcons name='backspace' size={32} color={theme.tertiary} />
+                        <MaterialIcons name='backspace' size={32} color={theme.primary} />
                     </TouchableOpacity>
                 </View>
             </View>

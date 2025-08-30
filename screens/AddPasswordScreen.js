@@ -1,19 +1,17 @@
 import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import * as SecureStore from 'expo-secure-store';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 
-import Button from '../components/Button';
 import Container from '../components/Container';
 
 import { translate } from '../providers/LanguageProvider';
 import { useTheme } from '../providers/ThemeProvider';
 
-import { apps } from '../constants/apps';
+import { apps } from '../constants/Apps';
 
 async function storePassword(id, data = {}, navigation, navigator) {
     try {
@@ -35,23 +33,17 @@ async function storePassword(id, data = {}, navigation, navigator) {
     }
 }
 
-export default function AddPasswordScreen() {
+export default function AddPasswordScreen({ route, navigation }) {
+    const { id } = route.params || {};
+
     const [icon, setIcon] = useState(null);
     const [app, setApp] = useState(null);
     const [login, setLogin] = useState(null);
     const [password, setPassword] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
-    const [passwordVisible, setIsPasswordVisible] = useState(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const theme = useTheme();
-
-    const navigation = useNavigation();
-
-    const changeApp = (item) => {
-        setIcon(item.icon);
-        setApp(item.value);
-        setIsFocus(false);
-    }
 
     const styles = {
         text: {
@@ -60,6 +52,13 @@ export default function AddPasswordScreen() {
             color: theme.placeholder,
             marginVertical: 5
         },
+        icon: {
+            position: 'absolute',
+            left: 20,
+            top: 20,
+            zIndex: 2,
+            color: theme.text
+        },
         dropdown: {
             width: '100%',
             backgroundColor: theme.secondary,
@@ -67,7 +66,7 @@ export default function AddPasswordScreen() {
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
             borderWidth: 1,
-            borderColor: theme.tertiary,
+            borderColor: theme.primary,
             padding: 15
         },
         container: {
@@ -78,23 +77,22 @@ export default function AddPasswordScreen() {
             borderBottomRightRadius: 10,
             borderWidth: 1,
             borderTopWidth: 0,
-            borderColor: theme.tertiary
+            borderColor: theme.primary
         },
         itemText: {
             fontFamily: 'Tommy',
-            color: theme.text,
-        },
-        placeholder: {
-            fontFamily: 'Tommy',
-            color: theme.placeholder
+            fontSize: 16,
+            color: theme.text
         },
         item: {
             flexDirection: 'row',
             alignItems: 'center',
-            padding: 15
+            paddingVertical: 15,
+            paddingHorizontal: 10
         },
-        itemIcon: {
-            color: theme.text,
+        iconBox: {
+            width: 35,
+            alignItems: 'center',
             marginRight: 10
         },
         input: {
@@ -104,48 +102,83 @@ export default function AddPasswordScreen() {
             fontFamily: 'Tommy',
             color: theme.text,
             borderRadius: 10,
-            padding: 15
+            padding: 15,
+            paddingRight: 0
         },
         inputView: {
-            flexDirection: "row",
-            alignItems: "center"
+            flexDirection: 'row',
+            alignItems: 'center'
         },
         visibilityToggle: {
             position: 'absolute',
-            right: '5%'
+            right: '0%',
+            width: 60,
+            height: 60,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        view: {
+            flex: 1,
+            justifyContent: 'center'
+        },
+        button: {
+            backgroundColor: theme.primary,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 10,
+            paddingVertical: 15,
+            paddingHorizontal: 30
         }
     }
 
     return (
         <Container>
             <Text style={styles.text}>{translate('appOrWebsite')}</Text>
-            <Dropdown
-                style={isFocus ? [styles.dropdown, { borderBottomWidth: 0 }] : [styles.dropdown, { borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}
-                containerStyle={styles.container}
-                itemTextStyle={styles.itemText}
-                placeholderStyle={styles.placeholder}
-                selectedTextStyle={styles.itemText}
-                activeColor={theme.tertiary}
-                data={apps}
-                labelField='value'
-                valueField='value'
-                placeholder={isFocus ? '...' : translate('choose')}
-                value={app}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={(item) => changeApp(item)}
-                renderItem={item => (
-                    <View style={styles.item}>
-                        <Icon name={item.icon} size={20} style={styles.itemIcon} />
-                        <Text style={styles.itemText}>{item.value}</Text>
-                    </View>
+            <View style={{ position: 'relative' }}>
+                {icon && (
+                    <Icon
+                        name={icon}
+                        size={20}
+                        style={styles.icon}
+                    />
                 )}
-            />
+                <Dropdown
+                    style={[
+                        isFocus
+                            ? { ...styles.dropdown, borderBottomWidth: 0 }
+                            : { ...styles.dropdown, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
+                        app && { paddingLeft: 55 }
+                    ]}
+                    containerStyle={styles.container}
+                    itemTextStyle={styles.itemText}
+                    placeholderStyle={[styles.itemText, { color: theme.placeholder }]}
+                    selectedTextStyle={styles.itemText}
+                    activeColor={theme.primary}
+                    data={apps}
+                    labelField='value'
+                    valueField='value'
+                    value={app}
+                    placeholder={isFocus ? '...' : translate('choose')}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={(item) => setApp(item.value)}
+                    renderItem={item => (
+                        <View style={styles.item}>
+                            <View style={styles.iconBox}>
+                                <Icon name={item.icon} size={20} style={{ color: theme.text }} />
+                            </View>
+                            <Text style={styles.itemText}>{item.value}</Text>
+                        </View>
+                    )}
+                />
+            </View>
             <Text style={styles.text}>{translate('login')}/{translate('mail')}</Text>
             <TextInput
                 style={styles.input}
                 placeholderTextColor={theme.placeholder}
                 placeholder='johndoe@mail.com'
+                value={login}
                 onChangeText={(text) => setLogin(text)}
             />
             <Text style={styles.text}>{translate('password')}</Text>
@@ -154,19 +187,26 @@ export default function AddPasswordScreen() {
                     style={styles.input}
                     placeholderTextColor={theme.placeholder}
                     placeholder='••••••••••••••••'
-                    secureTextEntry={!passwordVisible}
+                    secureTextEntry={!isPasswordVisible}
+                    value={password}
                     onChangeText={(text) => setPassword(text)}
                 />
-                <TouchableOpacity style={styles.visibilityToggle} onPress={() => setIsPasswordVisible(!passwordVisible)}>
+                <TouchableOpacity style={styles.visibilityToggle} onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
                     <Icon
-                        name={passwordVisible ? 'eye' : 'eye-slash'}
+                        name={isPasswordVisible ? 'eye' : 'eye-slash'}
                         size={18}
                         color={theme.placeholder}
                     />
                 </TouchableOpacity>
             </View>
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-                <Button onPress={icon && app && login && password ? async () => await storePassword(null, { icon, app, login, password }, navigation, 'PasswordsListScreen') : null} variant='wide' text={translate('save')} />
+            <View style={styles.view}>
+                <TouchableOpacity
+                    onPress={icon && app && login && password ? async () => await storePassword(id, { icon, app, login, password }, navigation, 'PasswordsListScreen') : null}
+                    activeOpacity={0.75}
+                    style={styles.button}
+                >
+                    <Text style={[styles.itemText, { color: theme.background }]}>{translate('save')}</Text>
+                </TouchableOpacity >
             </View>
         </Container>
     )
