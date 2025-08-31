@@ -155,7 +155,7 @@ export default function PasswordsListScreen() {
                     activeOpacity={0.75}
                     style={isActive ? styles.header : [styles.header, { borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}
                 >
-                    <View style={styles.row}>
+                    <View style={[styles.row, { gap: 15 }]}>
                         <Icon name={item.data.icon} size={32} color={theme.text} />
                         <Text style={styles.text}>{item.data.app}</Text>
                     </View>
@@ -190,7 +190,7 @@ export default function PasswordsListScreen() {
                         </View>
                         <View style={[styles.row, { width: '100%' }]}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('AddPasswordScreen', { id: item.id })}
+                                onPress={() => navigation.navigate('AddPasswordScreen', { id: item.id, app: item.data.app, icon: item.data.icon, login: item.data.login, password: item.data.password, mode: 'edit' })}
                                 activeOpacity={0.75}
                                 style={styles.button}
                             >

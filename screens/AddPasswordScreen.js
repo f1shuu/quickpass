@@ -36,14 +36,21 @@ async function storePassword(id, data = {}, navigation, navigator) {
 export default function AddPasswordScreen({ route, navigation }) {
     const { id } = route.params || {};
 
-    const [icon, setIcon] = useState(null);
-    const [app, setApp] = useState(null);
-    const [login, setLogin] = useState(null);
-    const [password, setPassword] = useState(null);
+    const [app, setApp] = useState(route.params.app || null);
+    const [icon, setIcon] = useState(route.params.icon || null);
+    const [login, setLogin] = useState(route.params.login || null);
+    const [password, setPassword] = useState(route.params.password || null);
+
     const [isFocus, setIsFocus] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const theme = useTheme();
+
+    const changeApp = (item) => {
+        setIcon(item.icon);
+        setApp(item.value);
+        setIsFocus(false);
+    }
 
     const styles = {
         text: {
@@ -159,10 +166,11 @@ export default function AddPasswordScreen({ route, navigation }) {
                     labelField='value'
                     valueField='value'
                     value={app}
+                    autoScroll={false}
                     placeholder={isFocus ? '...' : translate('choose')}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
-                    onChange={(item) => setApp(item.value)}
+                    onChange={(item) => changeApp(item)}
                     renderItem={item => (
                         <View style={styles.item}>
                             <View style={styles.iconBox}>

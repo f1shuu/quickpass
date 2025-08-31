@@ -27,6 +27,7 @@ export default function NavigationBar() {
         },
         tabBarStyle: {
             backgroundColor: theme.secondary,
+            height: 60,
             elevation: 0,
             borderTopWidth: 0
         },
@@ -42,7 +43,7 @@ export default function NavigationBar() {
                 initialRouteName='PasswordGeneratorScreen'
                 screenOptions={{
                     animationEnabled: false,
-                    tabBarHideOnKeyboard: false,
+                    tabBarHideOnKeyboard: true,
                     tabBarButton: (props) => (
                         <TouchableWithoutFeedback onPress={props.onPress}>
                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

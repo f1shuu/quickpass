@@ -41,10 +41,10 @@ export default function BodyMeasurementsNavigator() {
             <Stack.Screen
                 name='AddPasswordScreen'
                 component={AddPasswordScreen}
-                options={{
+                options={({ route }) => ({
                     ...customOptions,
-                    headerTitle: translate('addNewPassword')
-                }}
+                    headerTitle: route.params?.mode === 'edit' ? translate('editPassword') : translate('addNewPassword')
+                })}
             />
         </Stack.Navigator>
     )
