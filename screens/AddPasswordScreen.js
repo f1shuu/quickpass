@@ -47,10 +47,12 @@ export default function AddPasswordScreen({ route, navigation }) {
 
     const [isFocus, setIsFocus] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [otherChosen, setOtherChosen] = useState(false);
 
     const theme = useTheme();
 
     const changeApp = (item) => {
+        if (item.value === translate('other')) setOtherChosen(true);
         setIcon(item.icon);
         setApp(item.value);
         setIsFocus(false);
@@ -156,46 +158,58 @@ export default function AddPasswordScreen({ route, navigation }) {
     return (
         <Container>
             <Text style={styles.text}>{translate('appOrWebsite')}</Text>
-            <View style={{ position: 'relative' }}>
-                {icon && (
-                    <Icon
-                        name={icon}
-                        size={20}
-                        style={styles.icon}
-                    />
-                )}
-                <Dropdown
-                    style={[
-                        isFocus
-                            ? { ...styles.dropdown, borderBottomWidth: 0 }
-                            : { ...styles.dropdown, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
-                        app && { paddingLeft: 55 },
-                        markAppField ? { borderColor: 'red' } : { borderColor: theme.primary }
-                    ]}
-                    containerStyle={styles.container}
-                    itemTextStyle={styles.itemText}
-                    placeholderStyle={[styles.itemText, { color: theme.placeholder }]}
-                    selectedTextStyle={styles.itemText}
-                    activeColor={theme.primary}
-                    data={apps}
-                    labelField='value'
-                    valueField='value'
+            {!otherChosen ? (
+                <>
+                    <View>
+                        {icon && (
+                            <Icon
+                                name={icon}
+                                size={20}
+                                style={styles.icon}
+                            />
+                        )}
+                        <Dropdown
+                            style={[
+                                isFocus
+                                    ? { ...styles.dropdown, borderBottomWidth: 0 }
+                                    : { ...styles.dropdown, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
+                                app && { paddingLeft: 55 },
+                                markAppField ? { borderColor: 'red' } : { borderColor: theme.primary }
+                            ]}
+                            containerStyle={styles.container}
+                            itemTextStyle={styles.itemText}
+                            placeholderStyle={[styles.itemText, { color: theme.placeholder }]}
+                            selectedTextStyle={styles.itemText}
+                            activeColor={theme.primary}
+                            data={apps}
+                            labelField='value'
+                            valueField='value'
+                            value={app}
+                            autoScroll={false}
+                            placeholder={isFocus ? '...' : translate('choose')}
+                            onFocus={() => setIsFocus(true)}
+                            onBlur={() => setIsFocus(false)}
+                            onChange={(item) => changeApp(item)}
+                            renderItem={item => (
+                                <View style={styles.item}>
+                                    <View style={styles.iconBox}>
+                                        <Icon name={item.icon} size={20} style={{ color: theme.text }} />
+                                    </View>
+                                    <Text style={styles.itemText}>{item.value}</Text>
+                                </View>
+                            )}
+                        />
+                    </View>
+                </>
+            ) : (
+                <TextInput
+                    style={[styles.input, markAppField ? { borderColor: 'red' } : { borderColor: theme.secondary }]}
+                    placeholderTextColor={theme.placeholder}
+                    placeholder='Google'
                     value={app}
-                    autoScroll={false}
-                    placeholder={isFocus ? '...' : translate('choose')}
-                    onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
-                    onChange={(item) => changeApp(item)}
-                    renderItem={item => (
-                        <View style={styles.item}>
-                            <View style={styles.iconBox}>
-                                <Icon name={item.icon} size={20} style={{ color: theme.text }} />
-                            </View>
-                            <Text style={styles.itemText}>{item.value}</Text>
-                        </View>
-                    )}
+                    onChangeText={(text) => setApp(text)}
                 />
-            </View>
+            )}
             <Text style={styles.text}>{translate('login')}/{translate('mail')}</Text>
             <TextInput
                 style={[styles.input, markLoginField ? { borderColor: 'red' } : { borderColor: theme.secondary }]}
