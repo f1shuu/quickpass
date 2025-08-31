@@ -36,10 +36,14 @@ async function storePassword(id, data = {}, navigation, navigator) {
 export default function AddPasswordScreen({ route, navigation }) {
     const { id } = route.params || {};
 
-    const [app, setApp] = useState(route.params.app || null);
-    const [icon, setIcon] = useState(route.params.icon || null);
-    const [login, setLogin] = useState(route.params.login || null);
-    const [password, setPassword] = useState(route.params.password || null);
+    const [app, setApp] = useState(route.params?.app ?? null);
+    const [icon, setIcon] = useState(route.params?.icon ?? null);
+    const [login, setLogin] = useState(route.params?.login ?? null);
+    const [password, setPassword] = useState(route.params?.password ?? null);
+
+    const [markAppField, setMarkAppField] = useState(false);
+    const [markLoginField, setMarkLoginField] = useState(false);
+    const [markPasswordField, setMarkPasswordField] = useState(false);
 
     const [isFocus, setIsFocus] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -50,6 +54,19 @@ export default function AddPasswordScreen({ route, navigation }) {
         setIcon(item.icon);
         setApp(item.value);
         setIsFocus(false);
+    }
+
+    async function saveIfPossible() {
+        if (!app) setMarkAppField(true);
+        else setMarkAppField(false);
+
+        if (!login) setMarkLoginField(true);
+        else setMarkLoginField(false);
+
+        if (!password) setMarkPasswordField(true);
+        else setMarkPasswordField(false);
+
+        if (app && login && password) await storePassword(id, { icon, app, login, password }, navigation, 'PasswordsListScreen')
     }
 
     const styles = {
@@ -73,7 +90,6 @@ export default function AddPasswordScreen({ route, navigation }) {
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
             borderWidth: 1,
-            borderColor: theme.primary,
             padding: 15
         },
         container: {
@@ -110,7 +126,8 @@ export default function AddPasswordScreen({ route, navigation }) {
             color: theme.text,
             borderRadius: 10,
             padding: 15,
-            paddingRight: 0
+            paddingRight: 0,
+            borderWidth: 1
         },
         inputView: {
             flexDirection: 'row',
@@ -124,16 +141,13 @@ export default function AddPasswordScreen({ route, navigation }) {
             justifyContent: 'center',
             alignItems: 'center'
         },
-        view: {
-            flex: 1,
-            justifyContent: 'center'
-        },
         button: {
             backgroundColor: theme.primary,
             alignSelf: 'center',
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 10,
+            marginTop: 100,
             paddingVertical: 15,
             paddingHorizontal: 30
         }
@@ -155,7 +169,8 @@ export default function AddPasswordScreen({ route, navigation }) {
                         isFocus
                             ? { ...styles.dropdown, borderBottomWidth: 0 }
                             : { ...styles.dropdown, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
-                        app && { paddingLeft: 55 }
+                        app && { paddingLeft: 55 },
+                        markAppField ? { borderColor: 'red' } : { borderColor: theme.primary }
                     ]}
                     containerStyle={styles.container}
                     itemTextStyle={styles.itemText}
@@ -183,7 +198,7 @@ export default function AddPasswordScreen({ route, navigation }) {
             </View>
             <Text style={styles.text}>{translate('login')}/{translate('mail')}</Text>
             <TextInput
-                style={styles.input}
+                style={[styles.input, markLoginField ? { borderColor: 'red' } : { borderColor: theme.secondary }]}
                 placeholderTextColor={theme.placeholder}
                 placeholder='johndoe@mail.com'
                 value={login}
@@ -192,7 +207,7 @@ export default function AddPasswordScreen({ route, navigation }) {
             <Text style={styles.text}>{translate('password')}</Text>
             <View style={styles.inputView}>
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, markPasswordField ? { borderColor: 'red' } : { borderColor: theme.secondary }]}
                     placeholderTextColor={theme.placeholder}
                     placeholder='••••••••••••••••'
                     secureTextEntry={!isPasswordVisible}
@@ -207,15 +222,13 @@ export default function AddPasswordScreen({ route, navigation }) {
                     />
                 </TouchableOpacity>
             </View>
-            <View style={styles.view}>
-                <TouchableOpacity
-                    onPress={icon && app && login && password ? async () => await storePassword(id, { icon, app, login, password }, navigation, 'PasswordsListScreen') : null}
-                    activeOpacity={0.75}
-                    style={styles.button}
-                >
-                    <Text style={[styles.itemText, { color: theme.background }]}>{translate('save')}</Text>
-                </TouchableOpacity >
-            </View>
+            <TouchableOpacity
+                onPress={() => saveIfPossible()}
+                activeOpacity={0.75}
+                style={styles.button}
+            >
+                <Text style={[styles.itemText, { color: theme.background }]}>{translate('save')}</Text>
+            </TouchableOpacity >
         </Container>
     )
 }
