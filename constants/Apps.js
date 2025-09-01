@@ -1,6 +1,4 @@
-import { translate } from '../providers/LanguageProvider';
-
-export const apps = [
+export const getApps = (translate) => [
     { value: 'Airbnb', icon: 'airbnb' },
     { value: 'Amazon', icon: 'amazon' },
     { value: 'Apple', icon: 'apple' },
@@ -53,5 +51,5 @@ export const apps = [
     { value: 'Yahoo', icon: 'yahoo' },
     { value: 'Yandex', icon: 'yandex' },
     { value: 'YouTube', icon: 'youtube' },
-    { value: translate('other'), icon: 'circle-question' },
-];
+    { value: translate('other'), icon: 'circle-question' }
+]

@@ -1,4 +1,4 @@
-export default {
+export const translations = {
     pl: {
         addPassword: 'Dodaj hasło',
         addNewPassword: 'Dodaj nowe hasło',

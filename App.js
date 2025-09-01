@@ -2,14 +2,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Loader from './Loader';
 
-import ThemeProvider from './providers/ThemeProvider';
+import SettingsProvider from './SettingsProvider';
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ThemeProvider>
+      <SettingsProvider>
         <Loader />
-      </ThemeProvider>
+      </SettingsProvider>
     </SafeAreaProvider>
   )
 }

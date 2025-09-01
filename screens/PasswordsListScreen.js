@@ -7,15 +7,14 @@ import * as Clipboard from 'expo-clipboard';
 
 import Container from '../components/Container';
 
-import { translate } from '../providers/LanguageProvider';
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../SettingsProvider';
 
 export default function PasswordsListScreen() {
     const [passwords, setPasswords] = useState([]);
     const [activeId, setActiveId] = useState(null);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    const theme = useTheme();
+    const { theme, translate } = useSettings();
 
     const navigation = useNavigation();
 

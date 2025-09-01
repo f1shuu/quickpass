@@ -1,9 +1,9 @@
 import { View } from 'react-native';
 
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../SettingsProvider';
 
 export default function Container({ children }) {
-    const theme = useTheme();
+    const { theme } = useSettings();
 
     const styles = {
         container: {

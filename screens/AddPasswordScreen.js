@@ -8,10 +8,9 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 
 import Container from '../components/Container';
 
-import { translate } from '../providers/LanguageProvider';
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../SettingsProvider';
 
-import { apps } from '../constants/Apps';
+import { getApps } from '../constants/Apps';
 
 async function storePassword(id, data = {}, navigation, navigator) {
     try {
@@ -49,7 +48,9 @@ export default function AddPasswordScreen({ route, navigation }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [otherChosen, setOtherChosen] = useState(false);
 
-    const theme = useTheme();
+    const { theme, translate } = useSettings();
+
+    const apps = getApps(translate);
 
     const changeApp = (item) => {
         if (item.value === translate('other')) setOtherChosen(true);

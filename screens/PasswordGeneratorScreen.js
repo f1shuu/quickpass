@@ -6,10 +6,7 @@ import * as Clipboard from 'expo-clipboard';
 
 import Container from '../components/Container';
 
-import Colors from '../constants/Colors';
-
-import { translate } from '../providers/LanguageProvider';
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../SettingsProvider';
 
 export default function PasswordCreatorScreen() {
     const MIN_PASSWORD_LENGTH = 8;
@@ -28,7 +25,7 @@ export default function PasswordCreatorScreen() {
     const [minSpecialCharacters, setMinSpecialCharacters] = useState(3);
     const [password, setPassword] = useState('');
 
-    const theme = useTheme();
+    const { theme, translate } = useSettings();
 
     useEffect(() => {
         generateStrongPassword(
@@ -191,7 +188,7 @@ export default function PasswordCreatorScreen() {
                     <View style={[styles.row, { marginBottom: 15 }]}>
                         <Text style={styles.text}>[A-Z]</Text>
                         <Switch
-                            trackColor={{ false: Colors.red, true: theme.primary }}
+                            trackColor={{ false: 'red', true: theme.primary }}
                             thumbColor={theme.text}
                             onValueChange={toggleUseUpperCaseLetters}
                             value={useUpperCaseLetters}
@@ -200,7 +197,7 @@ export default function PasswordCreatorScreen() {
                     <View style={[styles.row, { marginBottom: 15 }]}>
                         <Text style={styles.text}>[a-z]</Text>
                         <Switch
-                            trackColor={{ false: Colors.red, true: theme.primary }}
+                            trackColor={{ false: 'red', true: theme.primary }}
                             thumbColor={theme.text}
                             onValueChange={toggleUseLowerCaseLetters}
                             value={useLowerCaseLetters}
@@ -211,7 +208,7 @@ export default function PasswordCreatorScreen() {
                     <View style={styles.row}>
                         <Text style={styles.text}>[0-9]</Text>
                         <Switch
-                            trackColor={{ false: Colors.red, true: theme.primary }}
+                            trackColor={{ false: 'red', true: theme.primary }}
                             thumbColor={theme.text}
                             onValueChange={toggleUseNumbers}
                             value={useNumbers}
@@ -220,7 +217,7 @@ export default function PasswordCreatorScreen() {
                     <View style={styles.row}>
                         <Text style={styles.text}>[!@#]</Text>
                         <Switch
-                            trackColor={{ false: Colors.red, true: theme.primary }}
+                            trackColor={{ false: 'red', true: theme.primary }}
                             thumbColor={theme.text}
                             onValueChange={toggleUseSpecialCharacters}
                             value={useSpecialCharacters}

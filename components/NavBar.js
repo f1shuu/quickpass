@@ -7,13 +7,12 @@ import PasswordGeneratorScreen from '../screens/PasswordGeneratorScreen';
 import PasswordsNavigator from '../navigators/PasswordsNavigator';
 import SettingsScreen from '../screens/SettingsScreen';
 
-import { useTheme } from '../providers/ThemeProvider';
-import { translate } from '../providers/LanguageProvider';
+import { useSettings } from '../SettingsProvider';
 
 const Tab = createBottomTabNavigator();
 
 export default function NavigationBar() {
-    const theme = useTheme();
+    const { theme, translate } = useSettings();
 
     const customOptions = {
         headerStyle: {

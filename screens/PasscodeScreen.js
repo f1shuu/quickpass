@@ -5,8 +5,7 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { translate } from '../providers/LanguageProvider';
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../SettingsProvider';
 
 export default function PasscodeScreen({ onAuthSuccess }) {
     const PASSCODE_LENGTH = 6;
@@ -17,9 +16,10 @@ export default function PasscodeScreen({ onAuthSuccess }) {
     const [storedPasscode, setStoredPasscode] = useState('');
     const [tempPasscode, setTempPasscode] = useState('');
     const [secondTime, setSecondTime] = useState(false);
-    const [message, setMessage] = useState(translate('createPasscode'));
 
-    const theme = useTheme();
+    const { theme, translate } = useSettings();
+
+    const [message, setMessage] = useState(translate('createPasscode'));
 
     useEffect(() => {
         checkStoredPasscode();

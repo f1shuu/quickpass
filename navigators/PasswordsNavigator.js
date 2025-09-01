@@ -3,13 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AddPasswordScreen from '../screens/AddPasswordScreen';
 import PasswordsListScreen from '../screens/PasswordsListScreen';
 
-import { translate } from '../providers/LanguageProvider';
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../SettingsProvider';
 
 const Stack = createStackNavigator();
 
-export default function BodyMeasurementsNavigator() {
-    const theme = useTheme();
+export default function PasswordsNavigator() {
+    const { theme, translate } = useSettings();
 
     const customOptions = {
         headerTintColor: theme.text,
