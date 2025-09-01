@@ -19,8 +19,10 @@ export default function PasswordsListScreen() {
     const navigation = useNavigation();
 
     useEffect(() => {
-        getPasswords();
-    }, [])
+        return navigation.addListener('focus', () => {
+            getPasswords();
+        })
+    }, [navigation])
 
     const getPasswords = async () => {
         try {
