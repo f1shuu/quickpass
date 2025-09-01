@@ -31,8 +31,7 @@ export default function NavigationBar() {
             borderTopWidth: 0
         },
         tabBarLabelStyle: {
-            fontFamily: 'Tommy',
-            color: theme.placeholder
+            fontFamily: 'Tommy'
         }
     }
 
@@ -60,7 +59,9 @@ export default function NavigationBar() {
                         title: translate('passwordsList'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name='list' size={24} color={focused ? theme.primary : theme.placeholder} />
-                        )
+                        ),
+                        tabBarActiveTintColor: theme.primary,
+                        tabBarInactiveTintColor: theme.placeholder
                     })}
                 />
                 <Tab.Screen
@@ -71,7 +72,9 @@ export default function NavigationBar() {
                         title: translate('passwordGenerator'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name='square-plus' size={28} color={focused ? theme.primary : theme.placeholder} />
-                        )
+                        ),
+                        tabBarActiveTintColor: theme.primary,
+                        tabBarInactiveTintColor: theme.placeholder
                     })}
                 />
                 <Tab.Screen
@@ -82,7 +85,9 @@ export default function NavigationBar() {
                         title: translate('settings'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name='gear' size={24} color={focused ? theme.primary : theme.placeholder} />
-                        )
+                        ),
+                        tabBarActiveTintColor: theme.primary,
+                        tabBarInactiveTintColor: theme.placeholder
                     })}
                 />
             </Tab.Navigator>

@@ -12,7 +12,8 @@ export default function SettingsScreen() {
 
     return (
         <Container>
-            <Setting name={translate('language')} icon={'translate'} color={theme.text} type='navigate' onPress={() => navigation.navigate('LanguageSelectionScreen')} />
+            <Setting name={translate('language')} icon={'globe'} color={theme.text} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'language' })} />
+            <Setting name={translate('theme')} icon={'palette'} color={theme.text} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'theme' })} />
         </Container>
     )
 }

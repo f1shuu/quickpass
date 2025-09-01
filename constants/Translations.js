@@ -6,9 +6,11 @@ export const translations = {
         appOrWebsite: 'Aplikacja/strona internetowa',
         choose: 'Wybierz...',
         chooseLanguage: 'Wybierz język',
+        chooseTheme: 'Wybierz motyw',
         confirmPasscode: 'Potwierdź kod PIN',
         createPasscode: 'Utwórz nowy kod PIN',
         createPassword: 'Stwórz nowe hasło',
+        dark: 'Ciemny',
         delete: 'Usuń',
         edit: 'Edytuj',
         editPassword: 'Edytuj hasło',
@@ -16,6 +18,7 @@ export const translations = {
         fallbackLabel: 'Użyj kodu PIN',
         incorrectPasscode: 'Nieprawidłowy kod PIN',
         language: 'Język',
+        light: 'Jasny',
         login: 'Nazwa użytkownika',
         mail: 'adres e-mail',
         minNumbers: 'Min. liczba cyfr',
@@ -32,6 +35,7 @@ export const translations = {
         save: 'Zapisz',
         settings: 'Ustawienia',
         strongPasswordGenerator: 'Generator silnych haseł',
+        theme: 'Motyw',
         website: 'Nazwa'
     },
 
@@ -42,9 +46,11 @@ export const translations = {
         appOrWebsite: 'App/website',
         choose: 'Choose...',
         chooseLanguage: 'Choose language',
+        chooseTheme: 'Choose theme',
         confirmPasscode: 'Confirm your passcode',
         createPasscode: 'Create a new passcode',
         createPassword: 'Create a new password',
+        dark: 'Dark',
         delete: 'Delete',
         edit: 'Edit',
         editPassword: 'Edit a password',
@@ -52,6 +58,7 @@ export const translations = {
         fallbackLabel: 'Use PIN instead',
         incorrectPasscode: 'Incorrect passcode',
         language: 'Language',
+        light: 'Light',
         login: 'Login',
         mail: 'e-mail address',
         minNumbers: 'Minimum numbers',
@@ -68,6 +75,7 @@ export const translations = {
         save: 'Save',
         settings: 'Settings',
         strongPasswordGenerator: 'Strong password generator',
+        theme: 'Theme',
         website: 'Webiste name'
     }
 }

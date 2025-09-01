@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import LanguageSelectionScreen from '../screens/LanguageSelectionScreen';
+import SelectionScreen from '../screens/SelectionScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 import { useSettings } from '../SettingsProvider';
@@ -38,11 +38,11 @@ export default function SettingsNavigator() {
                 }}
             />
             <Stack.Screen
-                name='LanguageSelectionScreen'
-                component={LanguageSelectionScreen}
+                name='SelectionScreen'
+                component={SelectionScreen}
                 options={({ route }) => ({
                     ...customOptions,
-                    headerTitle: translate('chooseLanguage')
+                    headerTitle: route.params?.screen === 'language' ? translate('chooseLanguage') : translate('chooseTheme')
                 })}
             />
         </Stack.Navigator>

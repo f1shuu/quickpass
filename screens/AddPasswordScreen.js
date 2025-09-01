@@ -242,7 +242,7 @@ export default function AddPasswordScreen({ route, navigation }) {
                 activeOpacity={0.75}
                 style={styles.button}
             >
-                <Text style={[styles.itemText, { color: theme.background }]}>{translate('save')}</Text>
+                <Text style={[styles.itemText, { color: 'black' }]}>{translate('save')}</Text>
             </TouchableOpacity >
         </Container>
     )

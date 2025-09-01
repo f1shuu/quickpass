@@ -285,7 +285,7 @@ export default function PasswordCreatorScreen() {
                     activeOpacity={0.75}
                     style={styles.button}
                 >
-                    <Text style={[styles.text, { color: theme.background }]}>{translate('regenerate')}</Text>
+                    <Text style={[styles.text, { color: 'black' }]}>{translate('regenerate')}</Text>
                 </TouchableOpacity >
             </View>
         </Container>
