@@ -51,6 +51,11 @@ export default function PasswordsListScreen() {
         }
     }
 
+    const togglePasswordVisiblity = (item) => {
+        if (activeId === null || activeId !== item.id) setIsPasswordVisible(false);
+        setActiveId(activeId === item.id ? null : item.id)
+    }
+
     const styles = {
         header: {
             backgroundColor: theme.secondary,
@@ -151,7 +156,7 @@ export default function PasswordsListScreen() {
         return (
             <View>
                 <TouchableOpacity
-                    onPress={() => setActiveId(activeId === item.id ? null : item.id)}
+                    onPress={() => togglePasswordVisiblity(item)}
                     activeOpacity={0.75}
                     style={isActive ? styles.header : [styles.header, { borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}
                 >
