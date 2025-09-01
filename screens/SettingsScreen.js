@@ -1,3 +1,4 @@
+import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 
@@ -5,6 +6,10 @@ import Container from '../components/Container';
 import Setting from '../components/Setting';
 
 import { useSettings } from '../SettingsProvider';
+
+import Colors from '../constants/Colors';
+
+var pkg = require('../package.json');
 
 export default function SettingsScreen() {
     const { theme, translate } = useSettings();
@@ -15,11 +20,23 @@ export default function SettingsScreen() {
         await SecureStore.deleteItemAsync('passwords');
     }
 
+    const styles = {
+        text: {
+            fontFamily: 'Tommy',
+            fontSize: 12,
+            color: theme.placeholder,
+            alignSelf: 'center',
+            position: 'absolute',
+            bottom: 10
+        }
+    }
+
     return (
         <Container>
             <Setting name={translate('language')} icon={'globe'} color={theme.text} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'language' })} />
             <Setting name={translate('theme')} icon={'palette'} color={theme.text} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'theme' })} />
-            <Setting name={translate('deleteAllPasswords')} icon={'trash-can'} color={'red'} onPress={deleteAllPasswords} />
+            <Setting name={translate('deleteAllPasswords')} icon={'trash-can'} color={Colors.red} onPress={deleteAllPasswords} />
+            <Text style={styles.text}>v{pkg.version}</Text>
         </Container>
     )
 }

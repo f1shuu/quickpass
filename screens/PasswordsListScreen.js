@@ -9,6 +9,8 @@ import Container from '../components/Container';
 
 import { useSettings } from '../SettingsProvider';
 
+import Colors from '../constants/Colors';
+
 export default function PasswordsListScreen() {
     const [passwords, setPasswords] = useState([]);
     const [activeId, setActiveId] = useState(null);
@@ -200,14 +202,14 @@ export default function PasswordsListScreen() {
                                 activeOpacity={0.75}
                                 style={styles.button}
                             >
-                                <Text style={[styles.text, { color: 'black' }]}>{translate('edit')}</Text>
+                                <Text style={[styles.text, { color: Colors.black }]}>{translate('edit')}</Text>
                             </TouchableOpacity >
                             <TouchableOpacity
                                 onPress={() => deletePassword(item.id, setPasswords)}
                                 activeOpacity={0.75}
                                 style={styles.button}
                             >
-                                <Text style={[styles.text, { color: 'black' }]}>{translate('delete')}</Text>
+                                <Text style={[styles.text, { color: Colors.black }]}>{translate('delete')}</Text>
                             </TouchableOpacity >
                         </View>
                     </View>

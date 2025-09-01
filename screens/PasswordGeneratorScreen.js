@@ -8,6 +8,8 @@ import Container from '../components/Container';
 
 import { useSettings } from '../SettingsProvider';
 
+import Colors from '../constants/Colors';
+
 export default function PasswordCreatorScreen() {
     const MIN_PASSWORD_LENGTH = 8;
     const MAX_PASSWORD_LENGTH = 32;
@@ -188,7 +190,7 @@ export default function PasswordCreatorScreen() {
                     <View style={[styles.row, { marginBottom: 15 }]}>
                         <Text style={styles.text}>[A-Z]</Text>
                         <Switch
-                            trackColor={{ false: 'red', true: theme.primary }}
+                            trackColor={{ false: Colors.red, true: theme.primary }}
                             thumbColor={theme.text}
                             onValueChange={toggleUseUpperCaseLetters}
                             value={useUpperCaseLetters}
@@ -197,7 +199,7 @@ export default function PasswordCreatorScreen() {
                     <View style={[styles.row, { marginBottom: 15 }]}>
                         <Text style={styles.text}>[a-z]</Text>
                         <Switch
-                            trackColor={{ false: 'red', true: theme.primary }}
+                            trackColor={{ false: Colors.red, true: theme.primary }}
                             thumbColor={theme.text}
                             onValueChange={toggleUseLowerCaseLetters}
                             value={useLowerCaseLetters}
@@ -208,7 +210,7 @@ export default function PasswordCreatorScreen() {
                     <View style={styles.row}>
                         <Text style={styles.text}>[0-9]</Text>
                         <Switch
-                            trackColor={{ false: 'red', true: theme.primary }}
+                            trackColor={{ false: Colors.red, true: theme.primary }}
                             thumbColor={theme.text}
                             onValueChange={toggleUseNumbers}
                             value={useNumbers}
@@ -217,7 +219,7 @@ export default function PasswordCreatorScreen() {
                     <View style={styles.row}>
                         <Text style={styles.text}>[!@#]</Text>
                         <Switch
-                            trackColor={{ false: 'red', true: theme.primary }}
+                            trackColor={{ false: Colors.red, true: theme.primary }}
                             thumbColor={theme.text}
                             onValueChange={toggleUseSpecialCharacters}
                             value={useSpecialCharacters}
@@ -285,7 +287,7 @@ export default function PasswordCreatorScreen() {
                     activeOpacity={0.75}
                     style={styles.button}
                 >
-                    <Text style={[styles.text, { color: 'black' }]}>{translate('regenerate')}</Text>
+                    <Text style={[styles.text, { color: Colors.black }]}>{translate('regenerate')}</Text>
                 </TouchableOpacity >
             </View>
         </Container>
