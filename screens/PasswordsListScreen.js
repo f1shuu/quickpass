@@ -70,7 +70,8 @@ export default function PasswordsListScreen() {
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
             borderWidth: 1,
-            borderColor: theme.primary
+            borderColor: theme.primary,
+            height: 70
         },
         row: {
             flexDirection: 'row',
@@ -222,6 +223,7 @@ export default function PasswordsListScreen() {
         <Container>
             {passwords.length !== 0 ? (
                 <FlatList
+                    style={{ marginTop: -10 }}
                     data={passwords}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => <Password item={item} />}

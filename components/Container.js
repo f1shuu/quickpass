@@ -11,11 +11,6 @@ export default function Container({ children }) {
             backgroundColor: theme.background,
             padding: 10,
             gap: 10
-        },
-        text: {
-            fontFamily: 'Tommy',
-            fontSize: 24,
-            color: theme.text
         }
     }
 

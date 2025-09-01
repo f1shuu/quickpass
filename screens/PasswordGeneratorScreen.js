@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import Slider from '@react-native-community/slider';
 import * as Clipboard from 'expo-clipboard';
+import * as Haptics from 'expo-haptics';
 
 import Container from '../components/Container';
 
@@ -90,6 +91,8 @@ export default function PasswordCreatorScreen() {
         setPassword(tempPassword);
 
         tempPassword = '';
+
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
 
     const getFontSize = () => {

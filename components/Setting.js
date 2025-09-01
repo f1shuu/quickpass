@@ -1,21 +1,22 @@
 import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import * as Haptics from 'expo-haptics';
+import CountryFlag from 'react-native-country-flag';
 
 import { useSettings } from '../SettingsProvider';
 
-export default function Setting({ name, icon, color, onPress, type, parameter, style }) {
+export default function Setting({ flag, icon, name, color, onPress, type, parameter }) {
     const { settings, theme, updateSettings } = useSettings();
 
     const styles = {
         widget: {
+            backgroundColor: theme.secondary,
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: theme.secondary,
-            paddingHorizontal: 15,
-            height: 70,
-            borderRadius: 10
+            padding: 20,
+            borderRadius: 10,
+            height: 70
         },
         text: {
             fontFamily: 'Tommy',
@@ -31,9 +32,13 @@ export default function Setting({ name, icon, color, onPress, type, parameter, s
     }
 
     return (
-        <TouchableOpacity onPress={type === 'toggle' ? () => toggleSetting(!settings[parameter]) : onPress} style={[styles.widget, style]} activeOpacity={0.8} >
+        <TouchableOpacity onPress={type === 'toggle' ? () => toggleSetting(!settings[parameter]) : onPress} style={styles.widget} activeOpacity={0.8} >
             <View style={{ flexDirection: 'row' }}>
-                <Icon name={icon} size={24} color={color} />
+                {flag ? (
+                    <CountryFlag isoCode={flag} size={16} style={{ alignSelf: 'center' }} />
+                ) : (
+                    <Icon name={icon} size={24} color={color} />
+                )}
                 <Text style={[styles.text, { color }]}>{name}</Text>
             </View>
             {type === 'navigate' ? (
