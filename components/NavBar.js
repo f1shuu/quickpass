@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 
 import PasswordGeneratorScreen from '../screens/PasswordGeneratorScreen';
 import PasswordsNavigator from '../navigators/PasswordsNavigator';
-import SettingsScreen from '../screens/SettingsScreen';
+import SettingsNavigator from '../navigators/SettingsNavigator';
 
 import { useSettings } from '../SettingsProvider';
 
@@ -75,8 +75,8 @@ export default function NavigationBar() {
                     })}
                 />
                 <Tab.Screen
-                    name='SettingsScreen'
-                    component={SettingsScreen}
+                    name='SettingsNavigator'
+                    component={SettingsNavigator}
                     options={() => ({
                         ...customOptions,
                         title: translate('settings'),
