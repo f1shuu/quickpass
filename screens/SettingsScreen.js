@@ -12,7 +12,7 @@ import Colors from '../constants/Colors';
 var pkg = require('../package.json');
 
 export default function SettingsScreen() {
-    const { theme, translate } = useSettings();
+    const { getColor, translate } = useSettings();
 
     const navigation = useNavigation();
 
@@ -24,7 +24,7 @@ export default function SettingsScreen() {
         text: {
             fontFamily: 'Tommy',
             fontSize: 12,
-            color: theme.placeholder,
+            color: getColor('placeholder'),
             alignSelf: 'center',
             position: 'absolute',
             bottom: 10
@@ -33,8 +33,8 @@ export default function SettingsScreen() {
 
     return (
         <Container>
-            <Setting name={translate('language')} icon={'globe'} color={theme.text} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'language' })} />
-            <Setting name={translate('theme')} icon={'palette'} color={theme.text} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'theme' })} />
+            <Setting name={translate('language')} icon={'globe'} color={getColor('text')} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'language' })} />
+            <Setting name={translate('theme')} icon={'palette'} color={getColor('text')} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'theme' })} />
             <Setting name={translate('deleteAllPasswords')} icon={'trash-can'} color={Colors.red} onPress={deleteAllPasswords} />
             <Text style={styles.text}>v{pkg.version}</Text>
         </Container>

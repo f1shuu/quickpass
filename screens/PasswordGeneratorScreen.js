@@ -28,7 +28,7 @@ export default function PasswordCreatorScreen() {
     const [minSpecialCharacters, setMinSpecialCharacters] = useState(3);
     const [password, setPassword] = useState('');
 
-    const { theme, translate } = useSettings();
+    const { getColor, translate } = useSettings();
 
     useEffect(() => {
         generateStrongPassword(
@@ -71,18 +71,18 @@ export default function PasswordCreatorScreen() {
         if (useLowerCaseLetters) letters += LOWERCASE_LETTERS;
 
         if (useNumbers) {
-            Array.from({ length: numbersLength }).forEach((_, i) => {
+            Array.from({ length: numbersLength }).forEach((_) => {
                 tempPassword += NUMBERS[Math.floor(Math.random() * NUMBERS.length)];
             });
         }
 
         if (useSpecialCharacters) {
-            Array.from({ length: specialCharactersLength }).forEach((_, i) => {
+            Array.from({ length: specialCharactersLength }).forEach((_) => {
                 tempPassword += SPECIAL_CHARACTERS[Math.floor(Math.random() * SPECIAL_CHARACTERS.length)];
             });
         }
 
-        Array.from({ length: lettersLength }).forEach((_, i) => {
+        Array.from({ length: lettersLength }).forEach((_) => {
             tempPassword += letters[Math.floor(Math.random() * letters.length)];
         });
 
@@ -113,34 +113,34 @@ export default function PasswordCreatorScreen() {
             height: 60,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             borderTopLeftRadius: 10,
             borderBottomLeftRadius: 10,
             borderTopWidth: 1,
             borderLeftWidth: 1,
             borderBottomWidth: 1,
-            borderColor: theme.primary
+            borderColor: getColor('primary')
         },
         text: {
             fontFamily: 'Tommy',
             fontSize: 16,
-            color: theme.text
+            color: getColor('text')
         },
         copyButton: {
             width: 60,
             height: 60,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             borderTopRightRadius: 10,
             borderBottomRightRadius: 10,
             borderTopWidth: 1,
             borderRightWidth: 1,
             borderBottomWidth: 1,
-            borderColor: theme.primary
+            borderColor: getColor('primary')
         },
         section: {
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             padding: 15,
             paddingBottom: 0,
             borderRadius: 10
@@ -150,7 +150,7 @@ export default function PasswordCreatorScreen() {
             marginVertical: 25
         },
         button: {
-            backgroundColor: theme.primary,
+            backgroundColor: getColor('primary'),
             alignSelf: 'center',
             justifyContent: 'center',
             alignItems: 'center',
@@ -167,7 +167,7 @@ export default function PasswordCreatorScreen() {
                     <Text style={[styles.text, { fontSize: getFontSize() }]}>{password}</Text>
                 </View>
                 <TouchableOpacity onPress={() => Clipboard.setStringAsync(password)} activeOpacity={0.75} style={styles.copyButton}>
-                    <Icon name='copy' size={28} color={theme.placeholder} />
+                    <Icon name='copy' size={28} color={getColor('placeholder')} />
                 </TouchableOpacity>
             </View>
             <View style={styles.section}>
@@ -178,9 +178,9 @@ export default function PasswordCreatorScreen() {
                         style={styles.slider}
                         minimumValue={MIN_PASSWORD_LENGTH}
                         maximumValue={MAX_PASSWORD_LENGTH}
-                        minimumTrackTintColor={theme.primary}
-                        maximumTrackTintColor={theme.text}
-                        thumbTintColor={theme.primary}
+                        minimumTrackTintColor={getColor('primary')}
+                        maximumTrackTintColor={getColor('text')}
+                        thumbTintColor={getColor('primary')}
                         step={1}
                         value={passwordLength}
                         onValueChange={setPasswordLength}
@@ -193,8 +193,8 @@ export default function PasswordCreatorScreen() {
                     <View style={[styles.row, { marginBottom: 15 }]}>
                         <Text style={styles.text}>[A-Z]</Text>
                         <Switch
-                            trackColor={{ false: Colors.red, true: theme.primary }}
-                            thumbColor={theme.text}
+                            trackColor={{ false: Colors.red, true: getColor('primary') }}
+                            thumbColor={getColor('text')}
                             onValueChange={toggleUseUpperCaseLetters}
                             value={useUpperCaseLetters}
                         />
@@ -202,8 +202,8 @@ export default function PasswordCreatorScreen() {
                     <View style={[styles.row, { marginBottom: 15 }]}>
                         <Text style={styles.text}>[a-z]</Text>
                         <Switch
-                            trackColor={{ false: Colors.red, true: theme.primary }}
-                            thumbColor={theme.text}
+                            trackColor={{ false: Colors.red, true: getColor('primary') }}
+                            thumbColor={getColor('text')}
                             onValueChange={toggleUseLowerCaseLetters}
                             value={useLowerCaseLetters}
                         />
@@ -213,8 +213,8 @@ export default function PasswordCreatorScreen() {
                     <View style={styles.row}>
                         <Text style={styles.text}>[0-9]</Text>
                         <Switch
-                            trackColor={{ false: Colors.red, true: theme.primary }}
-                            thumbColor={theme.text}
+                            trackColor={{ false: Colors.red, true: getColor('primary') }}
+                            thumbColor={getColor('text')}
                             onValueChange={toggleUseNumbers}
                             value={useNumbers}
                         />
@@ -222,8 +222,8 @@ export default function PasswordCreatorScreen() {
                     <View style={styles.row}>
                         <Text style={styles.text}>[!@#]</Text>
                         <Switch
-                            trackColor={{ false: Colors.red, true: theme.primary }}
-                            thumbColor={theme.text}
+                            trackColor={{ false: Colors.red, true: getColor('primary') }}
+                            thumbColor={getColor('text')}
                             onValueChange={toggleUseSpecialCharacters}
                             value={useSpecialCharacters}
                         />
@@ -242,9 +242,9 @@ export default function PasswordCreatorScreen() {
                                         style={styles.slider}
                                         minimumValue={1}
                                         maximumValue={Math.floor(passwordLength / 4)}
-                                        minimumTrackTintColor={theme.primary}
-                                        maximumTrackTintColor={theme.text}
-                                        thumbTintColor={theme.primary}
+                                        minimumTrackTintColor={getColor('primary')}
+                                        maximumTrackTintColor={getColor('text')}
+                                        thumbTintColor={getColor('primary')}
                                         step={1}
                                         value={minNumbers}
                                         onValueChange={setMinNumbers}
@@ -262,9 +262,9 @@ export default function PasswordCreatorScreen() {
                                         style={styles.slider}
                                         minimumValue={1}
                                         maximumValue={Math.floor(passwordLength / 4)}
-                                        minimumTrackTintColor={theme.primary}
-                                        maximumTrackTintColor={theme.text}
-                                        thumbTintColor={theme.primary}
+                                        minimumTrackTintColor={getColor('primary')}
+                                        maximumTrackTintColor={getColor('text')}
+                                        thumbTintColor={getColor('primary')}
                                         step={1}
                                         value={minSpecialCharacters}
                                         onValueChange={setMinSpecialCharacters}

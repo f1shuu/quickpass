@@ -12,20 +12,20 @@ import { useSettings } from '../SettingsProvider';
 const Tab = createBottomTabNavigator();
 
 export default function NavigationBar() {
-    const { theme, translate } = useSettings();
+    const { getColor, translate } = useSettings();
 
     const customOptions = {
         headerStyle: {
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             elevation: 0
         },
         headerTitleStyle: {
             fontFamily: 'Tommy',
             fontSize: 22,
-            color: theme.text
+            color: getColor('text')
         },
         tabBarStyle: {
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             height: 60,
             elevation: 0,
             borderTopWidth: 0
@@ -58,10 +58,10 @@ export default function NavigationBar() {
                         ...customOptions,
                         title: translate('passwordsList'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='list' size={24} color={focused ? theme.primary : theme.placeholder} />
+                            <Icon name='list' size={24} color={focused ? getColor('primary') : getColor('placeholder')} />
                         ),
-                        tabBarActiveTintColor: theme.primary,
-                        tabBarInactiveTintColor: theme.placeholder
+                        tabBarActiveTintColor: getColor('primary'),
+                        tabBarInactiveTintColor: getColor('placeholder')
                     })}
                 />
                 <Tab.Screen
@@ -71,10 +71,10 @@ export default function NavigationBar() {
                         ...customOptions,
                         title: translate('passwordGenerator'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='square-plus' size={28} color={focused ? theme.primary : theme.placeholder} />
+                            <Icon name='square-plus' size={28} color={focused ? getColor('primary') : getColor('placeholder')} />
                         ),
-                        tabBarActiveTintColor: theme.primary,
-                        tabBarInactiveTintColor: theme.placeholder
+                        tabBarActiveTintColor: getColor('primary'),
+                        tabBarInactiveTintColor: getColor('placeholder')
                     })}
                 />
                 <Tab.Screen
@@ -84,10 +84,10 @@ export default function NavigationBar() {
                         ...customOptions,
                         title: translate('settings'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='gear' size={24} color={focused ? theme.primary : theme.placeholder} />
+                            <Icon name='gear' size={24} color={focused ? getColor('primary') : getColor('placeholder')} />
                         ),
-                        tabBarActiveTintColor: theme.primary,
-                        tabBarInactiveTintColor: theme.placeholder
+                        tabBarActiveTintColor: getColor('primary'),
+                        tabBarInactiveTintColor: getColor('placeholder')
                     })}
                 />
             </Tab.Navigator>

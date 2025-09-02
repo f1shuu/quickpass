@@ -49,7 +49,7 @@ export default function AddPasswordScreen({ route, navigation }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [otherChosen, setOtherChosen] = useState(false);
 
-    const { theme, translate } = useSettings();
+    const { getColor, translate } = useSettings();
 
     const apps = getApps(translate);
 
@@ -77,7 +77,7 @@ export default function AddPasswordScreen({ route, navigation }) {
         text: {
             fontFamily: 'Tommy',
             fontSize: 14,
-            color: theme.placeholder,
+            color: getColor('placeholder'),
             marginVertical: 5
         },
         icon: {
@@ -85,11 +85,11 @@ export default function AddPasswordScreen({ route, navigation }) {
             left: 20,
             top: 20,
             zIndex: 2,
-            color: theme.text
+            color: getColor('text')
         },
         dropdown: {
             width: '100%',
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             height: 60,
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
@@ -99,17 +99,17 @@ export default function AddPasswordScreen({ route, navigation }) {
         container: {
             marginTop: -2,
             marginLeft: 1,
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             borderBottomLeftRadius: 10,
             borderBottomRightRadius: 10,
             borderWidth: 1,
             borderTopWidth: 0,
-            borderColor: theme.primary
+            borderColor: getColor('primary')
         },
         itemText: {
             fontFamily: 'Tommy',
             fontSize: 16,
-            color: theme.text
+            color: getColor('text')
         },
         item: {
             flexDirection: 'row',
@@ -124,10 +124,10 @@ export default function AddPasswordScreen({ route, navigation }) {
         },
         input: {
             width: '100%',
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             height: 60,
             fontFamily: 'Tommy',
-            color: theme.text,
+            color: getColor('text'),
             borderRadius: 10,
             padding: 15,
             paddingRight: 0,
@@ -146,7 +146,7 @@ export default function AddPasswordScreen({ route, navigation }) {
             alignItems: 'center'
         },
         button: {
-            backgroundColor: theme.primary,
+            backgroundColor: getColor('primary'),
             alignSelf: 'center',
             justifyContent: 'center',
             alignItems: 'center',
@@ -176,13 +176,13 @@ export default function AddPasswordScreen({ route, navigation }) {
                                     ? { ...styles.dropdown, borderBottomWidth: 0 }
                                     : { ...styles.dropdown, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
                                 app && { paddingLeft: 55 },
-                                markAppField ? { borderColor: Colors.red } : { borderColor: theme.primary }
+                                markAppField ? { borderColor: Colors.red } : { borderColor: getColor('primary') }
                             ]}
                             containerStyle={styles.container}
                             itemTextStyle={styles.itemText}
-                            placeholderStyle={[styles.itemText, { color: theme.placeholder }]}
+                            placeholderStyle={[styles.itemText, { color: getColor('placeholder') }]}
                             selectedTextStyle={styles.itemText}
-                            activeColor={theme.primary}
+                            activeColor={getColor('primary')}
                             data={apps}
                             labelField='value'
                             valueField='value'
@@ -195,7 +195,7 @@ export default function AddPasswordScreen({ route, navigation }) {
                             renderItem={item => (
                                 <View style={styles.item}>
                                     <View style={styles.iconBox}>
-                                        <Icon name={item.icon} size={20} style={{ color: theme.text }} />
+                                        <Icon name={item.icon} size={20} style={{ color: getColor('text') }} />
                                     </View>
                                     <Text style={styles.itemText}>{item.value}</Text>
                                 </View>
@@ -205,8 +205,8 @@ export default function AddPasswordScreen({ route, navigation }) {
                 </>
             ) : (
                 <TextInput
-                    style={[styles.input, markAppField ? { borderColor: Colors.red } : { borderColor: theme.secondary }]}
-                    placeholderTextColor={theme.placeholder}
+                    style={[styles.input, markAppField ? { borderColor: Colors.red } : { borderColor: getColor('secondary') }]}
+                    placeholderTextColor={getColor('placeholder')}
                     placeholder='Google'
                     value={app}
                     onChangeText={(text) => setApp(text)}
@@ -214,8 +214,8 @@ export default function AddPasswordScreen({ route, navigation }) {
             )}
             <Text style={styles.text}>{translate('login')}/{translate('mail')}</Text>
             <TextInput
-                style={[styles.input, markLoginField ? { borderColor: Colors.red } : { borderColor: theme.secondary }]}
-                placeholderTextColor={theme.placeholder}
+                style={[styles.input, markLoginField ? { borderColor: Colors.red } : { borderColor: getColor('secondary') }]}
+                placeholderTextColor={getColor('placeholder')}
                 placeholder='johndoe@mail.com'
                 value={login}
                 onChangeText={(text) => setLogin(text)}
@@ -223,8 +223,8 @@ export default function AddPasswordScreen({ route, navigation }) {
             <Text style={styles.text}>{translate('password')}</Text>
             <View style={styles.inputView}>
                 <TextInput
-                    style={[styles.input, markPasswordField ? { borderColor: Colors.red } : { borderColor: theme.secondary }]}
-                    placeholderTextColor={theme.placeholder}
+                    style={[styles.input, markPasswordField ? { borderColor: Colors.red } : { borderColor: getColor('secondary') }]}
+                    placeholderTextColor={getColor('placeholder')}
                     placeholder='••••••••••••••••'
                     secureTextEntry={!isPasswordVisible}
                     value={password}
@@ -234,7 +234,7 @@ export default function AddPasswordScreen({ route, navigation }) {
                     <Icon
                         name={isPasswordVisible ? 'eye' : 'eye-slash'}
                         size={18}
-                        color={theme.placeholder}
+                        color={getColor('placeholder')}
                     />
                 </TouchableOpacity>
             </View>

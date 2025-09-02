@@ -17,7 +17,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
     const [tempPasscode, setTempPasscode] = useState('');
     const [secondTime, setSecondTime] = useState(false);
 
-    const { theme, translate } = useSettings();
+    const { getColor, translate } = useSettings();
 
     const [message, setMessage] = useState(translate('createPasscode'));
 
@@ -99,7 +99,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
     const styles = {
         container: {
             flex: 1,
-            backgroundColor: theme.background,
+            backgroundColor: getColor('background'),
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingTop: 50
@@ -111,21 +111,21 @@ export default function PasscodeScreen({ onAuthSuccess }) {
         title: {
             fontFamily: 'Tommy',
             fontSize: 22,
-            color: theme.text
+            color: getColor('text')
         },
         text: {
             fontFamily: 'Tommy',
             fontSize: 36,
-            color: theme.primary,
+            color: getColor('primary'),
             letterSpacing: 10
         },
         placeholderText: {
             fontSize: 56,
-            color: theme.placeholder
+            color: getColor('placeholder')
         },
         passcodeText: {
             fontSize: 56,
-            color: theme.primary,
+            color: getColor('primary'),
             position: 'absolute',
             top: 0,
             left: 0
@@ -148,7 +148,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: getColor('background') }}>
             <View style={styles.container}>
                 <View style={styles.logo}>
                     <Image source={require('../assets/images/splash.png')} style={{ width: 200, height: 200 }} />
@@ -165,13 +165,13 @@ export default function PasscodeScreen({ onAuthSuccess }) {
                         </TouchableOpacity>
                     ))}
                     <TouchableOpacity style={styles.button} onPress={() => handleBiometricAuth()}>
-                        <MaterialIcons name='fingerprint' size={36} color={theme.primary} />
+                        <MaterialIcons name='fingerprint' size={36} color={getColor('primary')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('0')}>
                         <Text style={styles.text}>0</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => handleDelete()}>
-                        <MaterialIcons name='backspace' size={32} color={theme.primary} />
+                        <MaterialIcons name='backspace' size={32} color={getColor('primary')} />
                     </TouchableOpacity>
                 </View>
             </View>

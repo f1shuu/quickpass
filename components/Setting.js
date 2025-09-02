@@ -6,11 +6,11 @@ import CountryFlag from 'react-native-country-flag';
 import { useSettings } from '../SettingsProvider';
 
 export default function Setting({ flag, icon, name, color, onPress, type, parameter }) {
-    const { settings, theme, updateSettings } = useSettings();
+    const { getColor, updateSettings } = useSettings();
 
     const styles = {
         widget: {
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -44,7 +44,7 @@ export default function Setting({ flag, icon, name, color, onPress, type, parame
             {type === 'navigate' ? (
                 <Icon name='caret-right' size={24} color={color} />
             ) : type === 'check' ? (
-                <Icon name='check' size={24} color={theme.primary} />
+                <Icon name='check' size={24} color={getColor('primary')} />
             ) : null}
         </TouchableOpacity>
     )

@@ -5,25 +5,29 @@ import * as SplashScreen from 'expo-splash-screen';
 import PasscodeScreen from './screens/PasscodeScreen';
 import NavBar from './components/NavBar';
 
+import { useSettings } from './SettingsProvider';
+
 SplashScreen.preventAutoHideAsync();
 
 export default function Loader() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const { loadSettings } = useSettings();
 
     useEffect(() => {
-        const loadFonts = async () => {
+        const load = async () => {
             try {
                 await Font.loadAsync({
                     'Tommy': require('./assets/fonts/Tommy-Bold.otf')
                 })
+                await loadSettings();
             } catch (error) {
                 console.error(error);
             } finally {
                 setFontsLoaded(true);
             }
         }
-        loadFonts();
+        load();
     }, [])
 
     useEffect(() => {

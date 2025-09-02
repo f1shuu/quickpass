@@ -15,5 +15,3 @@ appConfig = appConfig.replace(
 );
 
 fs.writeFileSync(appConfigPath, appConfig);
-
-console.log(`Updated app.config.js version to ${newVersion}`);

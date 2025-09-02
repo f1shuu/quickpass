@@ -3,12 +3,12 @@ import { View } from 'react-native';
 import { useSettings } from '../SettingsProvider';
 
 export default function Container({ children }) {
-    const { theme } = useSettings();
+    const { getColor } = useSettings();
 
     const styles = {
         container: {
             flex: 1,
-            backgroundColor: theme.background,
+            backgroundColor: getColor('background'),
             padding: 10,
             gap: 10
         }

@@ -2,7 +2,7 @@ import { useState, createContext, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
 
-import * as themes from './constants/Themes';
+import { themes } from './constants/Themes';
 import { translations } from './constants/Translations';
 
 const SettingsContext = createContext();
@@ -14,16 +14,12 @@ export default function SettingsProvider({ children }) {
     }
 
     const [settings, setSettings] = useState(defaultSettings);
-    const [theme, setTheme] = useState(themes.dark);
 
     const loadSettings = async () => {
         const savedSettings = await AsyncStorage.getItem('settings');
 
         if (!savedSettings) setSettings(defaultSettings);
-        else {
-            setSettings(JSON.parse(savedSettings));
-            if (themes[theme]) setTheme(themes[theme]);
-        }
+        else setSettings(JSON.parse(savedSettings));
     }
 
     const updateSettings = async (newSettings) => {
@@ -43,19 +39,10 @@ export default function SettingsProvider({ children }) {
 
     const translate = (key) => translations[settings.language][key] || key;
 
-    const changeTheme = async (themeName) => {
-        if (themes[themeName]) {
-            setTheme(themes[themeName]);
-            try {
-                await AsyncStorage.setItem('theme', themeName);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    }
+    const getColor = (key) => themes[settings.theme][key] || key;
 
     return (
-        <SettingsContext.Provider value={{ settings, theme, changeTheme, loadSettings, restoreDefault, translate, updateSettings }}>
+        <SettingsContext.Provider value={{ settings, getColor, loadSettings, restoreDefault, translate, updateSettings }}>
             {children}
         </SettingsContext.Provider>
     )

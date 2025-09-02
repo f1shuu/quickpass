@@ -8,18 +8,18 @@ import { useSettings } from '../SettingsProvider';
 const Stack = createStackNavigator();
 
 export default function SettingsNavigator() {
-    const { theme, translate } = useSettings();
+    const { getColor, translate } = useSettings();
 
     const customOptions = {
-        headerTintColor: theme.text,
+        headerTintColor: getColor('text'),
         headerStyle: {
-            backgroundColor: theme.secondary,
+            backgroundColor: getColor('secondary'),
             elevation: 0
         },
         headerTitleStyle: {
             fontFamily: 'Tommy',
             fontSize: 18,
-            color: theme.text
+            color: getColor('text')
         }
     }
 
