@@ -3,7 +3,7 @@
 A simple and secure password management app built with React Native and Expo.
 
 ## ✨ Features
-- quickly generate strong passwords up to 64 characters long,
+- quickly generate strong passwords up to 32 characters long,
 - add, view, edit and delete saved passwords,
 - secure storage using Expo SecureStore,
 - multi-language support (with more languages incoming in the future),
