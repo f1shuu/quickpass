@@ -41,12 +41,6 @@ You can download the latest Android APK from the **Releases** page.
     <img src="assets/images/readme/settings.jpg" alt="Settings screen" width="250" style="margin: 0 12px;" />
 </p>
 
-<p align="center">
-    <span style="display: inline-block; width: 250px; text-align: center; margin: 0 12px;">Passwords list screen</span>
-    <span style="display: inline-block; width: 250px; text-align: center; margin: 0 12px;">Password generator</span>
-    <span style="display: inline-block; width: 250px; text-align: center; margin: 0 12px;">Settings screen</span>
-</p>
-
 ## 🛠️ Tech Stack
 
 - React Native,
