@@ -2,7 +2,7 @@ export default {
   expo: {
     name: 'QuickPass',
     slug: 'QuickPass',
-    version: '0.9.4',
+    version: '1.1.0',
     orientation: 'portrait',
     icon: './assets/images/icon.png',
     userInterfaceStyle: 'dark',
