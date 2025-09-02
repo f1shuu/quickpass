@@ -36,9 +36,15 @@ You can download the latest Android APK from the **Releases** page.
 ## 🖼️ Screenshots
 
 <p align="center">
-    <img src="assets/images/readme/password-generator.jpg" alt="Home screen with the password generator" width="250" />
-    <img src="assets/images/readme/passwords-list.jpg" alt="Passwords list screen" width="250" />
-    <img src="assets/images/readme/settings.jpg" alt="Settings screen" width="250" />
+    <img src="assets/images/readme/passwords-list.jpg" alt="Passwords list screen" width="250" style="margin: 0 12px;" />
+    <img src="assets/images/readme/password-generator.jpg" alt="Password generator" width="250" style="margin: 0 12px;" />
+    <img src="assets/images/readme/settings.jpg" alt="Settings screen" width="250" style="margin: 0 12px;" />
+</p>
+
+<p align="center">
+    <span style="display: inline-block; width: 250px; text-align: center; margin: 0 12px;">Passwords list screen</span>
+    <span style="display: inline-block; width: 250px; text-align: center; margin: 0 12px;">Password generator</span>
+    <span style="display: inline-block; width: 250px; text-align: center; margin: 0 12px;">Settings screen</span>
 </p>
 
 ## 🛠️ Tech Stack
