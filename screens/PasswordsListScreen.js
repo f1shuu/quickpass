@@ -4,8 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import * as SecureStore from 'expo-secure-store';
 import * as Clipboard from 'expo-clipboard';
+import * as Haptics from 'expo-haptics';
 
 import Container from '../components/Container';
+import Modal from '../components/Modal';
 
 import { useSettings } from '../SettingsProvider';
 
@@ -15,6 +17,8 @@ export default function PasswordsListScreen() {
     const [passwords, setPasswords] = useState([]);
     const [activeId, setActiveId] = useState(null);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [modalData, setModalData] = useState({});
 
     const { getColor, translate } = useSettings();
 
@@ -49,6 +53,7 @@ export default function PasswordsListScreen() {
             await SecureStore.setItemAsync('passwords', JSON.stringify(updatedPasswords));
             setPasswords(updatedPasswords);
 
+            setIsModalVisible(false);
         } catch (error) {
             console.error(error);
         }
@@ -57,6 +62,12 @@ export default function PasswordsListScreen() {
     const togglePasswordVisiblity = (item) => {
         if (activeId === null || activeId !== item.id) setIsPasswordVisible(false);
         setActiveId(activeId === item.id ? null : item.id)
+    }
+
+    const handleModal = (id) => {
+        setModalData(id);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
+        setIsModalVisible(!isModalVisible);
     }
 
     const styles = {
@@ -123,7 +134,6 @@ export default function PasswordsListScreen() {
         },
         button: {
             flex: 1,
-            backgroundColor: getColor('primary'),
             alignItems: 'center',
             borderRadius: 7.5,
             paddingVertical: 10
@@ -201,14 +211,14 @@ export default function PasswordsListScreen() {
                             <TouchableOpacity
                                 onPress={() => navigation.navigate('AddPasswordScreen', { id: item.id, app: item.data.app, icon: item.data.icon, login: item.data.login, password: item.data.password, mode: 'edit' })}
                                 activeOpacity={0.75}
-                                style={styles.button}
+                                style={[styles.button, { backgroundColor: getColor('primary') }]}
                             >
                                 <Text style={[styles.text, { color: Colors.black }]}>{translate('edit')}</Text>
                             </TouchableOpacity >
                             <TouchableOpacity
-                                onPress={() => deletePassword(item.id, setPasswords)}
+                                onPress={() => handleModal(item.id)}
                                 activeOpacity={0.75}
-                                style={styles.button}
+                                style={[styles.button, { backgroundColor: Colors.red }]}
                             >
                                 <Text style={[styles.text, { color: Colors.black }]}>{translate('delete')}</Text>
                             </TouchableOpacity >
@@ -237,6 +247,15 @@ export default function PasswordsListScreen() {
             <TouchableOpacity onPress={() => navigation.navigate('AddPasswordScreen')} style={styles.addButton} activeOpacity={0.75}>
                 <Icon name='plus' size={28} color={getColor('background')} />
             </TouchableOpacity>
+            <Modal
+                isVisible={isModalVisible}
+                text={translate('areYouSureYouWantToDeleteThisPassword')}
+                twoButtons={true}
+                buttonOneText={translate('yes')}
+                buttonOneOnPress={() => deletePassword(modalData, setPasswords)}
+                buttonTwoText={translate('no')}
+                buttonTwoOnPress={() => setIsModalVisible(!isModalVisible)}
+            />
         </Container>
     )
 }

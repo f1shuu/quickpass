@@ -3,7 +3,10 @@ export const translations = {
         addPassword: 'Dodaj hasło',
         addNewPassword: 'Dodaj nowe hasło',
         allPasswords: 'Wszystkie hasła',
+        allPasswordsDeletedSuccessfully: 'Pomyślnie usunięto wszystkie hasła.',
         appOrWebsite: 'Aplikacja/strona internetowa',
+        areYouSureYouWantToDeleteAllPasswords: 'Czy na pewno chcesz usunąć WSZYSTKIE hasła? Tej operacji nie można cofnąć.',
+        areYouSureYouWantToDeleteThisPassword: 'Czy na pewno chcesz usunąć to hasło \nz magazynu haseł?',
         choose: 'Wybierz...',
         chooseLanguage: 'Wybierz język',
         chooseTheme: 'Wybierz motyw',
@@ -24,7 +27,9 @@ export const translations = {
         mail: 'adres e-mail',
         minNumbers: 'Min. liczba cyfr',
         minSpecialCharacters: 'Min. liczba znaków specjalnych',
+        no: 'Nie',
         noPasswords: 'Brak haseł w magazynie',
+        ok: 'OK',
         other: 'Inne',
         passcodesDontMatch: 'Kody PIN nie pasują, spróbuj ponownie',
         password: 'Hasło',
@@ -37,14 +42,18 @@ export const translations = {
         settings: 'Ustawienia',
         strongPasswordGenerator: 'Generator silnych haseł',
         theme: 'Motyw',
-        website: 'Nazwa'
+        website: 'Nazwa',
+        yes: 'Tak'
     },
 
     en: {
         addPassword: 'Add password',
         addNewPassword: 'Add a new password',
         allPasswords: 'All passwords',
+        allPasswordsDeletedSuccessfully: 'All passwords successfully deleted.',
         appOrWebsite: 'App/website',
+        areYouSureYouWantToDeleteAllPasswords: 'Are you sure you want to delete ALL passwords? This operation cannot be undone.',
+        areYouSureYouWantToDeleteThisPassword: 'Are you sure you want to delete this password from the vault?',
         choose: 'Choose...',
         chooseLanguage: 'Choose language',
         chooseTheme: 'Choose theme',
@@ -65,7 +74,9 @@ export const translations = {
         mail: 'e-mail address',
         minNumbers: 'Minimum numbers',
         minSpecialCharacters: 'Minimum special characters',
+        no: 'No',
         noPasswords: 'No passwords in vault',
+        ok: 'OK',
         other: 'Other',
         passcodesDontMatch: 'Passcodes don\'t match, try again',
         password: 'Password',
@@ -78,6 +89,7 @@ export const translations = {
         settings: 'Settings',
         strongPasswordGenerator: 'Strong password generator',
         theme: 'Theme',
-        website: 'Webiste name'
+        website: 'Webiste name',
+        yes: 'Yes'
     }
 }
