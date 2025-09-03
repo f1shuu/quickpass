@@ -1,5 +1,5 @@
-import { Text, View, FlatList, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
+import { Text, View, SectionList, TouchableOpacity } from 'react-native';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import * as SecureStore from 'expo-secure-store';
@@ -30,19 +30,51 @@ export default function PasswordsListScreen() {
         })
     }, [navigation])
 
+    const sections = useMemo(() => {
+        if (!passwords) return;
+
+        const favorited = passwords.filter(p => p.favorited).sort((a, b) => a.data.app.localeCompare(b.data.app));
+        const regular = passwords.filter(p => !p.favorited).sort((a, b) => a.data.app.localeCompare(b.data.app));
+
+        const grouped = regular.reduce((acc, item) => {
+            const letter = item.data.app[0].toUpperCase();
+            if (!acc[letter]) acc[letter] = [];
+            acc[letter].push(item);
+            return acc;
+        }, {})
+
+        const result = [];
+
+        if (favorited.length > 0) {
+            result.push({
+                title: translate('favorited'),
+                data: favorited
+            })
+        }
+
+        Object.keys(grouped).sort().forEach(letter => {
+            result.push({
+                title: letter,
+                data: grouped[letter]
+            })
+        })
+
+        return result;
+    }, [passwords])
+
     const getPasswords = async () => {
         try {
             const storedPasswords = await SecureStore.getItemAsync('passwords');
             if (storedPasswords) {
                 const parsedPasswords = JSON.parse(storedPasswords);
-                setPasswords(parsedPasswords)
+                setPasswords(parsedPasswords);
             } else setPasswords([]);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
-    const deletePassword = async (id, setPasswords) => {
+    const deletePassword = async (id) => {
         try {
             const storedPasswords = await SecureStore.getItemAsync('passwords');
             if (!storedPasswords) return;
@@ -64,6 +96,16 @@ export default function PasswordsListScreen() {
         setActiveId(activeId === item.id ? null : item.id)
     }
 
+    const starPassword = async (id) => {
+        try {
+            const updatedPasswords = passwords.map(p => p.id === id ? { ...p, favorited: !p.favorited } : p);
+            setPasswords(updatedPasswords);
+            await SecureStore.setItemAsync('passwords', JSON.stringify(updatedPasswords));
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const handleModal = (id) => {
         setModalData(id);
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
@@ -81,8 +123,15 @@ export default function PasswordsListScreen() {
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
             borderWidth: 1,
-            borderColor: getColor('primary'),
             height: 70
+        },
+        activeHeader: {
+            borderColor: getColor('primary'),
+            borderBottomWidth: 0
+        },
+        inactiveHeader: {
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10
         },
         row: {
             flexDirection: 'row',
@@ -138,6 +187,11 @@ export default function PasswordsListScreen() {
             borderRadius: 7.5,
             paddingVertical: 10
         },
+        paddings: {
+            paddingTop: 15,
+            paddingLeft: 10,
+            paddingBottom: 5
+        },
         icon: {
             position: 'absolute',
             alignSelf: 'center',
@@ -172,19 +226,24 @@ export default function PasswordsListScreen() {
                 <TouchableOpacity
                     onPress={() => togglePasswordVisiblity(item)}
                     activeOpacity={0.75}
-                    style={isActive ? styles.header : [styles.header, { borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}
+                    style={isActive ? [styles.header, styles.activeHeader] : [styles.header, styles.inactiveHeader]}
                 >
                     <View style={[styles.row, { gap: 15 }]}>
                         <Icon name={item.data.icon} size={32} color={getColor('text')} />
                         <Text style={styles.text}>{item.data.app}</Text>
                     </View>
-                    <Icon name={isActive ? 'caret-up' : 'caret-down'} size={24} color={getColor('text')} />
+                    <View style={[styles.row, { gap: 15 }]}>
+                        <TouchableOpacity onPress={() => starPassword(item.id)} activeOpacity={0.75}>
+                            <Icon name={'star'} size={20} color={Colors.golden} solid={item.favorited ? true : false} />
+                        </TouchableOpacity>
+                        <Icon name={isActive ? 'caret-up' : 'caret-down'} size={24} color={getColor('text')} />
+                    </View>
                 </TouchableOpacity>
                 {isActive ? (
                     <View style={styles.content}>
                         <View style={styles.textBoxes}>
                             <View style={styles.textBox}>
-                                <Icon name={'user'} size={20} color={getColor('placeholder')} />
+                                <Icon name={'user'} size={20} color={getColor('placeholder')} solid={true} />
                                 <Text style={styles.smallText}>{item.data.login}</Text>
                                 <TouchableOpacity onPress={() => Clipboard.setStringAsync(item.data.login)} activeOpacity={0.75}>
                                     <Icon name='copy' size={24} color={getColor('placeholder')} />
@@ -195,11 +254,7 @@ export default function PasswordsListScreen() {
                                 <Text style={styles.smallText}>{isPasswordVisible ? item.data.password : '•'.repeat(item.data.password.length)}</Text>
                                 <View style={styles.row}>
                                     <TouchableOpacity style={styles.visibilityToggle} onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-                                        <Icon
-                                            name={isPasswordVisible ? 'eye' : 'eye-slash'}
-                                            size={20}
-                                            color={getColor('placeholder')}
-                                        />
+                                        <Icon name={isPasswordVisible ? 'eye' : 'eye-slash'} size={20} color={getColor('placeholder')} />
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => Clipboard.setStringAsync(item.data.password)} activeOpacity={0.75}>
                                         <Icon name='copy' size={24} color={getColor('placeholder')} />
@@ -232,11 +287,14 @@ export default function PasswordsListScreen() {
     return (
         <Container>
             {passwords.length !== 0 ? (
-                <FlatList
+                <SectionList
                     style={{ marginTop: -10 }}
-                    data={passwords}
+                    sections={sections}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => <Password item={item} />}
+                    renderSectionHeader={({ section: { title } }) => (
+                        <Text style={[styles.text, styles.paddings]}>{title}</Text>
+                    )}
                 />
             ) : (
                 <>
@@ -252,7 +310,7 @@ export default function PasswordsListScreen() {
                 text={translate('areYouSureYouWantToDeleteThisPassword')}
                 twoButtons={true}
                 buttonOneText={translate('yes')}
-                buttonOneOnPress={() => deletePassword(modalData, setPasswords)}
+                buttonOneOnPress={() => deletePassword(modalData)}
                 buttonTwoText={translate('no')}
                 buttonTwoOnPress={() => setIsModalVisible(!isModalVisible)}
             />

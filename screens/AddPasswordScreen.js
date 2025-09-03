@@ -13,17 +13,17 @@ import { useSettings } from '../SettingsProvider';
 import { getApps } from '../constants/Apps';
 import Colors from '../constants/Colors';
 
-async function storePassword(id, data = {}, navigation, navigator) {
+async function storePassword(id, favorited, data = {}, navigation, navigator) {
     try {
         const storedData = await SecureStore.getItemAsync('passwords');
         const parsedData = storedData ? JSON.parse(storedData) : [];
 
         if (id) {
             const existingElementId = parsedData.findIndex(item => item.id === id);
-            parsedData[existingElementId] = { ...parsedData[existingElementId], data: { ...parsedData[existingElementId].data, ...data } };
+            parsedData[existingElementId] = { ...parsedData[existingElementId], ...parsedData[existingElementId].favorited, data: { ...parsedData[existingElementId].data, ...data } };
         } else {
             id = uuidv4();
-            parsedData.push({ id, data: data });
+            parsedData.push({ id, favorited, data: data });
         }
 
         await SecureStore.setItemAsync('passwords', JSON.stringify(parsedData, null, 2));
@@ -40,6 +40,7 @@ export default function AddPasswordScreen({ route, navigation }) {
     const [icon, setIcon] = useState(route.params?.icon ?? null);
     const [login, setLogin] = useState(route.params?.login ?? null);
     const [password, setPassword] = useState(route.params?.password ?? null);
+    const [favorited] = useState(route.params?.favorited ?? false);
 
     const [markAppField, setMarkAppField] = useState(false);
     const [markLoginField, setMarkLoginField] = useState(false);
@@ -70,7 +71,7 @@ export default function AddPasswordScreen({ route, navigation }) {
         if (!password) setMarkPasswordField(true);
         else setMarkPasswordField(false);
 
-        if (app && login && password) await storePassword(id, { icon, app, login, password }, navigation, 'PasswordsListScreen')
+        if (app && login && password) await storePassword(id, favorited, { icon, app, login, password }, navigation, 'PasswordsListScreen');
     }
 
     const styles = {
