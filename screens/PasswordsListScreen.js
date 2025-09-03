@@ -117,6 +117,10 @@ export default function PasswordsListScreen() {
     }
 
     const styles = {
+        searchBarBackground: {
+            backgroundColor: getColor('background'),
+            paddingBottom: 10
+        },
         searchBar: {
             width: '100%',
             height: 50,
@@ -300,15 +304,17 @@ export default function PasswordsListScreen() {
 
     return (
         <Container>
-            <TextInput
-                style={[styles.searchBar, { borderColor: isSearchFocused ? getColor('primary') : getColor('placeholder') }]}
-                placeholder={translate('search')}
-                placeholderTextColor={getColor('placeholder')}
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setIsSearchFocused(false)}
-            />
+            <View style={styles.searchBarBackground}>
+                <TextInput
+                    style={[styles.searchBar, { borderColor: isSearchFocused ? getColor('primary') : getColor('placeholder') }]}
+                    placeholder={translate('search')}
+                    placeholderTextColor={getColor('placeholder')}
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                    onFocus={() => setIsSearchFocused(true)}
+                    onBlur={() => setIsSearchFocused(false)}
+                />
+            </View>
             {passwords.length !== 0 ? (
                 <SectionList
                     style={{ marginTop: -10 }}
