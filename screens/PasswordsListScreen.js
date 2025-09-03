@@ -1,4 +1,4 @@
-import { Text, View, SectionList, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, SectionList } from 'react-native';
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
@@ -19,6 +19,8 @@ export default function PasswordsListScreen() {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isSearchFocused, setIsSearchFocused] = useState(false);
 
     const { getColor, translate } = useSettings();
 
@@ -33,8 +35,10 @@ export default function PasswordsListScreen() {
     const sections = useMemo(() => {
         if (!passwords) return;
 
-        const favorited = passwords.filter(p => p.favorited).sort((a, b) => a.data.app.localeCompare(b.data.app));
-        const regular = passwords.filter(p => !p.favorited).sort((a, b) => a.data.app.localeCompare(b.data.app));
+        const filtered = passwords.filter((p) => p.data.app.toLowerCase().includes(searchQuery.toLowerCase()));
+
+        const favorited = filtered.filter(p => p.favorited).sort((a, b) => a.data.app.localeCompare(b.data.app));
+        const regular = filtered.filter(p => !p.favorited).sort((a, b) => a.data.app.localeCompare(b.data.app));
 
         const grouped = regular.reduce((acc, item) => {
             const letter = item.data.app[0].toUpperCase();
@@ -60,7 +64,7 @@ export default function PasswordsListScreen() {
         })
 
         return result;
-    }, [passwords])
+    }, [passwords, searchQuery])
 
     const getPasswords = async () => {
         try {
@@ -93,7 +97,7 @@ export default function PasswordsListScreen() {
 
     const togglePasswordVisiblity = (item) => {
         if (activeId === null || activeId !== item.id) setIsPasswordVisible(false);
-        setActiveId(activeId === item.id ? null : item.id)
+        setActiveId(activeId === item.id ? null : item.id);
     }
 
     const starPassword = async (id) => {
@@ -113,6 +117,16 @@ export default function PasswordsListScreen() {
     }
 
     const styles = {
+        searchBar: {
+            width: '100%',
+            height: 50,
+            fontFamily: 'Tommy',
+            color: getColor('text'),
+            borderRadius: 10,
+            padding: 15,
+            borderWidth: 1,
+            borderColor: getColor('primary')
+        },
         header: {
             backgroundColor: getColor('secondary'),
             flexDirection: 'row',
@@ -286,6 +300,15 @@ export default function PasswordsListScreen() {
 
     return (
         <Container>
+            <TextInput
+                style={[styles.searchBar, { borderColor: isSearchFocused ? getColor('primary') : getColor('placeholder') }]}
+                placeholder={translate('search')}
+                placeholderTextColor={getColor('placeholder')}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setIsSearchFocused(false)}
+            />
             {passwords.length !== 0 ? (
                 <SectionList
                     style={{ marginTop: -10 }}
