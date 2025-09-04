@@ -3,7 +3,7 @@ import Modal from 'react-native-modal';
 
 import { useSettings } from '../SettingsProvider';
 
-import Colors from '../constants/Colors';
+import Colors from '../constants/colors';
 
 export default function CustomModal({ isVisible, text, twoButtons, buttonOneText, buttonOneOnPress, buttonTwoText, buttonTwoOnPress }) {
     const { getColor } = useSettings();

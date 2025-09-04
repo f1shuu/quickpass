@@ -11,7 +11,7 @@ import Modal from '../components/Modal';
 
 import { useSettings } from '../SettingsProvider';
 
-import Colors from '../constants/Colors';
+import Colors from '../constants/colors';
 
 export default function PasswordsListScreen() {
     const [passwords, setPasswords] = useState([]);

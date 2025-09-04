@@ -12,6 +12,7 @@ SplashScreen.preventAutoHideAsync();
 export default function Loader() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+
     const { loadSettings } = useSettings();
 
     useEffect(() => {

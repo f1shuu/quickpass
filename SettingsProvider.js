@@ -2,8 +2,8 @@ import { useState, createContext, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
 
-import { themes } from './constants/Themes';
-import { translations } from './constants/Translations';
+import { themes } from './constants/themes';
+import { translations } from './constants/translations';
 
 const SettingsContext = createContext();
 

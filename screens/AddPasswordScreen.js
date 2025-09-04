@@ -10,8 +10,8 @@ import Container from '../components/Container';
 
 import { useSettings } from '../SettingsProvider';
 
-import { getApps } from '../constants/Apps';
-import Colors from '../constants/Colors';
+import { getApps } from '../constants/apps';
+import Colors from '../constants/colors';
 
 async function storePassword(id, favorited, data = {}, navigation, navigator) {
     try {

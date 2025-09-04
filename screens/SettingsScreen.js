@@ -10,7 +10,7 @@ import Setting from '../components/Setting';
 
 import { useSettings } from '../SettingsProvider';
 
-import Colors from '../constants/Colors';
+import Colors from '../constants/colors';
 
 var pkg = require('../package.json');
 
