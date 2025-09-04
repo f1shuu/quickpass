@@ -10,7 +10,8 @@ const SettingsContext = createContext();
 export default function SettingsProvider({ children }) {
     const defaultSettings = {
         language: Localization.getLocales()[0].languageCode,
-        theme: 'dark'
+        theme: 'dark',
+        defaultLogin: null
     }
 
     const [settings, setSettings] = useState(defaultSettings);

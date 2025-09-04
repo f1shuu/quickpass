@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
+import DefaultLoginScreen from '../screens/DefaultLoginScreen';
 import SelectionScreen from '../screens/SelectionScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -44,6 +45,14 @@ export default function SettingsNavigator() {
                     ...customOptions,
                     headerTitle: route.params?.screen === 'language' ? translate('chooseLanguage') : translate('chooseTheme')
                 })}
+            />
+            <Stack.Screen
+                name='DefaultLoginScreen'
+                component={DefaultLoginScreen}
+                options={{
+                    ...customOptions,
+                    headerTitle: translate('addDefaultLogin')
+                }}
             />
         </Stack.Navigator>
     )

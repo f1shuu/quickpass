@@ -38,7 +38,6 @@ export default function AddPasswordScreen({ route, navigation }) {
 
     const [app, setApp] = useState(route.params?.app ?? null);
     const [icon, setIcon] = useState(route.params?.icon ?? null);
-    const [login, setLogin] = useState(route.params?.login ?? null);
     const [password, setPassword] = useState(route.params?.password ?? null);
     const [favorited] = useState(route.params?.favorited ?? false);
 
@@ -50,7 +49,9 @@ export default function AddPasswordScreen({ route, navigation }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [otherChosen, setOtherChosen] = useState(false);
 
-    const { getColor, translate } = useSettings();
+    const { getColor, settings, translate } = useSettings();
+
+    const [login, setLogin] = useState(route.params?.login ?? settings.defaultLogin ?? null);
 
     const apps = getApps(translate);
 
