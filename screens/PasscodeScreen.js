@@ -8,6 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSettings } from '../SettingsProvider';
 
+import Colors from '../constants/colors';
+
 export default function PasscodeScreen({ isResetMode, onAuthSuccess }) {
     const PASSCODE_LENGTH = 6;
     const PASSCODE_PLACEHOLDER = '•'.repeat(PASSCODE_LENGTH);
@@ -51,6 +53,7 @@ export default function PasscodeScreen({ isResetMode, onAuthSuccess }) {
     const handleDelete = () => {
         if (passcode.length > 0) setPasscode(passcode.slice(0, -1));
         if (maskedPasscode.length > 0) setMaskedPasscode(maskedPasscode.slice(0, -1));
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
 
     const firstTry = (passcode) => {
@@ -194,8 +197,8 @@ export default function PasscodeScreen({ isResetMode, onAuthSuccess }) {
                             <Text style={styles.text}>{num}</Text>
                         </TouchableOpacity>
                     ))}
-                    <TouchableOpacity style={styles.button} onPress={() => handleBiometricAuth()}>
-                        <MaterialIcons name='fingerprint' size={36} color={getColor('primary')} />
+                    <TouchableOpacity style={styles.button} onPress={!storedPasscode || isResetMode ? () => { } : () => handleBiometricAuth()}>
+                        <MaterialIcons name='fingerprint' size={36} color={!storedPasscode || isResetMode ? Colors.red : getColor('primary')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('0')}>
                         <Text style={styles.text}>0</Text>
