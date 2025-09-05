@@ -8,7 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSettings } from '../SettingsProvider';
 
-import Colors from '../constants/colors';
+
+import colors from '../constants/colors';
 
 export default function PasscodeScreen({ isResetMode, onAuthSuccess }) {
     const PASSCODE_LENGTH = 6;
@@ -198,7 +199,7 @@ export default function PasscodeScreen({ isResetMode, onAuthSuccess }) {
                         </TouchableOpacity>
                     ))}
                     <TouchableOpacity style={styles.button} onPress={!storedPasscode || isResetMode ? () => { } : () => handleBiometricAuth()}>
-                        <MaterialIcons name='fingerprint' size={36} color={!storedPasscode || isResetMode ? Colors.red : getColor('primary')} />
+                        <MaterialIcons name='fingerprint' size={36} color={!storedPasscode || isResetMode ? colors.red : getColor('primary')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => handlePasscodeInput('0')}>
                         <Text style={styles.text}>0</Text>

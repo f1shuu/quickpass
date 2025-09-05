@@ -3,7 +3,7 @@ import Modal from 'react-native-modal';
 
 import { useSettings } from '../SettingsProvider';
 
-import Colors from '../constants/colors';
+import colors from '../constants/colors';
 
 export default function CustomModal({ isVisible, text, twoButtons, buttonOneText, buttonOneOnPress, buttonTwoText, buttonTwoOnPress }) {
     const { getColor } = useSettings();
@@ -43,16 +43,16 @@ export default function CustomModal({ isVisible, text, twoButtons, buttonOneText
                 <TouchableOpacity
                     onPress={buttonOneOnPress}
                     activeOpacity={0.75}
-                    style={[styles.button, { backgroundColor: Colors.red }]}
+                    style={[styles.button, { backgroundColor: colors.red }]}
                 >
-                    <Text style={[styles.text, { color: Colors.black }]}>{buttonOneText}</Text>
+                    <Text style={[styles.text, { color: colors.black }]}>{buttonOneText}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={buttonTwoOnPress}
                     activeOpacity={0.75}
                     style={[styles.button, { backgroundColor: getColor('primary') }]}
                 >
-                    <Text style={[styles.text, { color: Colors.black }]}>{buttonTwoText}</Text>
+                    <Text style={[styles.text, { color: colors.black }]}>{buttonTwoText}</Text>
                 </TouchableOpacity>
             </View>) :
                 <View style={styles.row}>
@@ -61,7 +61,7 @@ export default function CustomModal({ isVisible, text, twoButtons, buttonOneText
                         activeOpacity={0.75}
                         style={[styles.button, { backgroundColor: getColor('primary') }]}
                     >
-                        <Text style={[styles.text, { color: Colors.black }]}>{buttonOneText}</Text>
+                        <Text style={[styles.text, { color: colors.black }]}>{buttonOneText}</Text>
                     </TouchableOpacity>
                 </View>}
         </Modal >

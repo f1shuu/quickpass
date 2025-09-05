@@ -6,7 +6,7 @@ import Container from '../components/Container';
 
 import { useSettings } from '../SettingsProvider';
 
-import Colors from '../constants/colors';
+import colors from '../constants/colors';
 
 export default function DefaultLoginScreen() {
     const [defaultLogin, setDefaultLogin] = useState('');
@@ -50,7 +50,7 @@ export default function DefaultLoginScreen() {
             color: getColor('placeholder')
         },
         clearButton: {
-            backgroundColor: Colors.red,
+            backgroundColor: colors.red,
             alignSelf: 'flex-start',
             borderRadius: 5,
             paddingVertical: 5,
@@ -59,7 +59,7 @@ export default function DefaultLoginScreen() {
         text: {
             fontFamily: 'Tommy',
             fontSize: 16,
-            color: Colors.black
+            color: colors.black
         },
         button: {
             backgroundColor: getColor('primary'),
@@ -76,7 +76,7 @@ export default function DefaultLoginScreen() {
     return (
         <Container>
             <TextInput
-                style={[styles.input, markField ? { borderColor: Colors.red } : { borderColor: getColor('secondary') }]}
+                style={[styles.input, markField ? { borderColor: colors.red } : { borderColor: getColor('secondary') }]}
                 placeholderTextColor={getColor('placeholder')}
                 placeholder='johndoe@mail.com'
                 value={defaultLogin}

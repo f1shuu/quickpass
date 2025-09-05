@@ -11,7 +11,7 @@ import Container from '../components/Container';
 import { useSettings } from '../SettingsProvider';
 
 import { getApps } from '../constants/apps';
-import Colors from '../constants/colors';
+import colors from '../constants/colors';
 
 async function storePassword(id, favorited, data = {}, navigation, navigator) {
     try {
@@ -178,7 +178,7 @@ export default function AddPasswordScreen({ route, navigation }) {
                                     ? { ...styles.dropdown, borderBottomWidth: 0 }
                                     : { ...styles.dropdown, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
                                 app && { paddingLeft: 55 },
-                                markAppField ? { borderColor: Colors.red } : { borderColor: getColor('primary') }
+                                markAppField ? { borderColor: colors.red } : { borderColor: getColor('primary') }
                             ]}
                             containerStyle={styles.container}
                             itemTextStyle={styles.itemText}
@@ -207,7 +207,7 @@ export default function AddPasswordScreen({ route, navigation }) {
                 </>
             ) : (
                 <TextInput
-                    style={[styles.input, markAppField ? { borderColor: Colors.red } : { borderColor: getColor('secondary') }]}
+                    style={[styles.input, markAppField ? { borderColor: colors.red } : { borderColor: getColor('secondary') }]}
                     placeholderTextColor={getColor('placeholder')}
                     placeholder='Google'
                     value={app}
@@ -216,7 +216,7 @@ export default function AddPasswordScreen({ route, navigation }) {
             )}
             <Text style={styles.text}>{translate('login')}/{translate('mail')}</Text>
             <TextInput
-                style={[styles.input, markLoginField ? { borderColor: Colors.red } : { borderColor: getColor('secondary') }]}
+                style={[styles.input, markLoginField ? { borderColor: colors.red } : { borderColor: getColor('secondary') }]}
                 placeholderTextColor={getColor('placeholder')}
                 placeholder='johndoe@mail.com'
                 value={login}
@@ -225,7 +225,7 @@ export default function AddPasswordScreen({ route, navigation }) {
             <Text style={styles.text}>{translate('password')}</Text>
             <View style={styles.inputView}>
                 <TextInput
-                    style={[styles.input, markPasswordField ? { borderColor: Colors.red } : { borderColor: getColor('secondary') }]}
+                    style={[styles.input, markPasswordField ? { borderColor: colors.red } : { borderColor: getColor('secondary') }]}
                     placeholderTextColor={getColor('placeholder')}
                     placeholder='••••••••••••••••'
                     secureTextEntry={!isPasswordVisible}
@@ -245,7 +245,7 @@ export default function AddPasswordScreen({ route, navigation }) {
                 activeOpacity={0.75}
                 style={styles.button}
             >
-                <Text style={[styles.itemText, { color: Colors.black }]}>{translate('save')}</Text>
+                <Text style={[styles.itemText, { color: colors.black }]}>{translate('save')}</Text>
             </TouchableOpacity >
         </Container>
     )

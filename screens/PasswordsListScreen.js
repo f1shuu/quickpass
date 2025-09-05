@@ -11,7 +11,7 @@ import Modal from '../components/Modal';
 
 import { useSettings } from '../SettingsProvider';
 
-import Colors from '../constants/colors';
+import colors from '../constants/colors';
 
 export default function PasswordsListScreen() {
     const [passwords, setPasswords] = useState([]);
@@ -252,7 +252,7 @@ export default function PasswordsListScreen() {
                     </View>
                     <View style={[styles.row, { gap: 15 }]}>
                         <TouchableOpacity onPress={() => starPassword(item.id)} activeOpacity={0.75}>
-                            <Icon name={'star'} size={20} color={Colors.golden} solid={item.favorited ? true : false} />
+                            <Icon name={'star'} size={20} color={colors.golden} solid={item.favorited ? true : false} />
                         </TouchableOpacity>
                         <Icon name={isActive ? 'caret-up' : 'caret-down'} size={24} color={getColor('text')} />
                     </View>
@@ -286,14 +286,14 @@ export default function PasswordsListScreen() {
                                 activeOpacity={0.75}
                                 style={[styles.button, { backgroundColor: getColor('primary') }]}
                             >
-                                <Text style={[styles.text, { color: Colors.black }]}>{translate('edit')}</Text>
+                                <Text style={[styles.text, { color: colors.black }]}>{translate('edit')}</Text>
                             </TouchableOpacity >
                             <TouchableOpacity
                                 onPress={() => handleModal(item.id)}
                                 activeOpacity={0.75}
-                                style={[styles.button, { backgroundColor: Colors.red }]}
+                                style={[styles.button, { backgroundColor: colors.red }]}
                             >
-                                <Text style={[styles.text, { color: Colors.black }]}>{translate('delete')}</Text>
+                                <Text style={[styles.text, { color: colors.black }]}>{translate('delete')}</Text>
                             </TouchableOpacity >
                         </View>
                     </View>
