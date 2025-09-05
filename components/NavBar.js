@@ -11,7 +11,7 @@ import { useSettings } from '../SettingsProvider';
 
 const Tab = createBottomTabNavigator();
 
-export default function NavigationBar() {
+export default function NavigationBar({ onPasscodeReset }) {
     const { getColor, translate } = useSettings();
 
     const customOptions = {
@@ -79,7 +79,6 @@ export default function NavigationBar() {
                 />
                 <Tab.Screen
                     name='SettingsNavigator'
-                    component={SettingsNavigator}
                     options={() => ({
                         ...customOptions,
                         title: translate('settings'),
@@ -89,7 +88,9 @@ export default function NavigationBar() {
                         tabBarActiveTintColor: getColor('primary'),
                         tabBarInactiveTintColor: getColor('placeholder')
                     })}
-                />
+                >
+                    {() => <SettingsNavigator onPasscodeReset={onPasscodeReset} />}
+                </Tab.Screen>
             </Tab.Navigator>
         </NavigationContainer>
     )

@@ -8,7 +8,7 @@ import { useSettings } from '../SettingsProvider';
 
 const Stack = createStackNavigator();
 
-export default function SettingsNavigator() {
+export default function SettingsNavigator({ onPasscodeReset }) {
     const { getColor, translate } = useSettings();
 
     const customOptions = {
@@ -32,10 +32,19 @@ export default function SettingsNavigator() {
         >
             <Stack.Screen
                 name='SettingsScreen'
-                component={SettingsScreen}
                 options={{
                     ...customOptions,
                     headerShown: false
+                }}
+            >
+                {() => <SettingsScreen onPasscodeReset={onPasscodeReset} />}
+            </Stack.Screen>
+            <Stack.Screen
+                name='DefaultLoginScreen'
+                component={DefaultLoginScreen}
+                options={{
+                    ...customOptions,
+                    headerTitle: translate('addDefaultLogin')
                 }}
             />
             <Stack.Screen
@@ -45,14 +54,6 @@ export default function SettingsNavigator() {
                     ...customOptions,
                     headerTitle: route.params?.screen === 'language' ? translate('chooseLanguage') : translate('chooseTheme')
                 })}
-            />
-            <Stack.Screen
-                name='DefaultLoginScreen'
-                component={DefaultLoginScreen}
-                options={{
-                    ...customOptions,
-                    headerTitle: translate('addDefaultLogin')
-                }}
             />
         </Stack.Navigator>
     )

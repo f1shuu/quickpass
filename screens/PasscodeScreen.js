@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
+import * as Haptics from 'expo-haptics';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSettings } from '../SettingsProvider';
 
-export default function PasscodeScreen({ onAuthSuccess }) {
+export default function PasscodeScreen({ isResetMode, onAuthSuccess }) {
     const PASSCODE_LENGTH = 6;
     const PASSCODE_PLACEHOLDER = '•'.repeat(PASSCODE_LENGTH);
 
@@ -15,65 +16,98 @@ export default function PasscodeScreen({ onAuthSuccess }) {
     const [maskedPasscode, setMaskedPasscode] = useState('');
     const [storedPasscode, setStoredPasscode] = useState('');
     const [tempPasscode, setTempPasscode] = useState('');
-    const [secondTime, setSecondTime] = useState(false);
+    const [remembersCurrentPasscode, setRemembersCurrentPasscode] = useState(false);
 
     const { getColor, translate } = useSettings();
 
     const [message, setMessage] = useState(translate('createPasscode'));
 
     useEffect(() => {
-        checkStoredPasscode();
+        if (isResetMode) setMessage(translate('firstEnterCurrentPasscode'));
+        else checkIfPasscodeSet();
     }, [])
 
     useEffect(() => {
         if (passcode.length === PASSCODE_LENGTH) handlePasscodeSubmit();
     }, [passcode])
 
-    async function checkStoredPasscode() {
-        const storedPasscode = await SecureStore.getItemAsync('passcode');
-        setStoredPasscode(storedPasscode);
-        if (storedPasscode) {
+    async function checkIfPasscodeSet() {
+        const currentPasscode = await SecureStore.getItemAsync('passcode');
+        setStoredPasscode(currentPasscode);
+        if (currentPasscode) {
             setMessage(translate('enterPasscode'));
             handleBiometricAuth();
-        }
+        } else setMessage(translate('createPasscode'));
     }
 
     const handlePasscodeInput = (value) => {
         if (maskedPasscode.length + 1 <= PASSCODE_LENGTH && passcode.length + 1 <= PASSCODE_LENGTH) {
             setMaskedPasscode(maskedPasscode + '•');
             setPasscode(passcode + value);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        }
+    }
+
+    const handleDelete = () => {
+        if (passcode.length > 0) setPasscode(passcode.slice(0, -1));
+        if (maskedPasscode.length > 0) setMaskedPasscode(maskedPasscode.slice(0, -1));
+    }
+
+    const firstTry = (passcode) => {
+        setMessage(translate('confirmPasscode'));
+        setTempPasscode(passcode);
+        setMaskedPasscode('');
+        setPasscode('');
+    }
+
+    async function secondTry(passcode) {
+        if (passcode !== tempPasscode) {
+            setMessage(translate('passcodesDontMatch'));
+            setTempPasscode('');
+            setMaskedPasscode('');
+            setPasscode('');
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
+        } else {
+            await SecureStore.setItemAsync('passcode', passcode);
+            onAuthSuccess();
+        }
+    }
+
+    const login = (passcode) => {
+        if (passcode === storedPasscode) onAuthSuccess();
+        else {
+            setMessage(translate('incorrectPasscode'));
+            setMaskedPasscode('');
+            setPasscode('');
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        }
+    }
+
+    async function createNewPasscode(passcode) {
+        const storedPasscode = await SecureStore.getItemAsync('passcode');
+        setStoredPasscode(storedPasscode);
+        if (passcode === storedPasscode) {
+            setRemembersCurrentPasscode(true);
+            setMessage(translate('createPasscode'));
+            setMaskedPasscode('');
+            setPasscode('');
+        }
+        else {
+            setRemembersCurrentPasscode(false);
+            setMessage(translate('incorrectPasscode'));
+            setMaskedPasscode('');
+            setPasscode('');
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
         }
     }
 
     async function handlePasscodeSubmit() {
-        if (!storedPasscode) {
-            if (!secondTime) {
-                setSecondTime(true);
-                setMessage(translate('confirmPasscode'));
-                setTempPasscode(passcode);
-                setMaskedPasscode('');
-                setPasscode('');
-                return;
-            } else {
-                if (passcode !== tempPasscode) {
-                    setSecondTime(false);
-                    setMessage(translate('passcodesDontMatch'));
-                    setTempPasscode('');
-                    setMaskedPasscode('');
-                    setPasscode('');
-                    return;
-                }
-            }
-            await SecureStore.setItemAsync('passcode', passcode);
-            onAuthSuccess();
-        } else {
-            if (passcode === storedPasscode) onAuthSuccess();
-            else {
-                setMessage(translate('incorrectPasscode'));
-                setMaskedPasscode('');
-                setPasscode('');
-            }
-        }
+        if (!isResetMode && !storedPasscode && !tempPasscode) firstTry(passcode);
+        else if (!isResetMode && !storedPasscode && tempPasscode) secondTry(passcode);
+        else if (!isResetMode && storedPasscode) login(passcode);
+        else if (isResetMode && !remembersCurrentPasscode) createNewPasscode(passcode);
+        else if (isResetMode && remembersCurrentPasscode && !tempPasscode) firstTry(passcode);
+        else if (isResetMode && tempPasscode) secondTry(passcode);
     }
 
     async function handleBiometricAuth() {
@@ -91,11 +125,6 @@ export default function PasscodeScreen({ onAuthSuccess }) {
         if (biometricAuth.success) onAuthSuccess();
     }
 
-    const handleDelete = () => {
-        if (passcode.length > 0) setPasscode(passcode.slice(0, -1));
-        if (maskedPasscode.length > 0) setMaskedPasscode(maskedPasscode.slice(0, -1));
-    }
-
     const styles = {
         container: {
             flex: 1,
@@ -110,8 +139,9 @@ export default function PasscodeScreen({ onAuthSuccess }) {
         },
         title: {
             fontFamily: 'Tommy',
-            fontSize: 22,
-            color: getColor('text')
+            fontSize: 20,
+            color: getColor('text'),
+            textAlign: 'center'
         },
         text: {
             fontFamily: 'Tommy',
@@ -120,11 +150,11 @@ export default function PasscodeScreen({ onAuthSuccess }) {
             letterSpacing: 10
         },
         placeholderText: {
-            fontSize: 56,
+            fontSize: 48,
             color: getColor('placeholder')
         },
         passcodeText: {
-            fontSize: 56,
+            fontSize: 48,
             color: getColor('primary'),
             position: 'absolute',
             top: 0,
@@ -143,7 +173,7 @@ export default function PasscodeScreen({ onAuthSuccess }) {
             aspectRatio: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            borderRadius: '50%'
+            borderRadius: 15
         }
     }
 

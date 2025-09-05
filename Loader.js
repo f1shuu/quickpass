@@ -12,6 +12,7 @@ SplashScreen.preventAutoHideAsync();
 export default function Loader() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isPasscodeResetMode, setIsPasscodeResetMode] = useState(false);
 
     const { loadSettings } = useSettings();
 
@@ -37,7 +38,29 @@ export default function Loader() {
 
     if (!fontsLoaded) return null;
 
-    if (!isAuthenticated) return <PasscodeScreen onAuthSuccess={() => setIsAuthenticated(true)} />
+    if (!isAuthenticated) {
+        return (
+            <PasscodeScreen
+                isResetMode={isPasscodeResetMode}
+                onAuthSuccess={() => {
+                    setIsAuthenticated(true);
+                    setIsPasscodeResetMode(false);
+                }}
+                onPasscodeChangeComplete={() => {
+                    setIsAuthenticated(true);
+                    setIsPasscodeResetMode(false);
+                }}
+            />
+        )
+    }
 
-    return <NavBar />
+    return (
+        <NavBar
+            onPasscodeReset={() => {
+                setIsAuthenticated(false);
+                setIsPasscodeResetMode(true);
+            }}
+        />
+    )
+
 }
