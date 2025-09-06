@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
 import DefaultLoginScreen from '../screens/DefaultLoginScreen';
+import ImportExportScreen from '../screens/ImportExportScreen';
 import SelectionScreen from '../screens/SelectionScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -45,6 +46,14 @@ export default function SettingsNavigator({ onPasscodeReset }) {
                 options={{
                     ...customOptions,
                     headerTitle: translate('addDefaultLogin')
+                }}
+            />
+            <Stack.Screen
+                name='ImportExportScreen'
+                component={ImportExportScreen}
+                options={{
+                    ...customOptions,
+                    headerTitle: translate('importOrExportPasswords')
                 }}
             />
             <Stack.Screen

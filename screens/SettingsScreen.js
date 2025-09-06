@@ -59,8 +59,9 @@ export default function SettingsScreen({ onPasscodeReset }) {
             <Setting name={translate('theme')} icon={'palette'} color={getColor('text')} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'theme' })} />
             <Setting name={translate('defaultLogin')} icon={'user'} color={getColor('text')} type='navigate' onPress={() => navigation.navigate('DefaultLoginScreen')} />
             <Setting name={translate('changePasscode')} icon={'hashtag'} color={getColor('text')} type='navigate' onPress={onPasscodeReset} />
-            <Setting name={translate('deleteAllPasswords')} icon={'trash-can'} color={colors.red} onPress={() => handleModal(1)} />
+            <Setting name={translate('csvImportExport')} icon={'file-import'} color={getColor('text')} type='navigate' onPress={() => navigation.navigate('ImportExportScreen')} />
             <Setting name={translate('restoreDefault')} icon={'rotate-right'} color={getColor('text')} onPress={() => handleModal(2)} />
+            <Setting name={translate('deleteAllPasswords')} icon={'trash-can'} color={colors.red} onPress={() => handleModal(1)} />
             <Text style={styles.text}>v{pkg.version}</Text>
             <Modal
                 isVisible={isModal1Visible}
