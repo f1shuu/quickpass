@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import DefaultLoginScreen from '../screens/DefaultLoginScreen';
+import DefaultUsernameScreen from '../screens/DefaultUsernameScreen';
 import ImportExportScreen from '../screens/ImportExportScreen';
 import SelectionScreen from '../screens/SelectionScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -41,11 +41,11 @@ export default function SettingsNavigator({ onPasscodeReset }) {
                 {() => <SettingsScreen onPasscodeReset={onPasscodeReset} />}
             </Stack.Screen>
             <Stack.Screen
-                name='DefaultLoginScreen'
-                component={DefaultLoginScreen}
+                name='DefaultUsernameScreen'
+                component={DefaultUsernameScreen}
                 options={{
                     ...customOptions,
-                    headerTitle: translate('addDefaultLogin')
+                    headerTitle: translate('addDefaultUsername')
                 }}
             />
             <Stack.Screen

@@ -8,8 +8,8 @@ import { useSettings } from '../SettingsProvider';
 
 import colors from '../constants/colors';
 
-export default function DefaultLoginScreen() {
-    const [defaultLogin, setDefaultLogin] = useState('');
+export default function DefaultUsernameScreen() {
+    const [defaultUsername, setDefaultUsername] = useState('');
     const [markField, setMarkField] = useState(false);
 
     const { getColor, settings, translate, updateSettings } = useSettings();
@@ -17,19 +17,19 @@ export default function DefaultLoginScreen() {
     const navigation = useNavigation();
 
     async function saveIfPossible() {
-        if (!defaultLogin) setMarkField(true);
+        if (!defaultUsername) setMarkField(true);
         else setMarkField(false);
 
-        if (defaultLogin) {
-            updateSettings({ 'defaultLogin': defaultLogin });
+        if (defaultUsername) {
+            updateSettings({ 'defaultUsername': defaultUsername });
             navigation.navigate('SettingsScreen');
         }
     }
 
-    async function clearDefaultLogin() {
-        if (settings.defaultLogin) {
-            setDefaultLogin('')
-            updateSettings({ 'defaultLogin': '' });
+    async function clearDefaultUsername() {
+        if (settings.defaultUsername) {
+            setDefaultUsername('')
+            updateSettings({ 'defaultUsername': '' });
         }
     }
 
@@ -79,14 +79,14 @@ export default function DefaultLoginScreen() {
                 style={[styles.input, markField ? { borderColor: colors.red } : { borderColor: getColor('secondary') }]}
                 placeholderTextColor={getColor('placeholder')}
                 placeholder='johndoe@mail.com'
-                value={defaultLogin}
-                onChangeText={(text) => setDefaultLogin(text)}
+                value={defaultUsername}
+                onChangeText={(text) => setDefaultUsername(text)}
             />
-            <Text style={styles.infoText}>{translate('defaultLoginInfo')}</Text>
-            <Text style={[styles.infoText, { marginTop: 10 }]}>{translate('currentDefaultLogin')}{settings.defaultLogin || translate('none')}</Text>
-            {settings.defaultLogin ? (
+            <Text style={styles.infoText}>{translate('defaultUsernameInfo')}</Text>
+            <Text style={[styles.infoText, { marginTop: 10 }]}>{translate('currentDefaultUsername')}{settings.defaultUsername || translate('none')}</Text>
+            {settings.defaultUsername ? (
                 <TouchableOpacity
-                    onPress={() => clearDefaultLogin()}
+                    onPress={() => clearDefaultUsername()}
                     activeOpacity={0.75}
                     style={styles.clearButton}
                 >

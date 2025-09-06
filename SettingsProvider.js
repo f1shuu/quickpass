@@ -11,7 +11,7 @@ export default function SettingsProvider({ children }) {
     const defaultSettings = {
         language: Localization.getLocales()[0].languageCode,
         theme: 'dark',
-        defaultLogin: null
+        defaultUsername: null
     }
 
     const [settings, setSettings] = useState(defaultSettings);

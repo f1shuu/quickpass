@@ -10,7 +10,7 @@ import Container from '../components/Container';
 
 import { useSettings } from '../SettingsProvider';
 
-import { getApps } from '../constants/apps';
+import { getAppNames } from '../constants/appNames';
 import colors from '../constants/colors';
 
 async function storePassword(id, favorited, data = {}, navigation, navigator) {
@@ -36,13 +36,13 @@ async function storePassword(id, favorited, data = {}, navigation, navigator) {
 export default function AddPasswordScreen({ route, navigation }) {
     const { id } = route.params || {};
 
-    const [app, setApp] = useState(route.params?.app ?? null);
+    const [name, setName] = useState(route.params?.name ?? null);
     const [icon, setIcon] = useState(route.params?.icon ?? null);
     const [password, setPassword] = useState(route.params?.password ?? null);
     const [favorited] = useState(route.params?.favorited ?? false);
 
-    const [markAppField, setMarkAppField] = useState(false);
-    const [markLoginField, setMarkLoginField] = useState(false);
+    const [markNameField, setMarkNameField] = useState(false);
+    const [markUsernameField, setMarkUsernameField] = useState(false);
     const [markPasswordField, setMarkPasswordField] = useState(false);
 
     const [isFocus, setIsFocus] = useState(false);
@@ -51,28 +51,28 @@ export default function AddPasswordScreen({ route, navigation }) {
 
     const { getColor, settings, translate } = useSettings();
 
-    const [login, setLogin] = useState(route.params?.login ?? settings.defaultLogin ?? null);
+    const [username, setUsername] = useState(route.params?.username ?? settings.defaultUsername ?? null);
 
-    const apps = getApps(translate);
+    const names = getAppNames(translate);
 
-    const changeApp = (item) => {
+    const changeName = (item) => {
         if (item.value === translate('other')) setOtherChosen(true);
         setIcon(item.icon);
-        setApp(item.value);
+        setName(item.value);
         setIsFocus(false);
     }
 
     async function saveIfPossible() {
-        if (!app) setMarkAppField(true);
-        else setMarkAppField(false);
+        if (!name) setMarkNameField(true);
+        else setMarkNameField(false);
 
-        if (!login) setMarkLoginField(true);
-        else setMarkLoginField(false);
+        if (!username) setMarkUsernameField(true);
+        else setMarkUsernameField(false);
 
         if (!password) setMarkPasswordField(true);
         else setMarkPasswordField(false);
 
-        if (app && login && password) await storePassword(id, favorited, { icon, app, login, password }, navigation, 'PasswordsListScreen');
+        if (name && username && password) await storePassword(id, favorited, { icon, name, username, password }, navigation, 'PasswordsListScreen');
     }
 
     const styles = {
@@ -177,23 +177,23 @@ export default function AddPasswordScreen({ route, navigation }) {
                                 isFocus
                                     ? { ...styles.dropdown, borderBottomWidth: 0 }
                                     : { ...styles.dropdown, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
-                                app && { paddingLeft: 55 },
-                                markAppField ? { borderColor: colors.red } : { borderColor: getColor('primary') }
+                                name && { paddingLeft: 55 },
+                                markNameField ? { borderColor: colors.red } : { borderColor: getColor('primary') }
                             ]}
                             containerStyle={styles.container}
                             itemTextStyle={styles.itemText}
                             placeholderStyle={[styles.itemText, { color: getColor('placeholder') }]}
                             selectedTextStyle={styles.itemText}
                             activeColor={getColor('primary')}
-                            data={apps}
+                            data={names}
                             labelField='value'
                             valueField='value'
-                            value={app}
+                            value={name}
                             autoScroll={false}
                             placeholder={isFocus ? '...' : translate('choose')}
                             onFocus={() => setIsFocus(true)}
                             onBlur={() => setIsFocus(false)}
-                            onChange={(item) => changeApp(item)}
+                            onChange={(item) => changeName(item)}
                             renderItem={item => (
                                 <View style={styles.item}>
                                     <View style={styles.iconBox}>
@@ -207,20 +207,20 @@ export default function AddPasswordScreen({ route, navigation }) {
                 </>
             ) : (
                 <TextInput
-                    style={[styles.input, markAppField ? { borderColor: colors.red } : { borderColor: getColor('secondary') }]}
+                    style={[styles.input, markNameField ? { borderColor: colors.red } : { borderColor: getColor('secondary') }]}
                     placeholderTextColor={getColor('placeholder')}
                     placeholder='Google'
-                    value={app}
-                    onChangeText={(text) => setApp(text)}
+                    value={name}
+                    onChangeText={(text) => setName(text)}
                 />
             )}
-            <Text style={styles.text}>{translate('login')}/{translate('mail')}</Text>
+            <Text style={styles.text}>{translate('username')}/{translate('mail')}</Text>
             <TextInput
-                style={[styles.input, markLoginField ? { borderColor: colors.red } : { borderColor: getColor('secondary') }]}
+                style={[styles.input, markUsernameField ? { borderColor: colors.red } : { borderColor: getColor('secondary') }]}
                 placeholderTextColor={getColor('placeholder')}
                 placeholder='johndoe@mail.com'
-                value={login}
-                onChangeText={(text) => setLogin(text)}
+                value={username}
+                onChangeText={(text) => setUsername(text)}
             />
             <Text style={styles.text}>{translate('password')}</Text>
             <View style={styles.inputView}>

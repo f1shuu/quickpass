@@ -1,4 +1,4 @@
-export const getApps = (translate) => [
+export const getAppNames = (translate) => [
     { value: 'Airbnb', icon: 'airbnb' },
     { value: 'Amazon', icon: 'amazon' },
     { value: 'Apple', icon: 'apple' },

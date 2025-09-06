@@ -35,13 +35,13 @@ export default function PasswordsListScreen() {
     const sections = useMemo(() => {
         if (!passwords) return;
 
-        const filtered = passwords.filter((p) => p.data.app.toLowerCase().includes(searchQuery.toLowerCase()));
+        const filtered = passwords.filter((p) => p.data.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
-        const favorited = filtered.filter(p => p.favorited).sort((a, b) => a.data.app.localeCompare(b.data.app));
-        const regular = filtered.filter(p => !p.favorited).sort((a, b) => a.data.app.localeCompare(b.data.app));
+        const favorited = filtered.filter(p => p.favorited).sort((a, b) => a.data.name.localeCompare(b.data.name));
+        const regular = filtered.filter(p => !p.favorited).sort((a, b) => a.data.name.localeCompare(b.data.name));
 
         const grouped = regular.reduce((acc, item) => {
-            const letter = item.data.app[0].toUpperCase();
+            const letter = item.data.name[0].toUpperCase();
             if (!acc[letter]) acc[letter] = [];
             acc[letter].push(item);
             return acc;
@@ -248,7 +248,7 @@ export default function PasswordsListScreen() {
                 >
                     <View style={[styles.row, { gap: 15 }]}>
                         <Icon name={item.data.icon} size={32} color={getColor('text')} />
-                        <Text style={styles.text}>{item.data.app}</Text>
+                        <Text style={styles.text}>{item.data.name}</Text>
                     </View>
                     <View style={[styles.row, { gap: 15 }]}>
                         <TouchableOpacity onPress={() => starPassword(item.id)} activeOpacity={0.75}>
@@ -262,8 +262,8 @@ export default function PasswordsListScreen() {
                         <View style={styles.textBoxes}>
                             <View style={styles.textBox}>
                                 <Icon name={'user'} size={20} color={getColor('placeholder')} solid={true} />
-                                <Text style={styles.smallText}>{item.data.login}</Text>
-                                <TouchableOpacity onPress={() => Clipboard.setStringAsync(item.data.login)} activeOpacity={0.75}>
+                                <Text style={styles.smallText}>{item.data.username}</Text>
+                                <TouchableOpacity onPress={() => Clipboard.setStringAsync(item.data.username)} activeOpacity={0.75}>
                                     <Icon name='copy' size={24} color={getColor('placeholder')} />
                                 </TouchableOpacity>
                             </View>
@@ -282,7 +282,7 @@ export default function PasswordsListScreen() {
                         </View>
                         <View style={[styles.row, { width: '100%' }]}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('AddPasswordScreen', { id: item.id, app: item.data.app, icon: item.data.icon, login: item.data.login, password: item.data.password, mode: 'edit' })}
+                                onPress={() => navigation.navigate('AddPasswordScreen', { id: item.id, name: item.data.name, icon: item.data.icon, username: item.data.username, password: item.data.password, mode: 'edit' })}
                                 activeOpacity={0.75}
                                 style={[styles.button, { backgroundColor: getColor('primary') }]}
                             >

@@ -17,7 +17,7 @@ export default function PasswordCreatorScreen() {
     const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const LOWERCASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz';
     const NUMBERS = '1234567890';
-    const SPECIAL_CHARACTERS = '`~!@#$%^&*()-_=+[]{}\\|;:,<.>/?\'';
+    const SPECIAL_CHARACTERS = '`~!@#$%^&*()-_=+[]{}\\|;:<.>/?\'';
 
     const [useUpperCaseLetters, setUseUpperCaseLetters] = useState(true);
     const [useLowerCaseLetters, setUseLowerCaseLetters] = useState(true);
