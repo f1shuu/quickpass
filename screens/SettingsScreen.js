@@ -1,7 +1,7 @@
 import { Text } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 
 import Container from '../components/Container';
@@ -31,7 +31,7 @@ export default function SettingsScreen({ onPasscodeReset }) {
     }
 
     const deleteAllPasswords = async () => {
-        await SecureStore.deleteItemAsync('passwords');
+        await AsyncStorage.clear();
         setIsModal1Visible(false);
         setIsConfirmationModal1Visible(true);
     }

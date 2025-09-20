@@ -105,7 +105,8 @@ export default function PasswordGeneratorScreen() {
         row: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            backgroundColor: getColor('secondary')
         },
         input: {
             flex: 1,
@@ -116,8 +117,8 @@ export default function PasswordGeneratorScreen() {
             backgroundColor: getColor('secondary'),
             borderTopLeftRadius: 10,
             borderBottomLeftRadius: 10,
-            borderTopWidth: 1,
             borderLeftWidth: 1,
+            borderTopWidth: 1,
             borderBottomWidth: 1,
             borderColor: getColor('primary')
         },

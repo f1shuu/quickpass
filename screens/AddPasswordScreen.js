@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { FontAwesome6 } from '@expo/vector-icons';
 
 import Container from '../components/Container';
@@ -13,20 +14,27 @@ import { useSettings } from '../SettingsProvider';
 import { getAppNames } from '../constants/appNames';
 import colors from '../constants/colors';
 
-async function storePassword(id, favorited, data = {}, navigation, navigator) {
+async function storePassword(id, favorited, icon, name, username, password, navigation, navigator) {
     try {
-        const storedData = await SecureStore.getItemAsync('passwords');
+        const storedData = await AsyncStorage.getItem('passwords');
         const parsedData = storedData ? JSON.parse(storedData) : [];
 
         if (id) {
             const existingElementId = parsedData.findIndex(item => item.id === id);
-            parsedData[existingElementId] = { ...parsedData[existingElementId], ...parsedData[existingElementId].favorited, data: { ...parsedData[existingElementId].data, ...data } };
+            parsedData[existingElementId] = {
+                ...parsedData[existingElementId],
+                ...parsedData[existingElementId].favorited,
+                ...parsedData[existingElementId].icon,
+                ...parsedData[existingElementId].name,
+                ...parsedData[existingElementId].username,
+                ...parsedData[existingElementId].password
+            }
         } else {
             id = uuidv4();
-            parsedData.push({ id, favorited, data: data });
+            parsedData.push({ id, favorited, icon, name, username, password });
         }
 
-        await SecureStore.setItemAsync('passwords', JSON.stringify(parsedData, null, 2));
+        await AsyncStorage.setItem('passwords', JSON.stringify(parsedData, null, 2));
         navigation.navigate(navigator);
     } catch (error) {
         console.error(error);
@@ -170,7 +178,7 @@ export default function AddPasswordScreen({ route, navigation }) {
                             style={[
                                 isFocus
                                     ? { ...styles.dropdown, borderBottomWidth: 0 }
-                                    : { ...styles.dropdown, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
+                                    : { ...styles.dropdown, borderBottomWidth: 1, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
                                 name && { paddingLeft: 55 },
                                 markNameField ? { borderColor: colors.red } : { borderColor: getColor('primary') }
                             ]}

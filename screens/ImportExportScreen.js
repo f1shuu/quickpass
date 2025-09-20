@@ -1,8 +1,11 @@
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome6 } from '@expo/vector-icons';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as DocumentPicker from 'expo-document-picker';
+import { File } from 'expo-file-system';
+import Papa from 'papaparse';
 
 import Container from '../components/Container';
 
@@ -24,15 +27,79 @@ export default function ImportExportScreen() {
         })
     }, [navigation])
 
+    const generateId = () => Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
+
+    const normalizeName = (raw) => {
+        if (!raw || raw.trim() === '') return '-';
+        return raw;
+    }
+
     const checkForPasswords = async () => {
         try {
-            const storedPasswords = await SecureStore.getItemAsync('passwords');
+            const storedPasswords = await AsyncStorage.getItem('passwords');
             if (storedPasswords && JSON.parse(storedPasswords).length > 0) setIsPasswords(true);
             else setIsPasswords(false);
         } catch (error) {
             console.error(error);
         }
     }
+
+    const handleImport = async () => {
+        try {
+            const result = await DocumentPicker.getDocumentAsync({
+                type: 'text/csv',
+                copyToCacheDirectory: true,
+            })
+
+            if (result.canceled) return;
+
+            const asset = result.assets[0];
+            const file = new File(asset);
+
+            let text;
+            if (typeof file.text === 'function') text = await file.text();
+            else if (typeof file.textSync === 'function') text = file.textSync();
+            else throw new Error('File API does not support reading text in this runtime.');
+
+            const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+            if (parsed.errors?.length) {
+                console.warn('CSV parse errors:', parsed.errors);
+                Alert.alert('Import warning', `${parsed.errors.length} rows had issues.`);
+            }
+
+            const importedPasswords = parsed.data.map((r) => ({
+                id: generateId(),
+                name: normalizeName(r.site || r.name),
+                username: r.username || '',
+                password: r.password || '',
+                favorited: false
+            }))
+
+            const existingRaw = await AsyncStorage.getItem('passwords');
+            let existing = [];
+            if (existingRaw) existing = JSON.parse(existingRaw);
+
+            let updated;
+            if (overwrite) {
+                const existingFiltered = existing.filter(
+                    (item) =>
+                        !importedPasswords.some(
+                            (imp) =>
+                                imp.name.toLowerCase() === item.name.toLowerCase() &&
+                                imp.username.toLowerCase() === item.username.toLowerCase()
+                        )
+                );
+                updated = [...existingFiltered, ...importedPasswords];
+            } else updated = [...existing, ...importedPasswords];
+
+            await AsyncStorage.setItem('passwords', JSON.stringify(updated));
+
+            Alert.alert('Success', `Imported ${importedPasswords.length} passwords`);
+        } catch (err) {
+            console.error('Import failed:', err);
+            Alert.alert('Import failed', err.message || 'Unknown error');
+        }
+    };
 
     const styles = {
         divider: {
