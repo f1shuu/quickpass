@@ -1,5 +1,5 @@
 import { Text, View, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome6';
+import { FontAwesome6 } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import CountryFlag from 'react-native-country-flag';
 
@@ -37,14 +37,14 @@ export default function Setting({ flag, icon, name, color, onPress, type, parame
                 {flag ? (
                     <CountryFlag isoCode={flag} size={16} style={{ alignSelf: 'center' }} />
                 ) : (
-                    <Icon name={icon} size={24} color={color} />
+                    <FontAwesome6 name={icon} size={24} color={color} />
                 )}
                 <Text style={[styles.text, { color }]}>{name}</Text>
             </View>
             {type === 'navigate' ? (
-                <Icon name='caret-right' size={24} color={color} />
+                <FontAwesome6 name='caret-right' size={24} color={color} />
             ) : type === 'check' ? (
-                <Icon name='check' size={24} color={getColor('primary')} />
+                <FontAwesome6 name='check' size={24} color={getColor('primary')} />
             ) : null}
         </TouchableOpacity>
     )

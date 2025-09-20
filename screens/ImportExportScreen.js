@@ -1,7 +1,7 @@
 import { Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome6';
+import { FontAwesome6 } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
 
 import Container from '../components/Container';
@@ -102,31 +102,31 @@ export default function ImportExportScreen() {
                 <Text style={[styles.text, { color: getColor('placeholder') }]}>{translate('inCaseOfDuplicates')}</Text>
                 <View style={styles.row}>
                     <TouchableOpacity
-                        onPress={() => setOverwrite(true)}
-                        activeOpacity={0.75}
-                        style={[styles.checkBox, { backgroundColor: overwrite ? getColor('primary') : getColor('background') }]}
-                    >
-                        <Icon name={'check'} size={18} color={getColor('background')} />
-                    </TouchableOpacity>
-                    <Text style={styles.checkBoxText}>{translate('overwrite')}</Text>
-                </View>
-                <View style={styles.row}>
-                    <TouchableOpacity
                         onPress={() => setOverwrite(false)}
                         activeOpacity={0.75}
                         style={[styles.checkBox, { backgroundColor: !overwrite ? getColor('primary') : getColor('background') }]}
                     >
-                        <Icon name={'check'} size={18} color={getColor('background')} />
+                        <FontAwesome6 name={'check'} size={18} color={getColor('background')} />
                     </TouchableOpacity>
                     <Text style={styles.checkBoxText}>{translate('keepBoth')}</Text>
                 </View>
+                <View style={styles.row}>
+                    <TouchableOpacity
+                        onPress={() => setOverwrite(true)}
+                        activeOpacity={0.75}
+                        style={[styles.checkBox, { backgroundColor: overwrite ? getColor('primary') : getColor('background') }]}
+                    >
+                        <FontAwesome6 name={'check'} size={18} color={getColor('background')} />
+                    </TouchableOpacity>
+                    <Text style={styles.checkBoxText}>{translate('overwrite')}</Text>
+                </View>
                 <TouchableOpacity
-                    onPress={() => { }}
+                    onPress={handleImport}
                     activeOpacity={0.75}
                     style={styles.button}
                 >
                     <View style={styles.row}>
-                        <Icon name={'right-to-bracket'} size={24} color={colors.black}></Icon>
+                        <FontAwesome6 name={'right-to-bracket'} size={24} color={colors.black}></FontAwesome6>
                         <Text style={styles.buttonText}>{translate('csvImport')}</Text>
                     </View>
                 </TouchableOpacity>
@@ -143,7 +143,7 @@ export default function ImportExportScreen() {
                     style={[styles.button, { backgroundColor: isPasswords ? getColor('primary') : getColor('tertiary') }]}
                 >
                     <View style={styles.row}>
-                        <Icon name={'right-from-bracket'} size={24} color={colors.black}></Icon>
+                        <FontAwesome6 name={'right-from-bracket'} size={24} color={colors.black}></FontAwesome6>
                         <Text style={styles.buttonText}>{translate('csvExport')}</Text>
                     </View>
                 </TouchableOpacity>

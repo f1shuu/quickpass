@@ -4,7 +4,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import * as SecureStore from 'expo-secure-store';
-import Icon from 'react-native-vector-icons/FontAwesome6';
+import { FontAwesome6 } from '@expo/vector-icons';
 
 import Container from '../components/Container';
 
@@ -165,13 +165,7 @@ export default function AddPasswordScreen({ route, navigation }) {
             {!otherChosen ? (
                 <>
                     <View>
-                        {icon && (
-                            <Icon
-                                name={icon}
-                                size={20}
-                                style={styles.icon}
-                            />
-                        )}
+                        {icon && <FontAwesome6 name={icon} size={20} style={styles.icon} />}
                         <Dropdown
                             style={[
                                 isFocus
@@ -197,7 +191,7 @@ export default function AddPasswordScreen({ route, navigation }) {
                             renderItem={item => (
                                 <View style={styles.item}>
                                     <View style={styles.iconBox}>
-                                        <Icon name={item.icon} size={20} style={{ color: getColor('text') }} />
+                                        <FontAwesome6 name={item.icon} size={20} style={{ color: getColor('text') }} />
                                     </View>
                                     <Text style={styles.itemText}>{item.value}</Text>
                                 </View>
@@ -233,11 +227,7 @@ export default function AddPasswordScreen({ route, navigation }) {
                     onChangeText={(text) => setPassword(text)}
                 />
                 <TouchableOpacity style={styles.visibilityToggle} onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-                    <Icon
-                        name={isPasswordVisible ? 'eye' : 'eye-slash'}
-                        size={18}
-                        color={getColor('placeholder')}
-                    />
+                    <FontAwesome6 name={isPasswordVisible ? 'eye' : 'eye-slash'} size={18} color={getColor('placeholder')} />
                 </TouchableOpacity>
             </View>
             <TouchableOpacity

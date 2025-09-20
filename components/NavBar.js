@@ -1,7 +1,7 @@
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome6';
+import { FontAwesome6 } from '@expo/vector-icons';
 
 import PasswordGeneratorScreen from '../screens/PasswordGeneratorScreen';
 import PasswordsNavigator from '../navigators/PasswordsNavigator';
@@ -58,7 +58,7 @@ export default function NavigationBar({ onPasscodeReset }) {
                         ...customOptions,
                         title: translate('passwordsList'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='list' size={24} color={focused ? getColor('primary') : getColor('placeholder')} />
+                            <FontAwesome6 name='list' size={24} color={focused ? getColor('primary') : getColor('placeholder')} />
                         ),
                         tabBarActiveTintColor: getColor('primary'),
                         tabBarInactiveTintColor: getColor('placeholder')
@@ -71,7 +71,7 @@ export default function NavigationBar({ onPasscodeReset }) {
                         ...customOptions,
                         title: translate('passwordGenerator'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='square-plus' size={28} color={focused ? getColor('primary') : getColor('placeholder')} />
+                            <FontAwesome6 name='square-plus' size={28} color={focused ? getColor('primary') : getColor('placeholder')} />
                         ),
                         tabBarActiveTintColor: getColor('primary'),
                         tabBarInactiveTintColor: getColor('placeholder')
@@ -83,7 +83,7 @@ export default function NavigationBar({ onPasscodeReset }) {
                         ...customOptions,
                         title: translate('settings'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='gear' size={24} color={focused ? getColor('primary') : getColor('placeholder')} />
+                            <FontAwesome6 name='gear' size={24} color={focused ? getColor('primary') : getColor('placeholder')} />
                         ),
                         tabBarActiveTintColor: getColor('primary'),
                         tabBarInactiveTintColor: getColor('placeholder')

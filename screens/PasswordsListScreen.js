@@ -1,7 +1,7 @@
 import { Text, View, TouchableOpacity, TextInput, SectionList } from 'react-native';
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome6';
+import { FontAwesome6 } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
 import * as Clipboard from 'expo-clipboard';
 import * as Haptics from 'expo-haptics';
@@ -247,35 +247,35 @@ export default function PasswordsListScreen() {
                     style={isActive ? [styles.header, styles.activeHeader] : [styles.header, styles.inactiveHeader]}
                 >
                     <View style={[styles.row, { gap: 15 }]}>
-                        <Icon name={item.data.icon} size={32} color={getColor('text')} />
+                        <FontAwesome6 name={item.data.icon} size={32} color={getColor('text')} />
                         <Text style={styles.text}>{item.data.name}</Text>
                     </View>
                     <View style={[styles.row, { gap: 15 }]}>
                         <TouchableOpacity onPress={() => starPassword(item.id)} activeOpacity={0.75}>
-                            <Icon name={'star'} size={20} color={colors.golden} solid={item.favorited ? true : false} />
+                            <FontAwesome6 name={'star'} size={20} color={colors.golden} solid={item.favorited ? true : false} />
                         </TouchableOpacity>
-                        <Icon name={isActive ? 'caret-up' : 'caret-down'} size={24} color={getColor('text')} />
+                        <FontAwesome6 name={isActive ? 'caret-up' : 'caret-down'} size={24} color={getColor('text')} />
                     </View>
                 </TouchableOpacity>
                 {isActive ? (
                     <View style={styles.content}>
                         <View style={styles.textBoxes}>
                             <View style={styles.textBox}>
-                                <Icon name={'user'} size={20} color={getColor('placeholder')} solid={true} />
+                                <FontAwesome6 name={'user'} size={20} color={getColor('placeholder')} solid={true} />
                                 <Text style={styles.smallText}>{item.data.username}</Text>
                                 <TouchableOpacity onPress={() => Clipboard.setStringAsync(item.data.username)} activeOpacity={0.75}>
-                                    <Icon name='copy' size={24} color={getColor('placeholder')} />
+                                    <FontAwesome6 name='copy' size={24} color={getColor('placeholder')} />
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.textBox}>
-                                <Icon name={'key'} size={20} color={getColor('placeholder')} />
+                                <FontAwesome6 name={'key'} size={20} color={getColor('placeholder')} />
                                 <Text style={styles.smallText}>{isPasswordVisible ? item.data.password : '•'.repeat(item.data.password.length)}</Text>
                                 <View style={styles.row}>
                                     <TouchableOpacity style={styles.visibilityToggle} onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-                                        <Icon name={isPasswordVisible ? 'eye' : 'eye-slash'} size={20} color={getColor('placeholder')} />
+                                        <FontAwesome6 name={isPasswordVisible ? 'eye' : 'eye-slash'} size={20} color={getColor('placeholder')} />
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => Clipboard.setStringAsync(item.data.password)} activeOpacity={0.75}>
-                                        <Icon name='copy' size={24} color={getColor('placeholder')} />
+                                        <FontAwesome6 name='copy' size={24} color={getColor('placeholder')} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -327,12 +327,12 @@ export default function PasswordsListScreen() {
                 />
             ) : (
                 <>
-                    <Icon name='shield' size={150} color={getColor('secondary')} style={styles.icon} />
+                    <FontAwesome6 name='shield' size={150} color={getColor('secondary')} style={styles.icon} />
                     <Text style={styles.noPasswordsText}>{translate('noPasswords')}</Text>
                 </>
             )}
             <TouchableOpacity onPress={() => navigation.navigate('AddPasswordScreen')} style={styles.addButton} activeOpacity={0.75}>
-                <Icon name='plus' size={28} color={getColor('background')} />
+                <FontAwesome6 name='plus' size={28} color={getColor('background')} />
             </TouchableOpacity>
             <Modal
                 isVisible={isModalVisible}

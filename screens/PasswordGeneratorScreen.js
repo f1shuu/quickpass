@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity, Switch } from 'react-native';
 import { useState, useEffect } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome6';
+import { FontAwesome6 } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import * as Clipboard from 'expo-clipboard';
 import * as Haptics from 'expo-haptics';
@@ -11,7 +11,7 @@ import { useSettings } from '../SettingsProvider';
 
 import colors from '../constants/colors';
 
-export default function PasswordCreatorScreen() {
+export default function PasswordGeneratorScreen() {
     const MIN_PASSWORD_LENGTH = 8;
     const MAX_PASSWORD_LENGTH = 32;
     const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -167,7 +167,7 @@ export default function PasswordCreatorScreen() {
                     <Text style={[styles.text, { fontSize: getFontSize() }]}>{password}</Text>
                 </View>
                 <TouchableOpacity onPress={() => Clipboard.setStringAsync(password)} activeOpacity={0.75} style={styles.copyButton}>
-                    <Icon name='copy' size={28} color={getColor('placeholder')} />
+                    <FontAwesome6 name='copy' size={28} color={getColor('placeholder')} />
                 </TouchableOpacity>
             </View>
             <View style={styles.section}>
