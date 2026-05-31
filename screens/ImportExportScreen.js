@@ -2,7 +2,6 @@ import { Text, View, TouchableOpacity, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome6 } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as DocumentPicker from 'expo-document-picker';
 import { File } from 'expo-file-system';
 import Papa from 'papaparse';
@@ -12,6 +11,7 @@ import Container from '../components/Container';
 import { useSettings } from '../SettingsProvider';
 
 import colors from '../constants/colors';
+import { getPasswords, savePasswords } from '../storage/passwordStorage';
 
 export default function ImportExportScreen() {
     const [overwrite, setOverwrite] = useState(false);
@@ -36,9 +36,8 @@ export default function ImportExportScreen() {
 
     const checkForPasswords = async () => {
         try {
-            const storedPasswords = await AsyncStorage.getItem('passwords');
-            if (storedPasswords && JSON.parse(storedPasswords).length > 0) setIsPasswords(true);
-            else setIsPasswords(false);
+            const storedPasswords = await getPasswords();
+            setIsPasswords(storedPasswords.length > 0);
         } catch (error) {
             console.error(error);
         }
@@ -69,15 +68,14 @@ export default function ImportExportScreen() {
 
             const importedPasswords = parsed.data.map((r) => ({
                 id: generateId(),
+                icon: 'circle-question',
                 name: normalizeName(r.site || r.name),
                 username: r.username || '',
                 password: r.password || '',
                 favorited: false
             }))
 
-            const existingRaw = await AsyncStorage.getItem('passwords');
-            let existing = [];
-            if (existingRaw) existing = JSON.parse(existingRaw);
+            const existing = await getPasswords();
 
             let updated;
             if (overwrite) {
@@ -92,7 +90,7 @@ export default function ImportExportScreen() {
                 updated = [...existingFiltered, ...importedPasswords];
             } else updated = [...existing, ...importedPasswords];
 
-            await AsyncStorage.setItem('passwords', JSON.stringify(updated));
+            await savePasswords(updated);
 
             Alert.alert('Success', `Imported ${importedPasswords.length} passwords`);
         } catch (err) {

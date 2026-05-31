@@ -2,7 +2,6 @@ import { Text, View, TouchableOpacity, TextInput, SectionList } from 'react-nati
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome6 } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 
 import Container from '../components/Container';
@@ -12,6 +11,7 @@ import Password from '../components/Password';
 import { useSettings } from '../SettingsProvider';
 
 import colors from '../constants/colors';
+import { getPasswords as getStoredPasswords, savePasswords } from '../storage/passwordStorage';
 
 export default function PasswordsListScreen() {
     const [passwords, setPasswords] = useState([]);
@@ -65,11 +65,8 @@ export default function PasswordsListScreen() {
 
     const getPasswords = async () => {
         try {
-            const storedPasswords = await AsyncStorage.getItem('passwords');
-            if (storedPasswords) {
-                const parsedPasswords = JSON.parse(storedPasswords);
-                setPasswords(parsedPasswords);
-            } else setPasswords([]);
+            const storedPasswords = await getStoredPasswords();
+            setPasswords(storedPasswords);
         } catch (error) {
             console.error(error);
         }
@@ -77,13 +74,10 @@ export default function PasswordsListScreen() {
 
     const deletePassword = async (id) => {
         try {
-            const storedPasswords = await AsyncStorage.getItem('passwords');
-            if (!storedPasswords) return;
-
-            const parsedPasswords = JSON.parse(storedPasswords);
+            const parsedPasswords = await getStoredPasswords();
             const updatedPasswords = parsedPasswords.filter(item => item.id !== id);
 
-            await AsyncStorage.setItem('passwords', JSON.stringify(updatedPasswords));
+            await savePasswords(updatedPasswords);
             setPasswords(updatedPasswords);
 
             setIsModalVisible(false);
@@ -96,7 +90,7 @@ export default function PasswordsListScreen() {
         try {
             const updatedPasswords = passwords.map(p => p.id === id ? { ...p, favorited: !p.favorited } : p);
             setPasswords(updatedPasswords);
-            await AsyncStorage.setItem('passwords', JSON.stringify(updatedPasswords));
+            await savePasswords(updatedPasswords);
         } catch (error) {
             console.error(error);
         }

@@ -28,6 +28,7 @@ const Password = memo(({ item, activeId, setActiveId, starPassword, handleModal,
             icon: item.icon,
             username: item.username,
             password: item.password,
+            favorited: item.favorited,
             mode: 'edit'
         })
     }, [item])

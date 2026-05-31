@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { FontAwesome6 } from '@expo/vector-icons';
 
@@ -13,28 +12,22 @@ import { useSettings } from '../SettingsProvider';
 
 import { getAppNames } from '../constants/appNames';
 import colors from '../constants/colors';
+import { getPasswords, savePasswords } from '../storage/passwordStorage';
 
 async function storePassword(id, favorited, icon, name, username, password, navigation, navigator) {
     try {
-        const storedData = await AsyncStorage.getItem('passwords');
-        const parsedData = storedData ? JSON.parse(storedData) : [];
+        const parsedData = await getPasswords();
 
         if (id) {
             const existingElementId = parsedData.findIndex(item => item.id === id);
-            parsedData[existingElementId] = {
-                ...parsedData[existingElementId],
-                ...parsedData[existingElementId].favorited,
-                ...parsedData[existingElementId].icon,
-                ...parsedData[existingElementId].name,
-                ...parsedData[existingElementId].username,
-                ...parsedData[existingElementId].password
-            }
+            if (existingElementId >= 0) parsedData[existingElementId] = { ...parsedData[existingElementId], favorited, icon, name, username, password }
+            else parsedData.push({ id, favorited, icon, name, username, password });
         } else {
             id = uuidv4();
             parsedData.push({ id, favorited, icon, name, username, password });
         }
 
-        await AsyncStorage.setItem('passwords', JSON.stringify(parsedData, null, 2));
+        await savePasswords(parsedData);
         navigation.navigate(navigator);
     } catch (error) {
         console.error(error);
@@ -80,7 +73,7 @@ export default function AddPasswordScreen({ route, navigation }) {
         if (!password) setMarkPasswordField(true);
         else setMarkPasswordField(false);
 
-        if (name && username && password) await storePassword(id, favorited, { icon, name, username, password }, navigation, 'PasswordsListScreen');
+        if (name && username && password) await storePassword(id, favorited, icon, name, username, password, navigation, 'PasswordsListScreen');
     }
 
     const styles = {
