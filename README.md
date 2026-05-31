@@ -5,8 +5,9 @@ A simple and secure password management app built with React Native and Expo.
 ## Features
 - quickly generate strong passwords up to 32 characters long,
 - add, view, edit and delete saved passwords,
+- import and export all passwords as CSV files,
 - secure storage using Expo SecureStore,
-- multi-language support (with more languages incoming in the future).
+- multi-language support,.
 
 ## Installation
 
@@ -38,7 +39,7 @@ You can download the latest Android APK from the [Releases](https://github.com/f
     <img src="assets/images/readme/passwords-list.jpg" alt="Passwords list screen" width="250"/>
     <img src="assets/images/readme/password-generator.jpg" alt="Password generator" width="250"/>
     <img src="assets/images/readme/settings.jpg" alt="Settings screen" width="250"/>
-</p>
+</div>
 
 ## Tech Stack
 
