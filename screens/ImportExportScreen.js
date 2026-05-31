@@ -2,16 +2,25 @@ import { Text, View, TouchableOpacity, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome6 } from '@expo/vector-icons';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 import * as DocumentPicker from 'expo-document-picker';
-import { File } from 'expo-file-system';
-import Papa from 'papaparse';
+import { Directory, File } from 'expo-file-system';
 
 import Container from '../components/Container';
 
 import { useSettings } from '../SettingsProvider';
 
+import { getAppNames } from '../constants/appNames';
 import colors from '../constants/colors';
 import { getPasswords, savePasswords } from '../storage/passwordStorage';
+import {
+    createExportFileName,
+    createPasswordsExportCsv,
+    isCsvFileAsset,
+    mergePasswordsForImport,
+    parsePasswordsImportCsv
+} from '../utils/passwordCsv';
 
 export default function ImportExportScreen() {
     const [overwrite, setOverwrite] = useState(false);
@@ -27,11 +36,35 @@ export default function ImportExportScreen() {
         })
     }, [navigation])
 
-    const generateId = () => Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
+    const isPickerCancelError = (error) => {
+        const message = error?.message?.toLowerCase() ?? '';
+        const code = error?.code?.toLowerCase() ?? '';
 
-    const normalizeName = (raw) => {
-        if (!raw || raw.trim() === '') return '-';
-        return raw;
+        return message.includes('cancel') || code.includes('cancel');
+    }
+
+    const getImportErrorMessage = (error) => {
+        const message = translate(error?.code || error?.message || 'unknownError');
+        const skippedRows = (error?.stats?.emptyRows ?? 0) + (error?.stats?.emptyFieldRows ?? 0);
+
+        if (skippedRows > 0) return `${message}\n${translate('csvImportSkippedEmpty')}: ${skippedRows}`;
+
+        return message;
+    }
+
+    const buildImportSummary = (parseStats, mergeStats) => {
+        const emptyRows = parseStats.emptyRows + parseStats.emptyFieldRows;
+        const duplicateRows = mergeStats.appDuplicates + mergeStats.importDuplicates;
+        const lines = [
+            `${translate('csvImportImported')}: ${mergeStats.savedImportedRows}`
+        ];
+
+        if (emptyRows > 0) lines.push(`${translate('csvImportSkippedEmpty')}: ${emptyRows}`);
+        if (duplicateRows > 0) {
+            lines.push(`${translate(overwrite ? 'csvImportDuplicatesOverwritten' : 'csvImportDuplicatesKept')}: ${duplicateRows}`);
+        }
+
+        return lines.join('\n');
     }
 
     const checkForPasswords = async () => {
@@ -44,58 +77,79 @@ export default function ImportExportScreen() {
     }
 
     const handleImport = async () => {
+        let existingPasswords = null;
+        let shouldRollback = false;
+
         try {
             const result = await DocumentPicker.getDocumentAsync({
-                type: 'text/csv',
+                type: '*/*',
                 copyToCacheDirectory: true,
             })
 
             if (result.canceled) return;
 
             const asset = result.assets[0];
-            const file = new File(asset);
+            if (!isCsvFileAsset(asset)) throw new Error('csvImportInvalidFile');
+
+            const file = new File(asset.uri);
 
             let text;
             if (typeof file.text === 'function') text = await file.text();
             else if (typeof file.textSync === 'function') text = file.textSync();
             else throw new Error('File API does not support reading text in this runtime.');
 
-            const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
-            if (parsed.errors?.length) {
-                console.warn('CSV parse errors:', parsed.errors);
-                Alert.alert('Import warning', `${parsed.errors.length} rows had issues.`);
+            const parsedImport = parsePasswordsImportCsv(text, getAppNames(translate), uuidv4);
+
+            existingPasswords = await getPasswords();
+
+            const mergedImport = mergePasswordsForImport(existingPasswords, parsedImport.passwords, overwrite);
+
+            shouldRollback = true;
+            await savePasswords(mergedImport.passwords);
+            shouldRollback = false;
+
+            setIsPasswords(mergedImport.passwords.length > 0);
+
+            Alert.alert(translate('csvImportSuccess'), buildImportSummary(parsedImport.stats, mergedImport.stats));
+        } catch (err) {
+            if (shouldRollback && existingPasswords) {
+                try {
+                    await savePasswords(existingPasswords);
+                } catch (rollbackError) {
+                    console.error('Import rollback failed:', rollbackError);
+                }
             }
 
-            const importedPasswords = parsed.data.map((r) => ({
-                id: generateId(),
-                icon: 'circle-question',
-                name: normalizeName(r.site || r.name),
-                username: r.username || '',
-                password: r.password || '',
-                favorited: false
-            }))
-
-            const existing = await getPasswords();
-
-            let updated;
-            if (overwrite) {
-                const existingFiltered = existing.filter(
-                    (item) =>
-                        !importedPasswords.some(
-                            (imp) =>
-                                imp.name.toLowerCase() === item.name.toLowerCase() &&
-                                imp.username.toLowerCase() === item.username.toLowerCase()
-                        )
-                );
-                updated = [...existingFiltered, ...importedPasswords];
-            } else updated = [...existing, ...importedPasswords];
-
-            await savePasswords(updated);
-
-            Alert.alert('Success', `Imported ${importedPasswords.length} passwords`);
-        } catch (err) {
             console.error('Import failed:', err);
-            Alert.alert('Import failed', err.message || 'Unknown error');
+            Alert.alert(translate('csvImportFailed'), getImportErrorMessage(err));
+        }
+    };
+
+    const handleExport = async () => {
+        try {
+            const passwords = await getPasswords();
+
+            if (passwords.length === 0) {
+                setIsPasswords(false);
+                Alert.alert(translate('csvExportFailed'), translate('noPasswordsToExport'));
+                return;
+            }
+
+            const fileName = createExportFileName();
+            const csv = createPasswordsExportCsv(passwords);
+            const directory = await Directory.pickDirectoryAsync();
+
+            if (!directory) return;
+
+            const file = directory.createFile(fileName, 'text/csv');
+            file.write(csv, { encoding: 'utf8' });
+
+            Alert.alert(translate('csvExportSaved'), fileName);
+        } catch (err) {
+            if (isPickerCancelError(err)) return;
+
+            console.error('Export failed:', err);
+            Alert.alert(translate('csvExportFailed'), err.message || translate('unknownError'));
         }
     };
 
@@ -202,7 +256,7 @@ export default function ImportExportScreen() {
                 <Text style={[styles.text, { marginVertical: 15 }]}>{translate('csvExportDescription')}</Text>
                 <Text style={[styles.text, styles.warningText]}>{translate('csvExportWarning')}</Text>
                 <TouchableOpacity
-                    onPress={() => { }}
+                    onPress={handleExport}
                     activeOpacity={0.75}
                     disabled={!isPasswords}
                     style={[styles.button, { backgroundColor: isPasswords ? getColor('primary') : getColor('tertiary') }]}

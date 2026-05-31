@@ -22,7 +22,6 @@
     "expo-local-authentication": "~17.0.8",
     "expo-localization": "~17.0.9",
     "expo-secure-store": "~15.0.8",
-    "expo-sharing": "~14.0.8",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
     "papaparse": "^5.5.3",
