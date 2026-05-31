@@ -56,7 +56,6 @@ export default function SettingsScreen({ onPasscodeReset }) {
     return (
         <Container>
             <Setting name={translate('language')} icon={'globe'} color={getColor('text')} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'language' })} />
-            <Setting name={translate('theme')} icon={'palette'} color={getColor('text')} type='navigate' onPress={() => navigation.navigate('SelectionScreen', { screen: 'theme' })} />
             <Setting name={translate('defaultUsername')} icon={'user'} color={getColor('text')} type='navigate' onPress={() => navigation.navigate('DefaultUsernameScreen')} />
             <Setting name={translate('changePasscode')} icon={'hashtag'} color={getColor('text')} type='navigate' onPress={onPasscodeReset} />
             <Setting name={translate('csvImportExport')} icon={'file-import'} color={getColor('text')} type='navigate' onPress={() => navigation.navigate('ImportExportScreen')} />

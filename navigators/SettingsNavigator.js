@@ -61,7 +61,7 @@ export default function SettingsNavigator({ onPasscodeReset }) {
                 component={SelectionScreen}
                 options={({ route }) => ({
                     ...customOptions,
-                    headerTitle: route.params?.screen === 'language' ? translate('chooseLanguage') : translate('chooseTheme')
+                    headerTitle: translate('chooseLanguage')
                 })}
             />
         </Stack.Navigator>

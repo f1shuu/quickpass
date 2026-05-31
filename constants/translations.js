@@ -12,7 +12,6 @@ export const translations = {
         changePasscode: 'Zmień kod PIN',
         choose: 'Wybierz...',
         chooseLanguage: 'Wybierz język',
-        chooseTheme: 'Wybierz motyw',
         clear: 'Wyczyść',
         confirmPasscode: 'Potwierdź kod PIN',
         createPasscode: 'Utwórz nowy kod PIN',
@@ -65,7 +64,6 @@ export const translations = {
         search: 'Szukaj...',
         settings: 'Ustawienia',
         strongPasswordGenerator: 'Generator silnych haseł',
-        theme: 'Motyw',
         website: 'Nazwa',
         yes: 'Tak'
     },
@@ -83,7 +81,6 @@ export const translations = {
         changePasscode: 'Change passcode',
         choose: 'Choose...',
         chooseLanguage: 'Choose language',
-        chooseTheme: 'Choose theme',
         clear: 'Clear',
         confirmPasscode: 'Confirm new passcode',
         createPasscode: 'Create a new passcode',
@@ -136,7 +133,6 @@ export const translations = {
         search: 'Search...',
         settings: 'Settings',
         strongPasswordGenerator: 'Strong password generator',
-        theme: 'Theme',
         website: 'Webiste name',
         yes: 'Yes'
     }
