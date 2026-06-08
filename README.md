@@ -7,7 +7,7 @@ A simple and secure password management app built with React Native and Expo.
 - add, view, edit and delete saved passwords,
 - import and export all passwords as CSV files,
 - secure storage using Expo SecureStore,
-- multi-language support,.
+- multi-language support.
 
 ## Installation
 
