@@ -26,7 +26,8 @@ export default function NavigationBar({ onPasscodeReset }) {
         },
         tabBarStyle: {
             backgroundColor: getColor('secondary'),
-            height: 60,
+            height: 80,
+            paddingTop: 5,
             elevation: 0,
             borderTopWidth: 0
         },
