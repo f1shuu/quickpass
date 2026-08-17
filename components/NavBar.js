@@ -36,20 +36,8 @@ export default function NavigationBar({ onPasscodeReset }) {
         }
     }
 
-    const navigationTheme = {
-        dark: true,
-        colors: {
-            background: getColor('background'),
-            card: getColor('secondary'),
-            text: getColor('text'),
-            border: getColor('secondary'),
-            primary: getColor('primary'),
-            notification: getColor('primary')
-        }
-    };
-
     return (
-        <NavigationContainer theme={navigationTheme}>
+        <NavigationContainer>
             <Tab.Navigator
                 initialRouteName='PasswordGeneratorScreen'
                 screenOptions={{
