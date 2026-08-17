@@ -22,13 +22,19 @@ export default function SettingsNavigator({ onPasscodeReset }) {
             fontFamily: 'Tommy',
             fontSize: 18,
             color: getColor('text')
+        },
+        cardStyle: {
+            backgroundColor: getColor('background')
         }
     }
 
     return (
         <Stack.Navigator
             screenOptions={{
-                animation: 'none'
+                animation: 'none',
+                cardStyle: {
+                    backgroundColor: getColor('background')
+                }
             }}
         >
             <Stack.Screen

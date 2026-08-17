@@ -10,6 +10,7 @@ export default function Container({ children }) {
             flex: 1,
             backgroundColor: getColor('background'),
             padding: 10,
+            paddingBottom: 0,
             gap: 10
         }
     }

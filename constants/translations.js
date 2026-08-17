@@ -77,6 +77,7 @@ export const translations = {
         strongPasswordGenerator: 'Generator silnych haseł',
         unknownError: 'Nieznany błąd',
         username: 'Nazwa użytkownika',
+        version: 'Wersja',
         website: 'Nazwa',
         yes: 'Tak'
     },
@@ -159,6 +160,7 @@ export const translations = {
         strongPasswordGenerator: 'Strong password generator',
         unknownError: 'Unknown error',
         username: 'Username',
+        version: 'Version',
         website: 'Webiste name',
         yes: 'Yes'
     }

@@ -36,13 +36,29 @@ export default function NavigationBar({ onPasscodeReset }) {
         }
     }
 
+    const navigationTheme = {
+        dark: true,
+        colors: {
+            background: getColor('background'),
+            card: getColor('secondary'),
+            text: getColor('text'),
+            border: getColor('secondary'),
+            primary: getColor('primary'),
+            notification: getColor('primary')
+        }
+    };
+
     return (
-        <NavigationContainer>
+        <NavigationContainer theme={navigationTheme}>
             <Tab.Navigator
                 initialRouteName='PasswordGeneratorScreen'
                 screenOptions={{
+                    popToTopOnBlur: true,
                     animationEnabled: false,
                     tabBarHideOnKeyboard: true,
+                    sceneStyle: {
+                        backgroundColor: getColor('background')
+                    },
                     tabBarButton: (props) => (
                         <TouchableWithoutFeedback onPress={props.onPress}>
                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -55,6 +71,11 @@ export default function NavigationBar({ onPasscodeReset }) {
                 <Tab.Screen
                     name='PasswordsNavigator'
                     component={PasswordsNavigator}
+                    listeners={({ navigation }) => ({
+                        tabPress: () => {
+                            navigation.navigate('PasswordsNavigator', { screen: 'PasswordsListScreen' });
+                        }
+                    })}
                     options={() => ({
                         ...customOptions,
                         title: translate('passwordsList'),
@@ -68,6 +89,11 @@ export default function NavigationBar({ onPasscodeReset }) {
                 <Tab.Screen
                     name='PasswordGeneratorScreen'
                     component={PasswordGeneratorScreen}
+                    listeners={({ navigation }) => ({
+                        tabPress: () => {
+                            navigation.navigate('PasswordGeneratorScreen');
+                        }
+                    })}
                     options={() => ({
                         ...customOptions,
                         title: translate('passwordGenerator'),
@@ -80,6 +106,11 @@ export default function NavigationBar({ onPasscodeReset }) {
                 />
                 <Tab.Screen
                     name='SettingsNavigator'
+                    listeners={({ navigation }) => ({
+                        tabPress: () => {
+                            navigation.navigate('SettingsNavigator', { screen: 'SettingsScreen' });
+                        }
+                    })}
                     options={() => ({
                         ...customOptions,
                         title: translate('settings'),
