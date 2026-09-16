@@ -14,7 +14,10 @@ export default {
     },
     plugins: [
       'expo-secure-store',
-      'expo-localization'
+      'expo-localization',
+      'expo-font',
+      'expo-splash-screen',
+      'expo-status-bar'
     ],
     extra: {
       'eas': {
